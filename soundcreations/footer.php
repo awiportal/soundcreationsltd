@@ -37,6 +37,8 @@ $sc_email   = sc_setting( 'email' );
 				<div class="sc-foot-soc"><?php sc_all_social(); ?></div>
 			</div>
 
+			<div class="sc-foot-nav">
+
 			<div class="sc-foot-col">
 				<h2><?php esc_html_e( 'Explore', 'soundcreations' ); ?></h2>
 				<ul>
@@ -114,6 +116,7 @@ $sc_email   = sc_setting( 'email' );
 				<?php endif; ?>
 			</div>
 
+			</div>
 		</div>
 
 		<div class="sc-footer__bottom">

@@ -1781,3 +1781,26 @@ h3 { font-size: 1.35rem; font-weight: 700; line-height: 1.22; letter-spacing: -.
 .sc-shot:hover img { transform: scale(1.04); }
 .sc-svc-hero__media { min-height: clamp(300px, 30vw, 460px); }
 @media (max-width: 720px) { .sc-svc-hero__media { min-height: 230px; } }
+
+
+/* ===== Footer v2 - balanced, professional 2-zone layout (brand anchor + nav group) ===== */
+.sc-footer { padding-block: clamp(2.75rem, 5vw, 4rem) 1.75rem; }
+.sc-footer .sc-footer__grid { grid-template-columns: minmax(230px, 1fr) minmax(0, 2.25fr); gap: clamp(2.25rem, 4vw, 4.5rem); align-items: start; }
+.sc-foot-nav { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: clamp(1.75rem, 3vw, 3rem); align-items: start; }
+.sc-foot-about { max-width: 360px; }
+.sc-foot-logo { margin-bottom: 1rem; }
+.sc-foot-logo img { max-height: 52px; }
+.sc-foot-about p.sc-foot-tagline { max-width: 30ch; margin: .1rem 0 1.25rem; }
+.sc-foot-soc { gap: .6rem; }
+.sc-footer__bottom { margin-top: clamp(2rem, 4vw, 3rem); }
+@media (max-width: 900px) {
+  .sc-footer .sc-footer__grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .sc-foot-nav { grid-template-columns: repeat(3, 1fr); }
+  .sc-foot-about { max-width: none; }
+}
+@media (max-width: 560px) {
+  .sc-foot-nav { grid-template-columns: 1fr 1fr; gap: 1.75rem 1.4rem; }
+}
+@media (max-width: 380px) {
+  .sc-foot-nav { grid-template-columns: 1fr; }
+}
