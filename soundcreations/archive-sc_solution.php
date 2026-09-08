@@ -46,9 +46,7 @@ $sc_pills = array(
 		<div class="sc-sechead">
 			<div>
 				<p class="sc-eyebrow"><?php esc_html_e( 'Our Solutions', 'soundcreations' ); ?></p>
-				<h2><?php echo esc_html( sc_setting( 'sol_solutions_title', 'Complete technology solutions for every environment.' ) ); ?></h2>
 			</div>
-			<p class="sc-sechead__intro">From houses of worship and corporate spaces to live events and hospitality venues, we deliver tailored audio, visual, lighting and acoustic solutions.</p>
 		</div>
 		<div class="sc-solgrid">
 			<?php
