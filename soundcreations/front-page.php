@@ -32,37 +32,11 @@ $sc_hc2_h = ( 0 === strpos( $sc_hc2_u, 'http' ) ) ? $sc_hc2_u : home_url( $sc_hc
 	<?php endif; ?>
 	<span class="sc-hero__scrim" aria-hidden="true"></span>
 	<div class="sc-container sc-hero__inner">
-		<p class="sc-eyebrow"><?php echo esc_html( sc_setting( 'home_hero_eyebrow', 'Consult -> Design -> Distribute -> Integrate -> Support' ) ); ?></p>
 		<h1 class="sc-hero__title"><?php echo esc_html( sc_setting( 'home_hero_title', 'Engineering exceptional sound. Delivering complete solutions.' ) ); ?></h1>
-		<p class="sc-hero__lead"><?php echo sc_rich_e( sc_setting( 'home_hero_lead', 'We design, supply, integrate and support professional audio, visual, lighting and acoustic systems across Africa and the Middle East.' ) ); ?></p>
 		<div class="sc-hero__cta">
 			<?php if ( '' !== $sc_hc1_l ) : ?><a class="sc-btn sc-btn--primary" href="<?php echo esc_url( $sc_hc1_h ); ?>"><?php echo esc_html( $sc_hc1_l ); ?></a><?php endif; ?>
 			<?php if ( '' !== $sc_hc2_l ) : ?><a class="sc-btn sc-btn--ghost" href="<?php echo esc_url( $sc_hc2_h ); ?>"><?php echo esc_html( $sc_hc2_l ); ?></a><?php endif; ?>
 		</div>
-	</div>
-</section>
-
-<section class="sc-pillars">
-	<div class="sc-container sc-pillars__grid">
-		<?php
-		$sc_pillars = array(
-			array( '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.3"/><circle cx="18" cy="18" r="2.3"/><path d="M8.3 6H15a3 3 0 0 1 3 3v6.7"/><path d="M6 8.3V15a3 3 0 0 0 3 3h6.7"/></svg>', 'End-to-end Expertise', 'From concept to commissioning and beyond.' ),
-			array( '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="7" width="10" height="10" rx="2"/><path d="M10 3v3M14 3v3M10 18v3M14 18v3M3 10h3M3 14h3M18 10h3M18 14h3"/></svg>', 'World-class Technology', 'Trusted brands, engineered for your environment.' ),
-			array( '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9.5" r="2.3"/><path d="M2.5 19a5.5 5.5 0 0 1 11 0"/><path d="M14.8 14.3a4.6 4.6 0 0 1 6.7 4.7"/></svg>', 'Long-term Partnership', 'Reliable support that keeps you performing.' ),
-			array( '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v4a4 4 0 0 1-8 0z"/><path d="M8 5H5v1.4A3.5 3.5 0 0 0 8 10M16 5h3v1.4A3.5 3.5 0 0 1 16 10"/><path d="M12 12v3M9 20h6M10 20l.6-3h2.8l.6 3"/></svg>', 'Proven Results', 'Hundreds of successful projects across the region.' ),
-		);
-		foreach ( $sc_pillars as $sc_p ) :
-			?>
-			<div class="sc-pillar">
-				<span class="sc-pillar__icon"><?php echo $sc_p[0]; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG. ?></span>
-				<div class="sc-pillar__text">
-					<strong><?php echo esc_html( $sc_p[1] ); ?></strong>
-					<span><?php echo esc_html( $sc_p[2] ); ?></span>
-				</div>
-			</div>
-			<?php
-		endforeach;
-		?>
 	</div>
 </section>
 
@@ -71,9 +45,7 @@ $sc_hc2_h = ( 0 === strpos( $sc_hc2_u, 'http' ) ) ? $sc_hc2_u : home_url( $sc_hc
 		<div class="sc-sechead">
 			<div>
 				<p class="sc-eyebrow">What We Do</p>
-				<h2>More than equipment. A complete solution.</h2>
 			</div>
-			<p class="sc-sechead__intro">If it sounds good, it's Sound Creations. From acoustic design and system engineering to equipment, integration, commissioning and support, we deliver world-class technology and expertise across Africa and the Middle East.</p>
 		</div>
 		<div class="sc-svcards">
 			<?php
@@ -140,9 +112,7 @@ $sc_hc2_h = ( 0 === strpos( $sc_hc2_u, 'http' ) ) ? $sc_hc2_u : home_url( $sc_hc
 		<div class="sc-sechead">
 			<div>
 				<p class="sc-eyebrow">Our Solutions</p>
-				<h2>Complete technology solutions for every environment.</h2>
 			</div>
-			<p class="sc-sechead__intro">From houses of worship and corporate spaces to live events and hospitality venues, we deliver tailored audio, visual, lighting and acoustic solutions.</p>
 		</div>
 		<div class="sc-solgrid">
 			<?php
