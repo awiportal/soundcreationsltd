@@ -162,8 +162,6 @@ function sc_render_profiles( $atts = array() ) {
 	<div class="sc-profiles sc-profiles--compact">
 		<div class="sc-profiles__head">
 			<p class="sc-eyebrow"><?php echo esc_html( sc_setting( 'profiles_eyebrow' ) ); ?></p>
-			<h2><?php echo esc_html( sc_setting( 'profiles_title' ) ); ?></h2>
-			<p class="sc-lead"><?php echo sc_rich_e( sc_setting( 'profiles_intro' ) ); ?></p>
 		</div>
 		<div class="sc-profiles__grid">
 			<?php foreach ( $cards as $card ) : ?>
