@@ -95,43 +95,6 @@ $sc_arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-w
 			<img src="<?php echo esc_url( $sc_img . '/fane-hero.jpg' ); ?>" alt="<?php esc_attr_e( 'FANE professional loudspeaker driver', 'soundcreations' ); ?>">
 		</div>
 	</div>
-	<div class="sc-container">
-		<div class="sc-fane-stats">
-			<?php foreach ( $sc_pills as $p ) : ?>
-				<div class="sc-fane-stat">
-					<span class="sc-fane-stat__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><?php echo $p[2]; ?></svg></span>
-					<div class="sc-fane-stat__text"><strong><?php echo esc_html( $p[0] ); ?></strong><span><?php echo esc_html( $p[1] ); ?></span></div>
-				</div>
-			<?php endforeach; ?>
-		</div>
-	</div>
-</section>
-
-<section class="sc-section" id="fane-about">
-	<div class="sc-container">
-		<div class="sc-prose sc-fane-info" style="max-width:820px;margin-inline:auto;">
-			<?php echo sc_rich_block( 'fane_info' ); ?>
-		</div>
-	</div>
-</section>
-
-<section class="sc-section" id="fane-difference">
-	<div class="sc-container sc-fane-diff">
-		<div class="sc-fane-diff__intro">
-			<p class="sc-eyebrow"><?php esc_html_e( 'The FANE difference', 'soundcreations' ); ?></p>
-			<h2><?php echo esc_html( sc_setting( 'fane_diff_title', 'Built from the inside out.' ) ); ?></h2>
-			<p class="sc-support-sub"><?php echo sc_rich_e( sc_setting( 'fane_diff_body', 'Every FANE component is designed and engineered to work in perfect harmony - delivering the performance, reliability and consistency professionals depend on.' ) ); ?></p>
-			<a class="sc-btn sc-btn--ghost" href="#fane-products"><?php esc_html_e( 'Discover Our Technology', 'soundcreations' ); ?> <?php echo $sc_arrow; ?></a>
-		</div>
-		<div class="sc-fane-diff__media">
-			<img src="<?php echo esc_url( $sc_img . '/fane-exploded.jpg' ); ?>" alt="<?php esc_attr_e( 'Exploded view of a FANE loudspeaker driver', 'soundcreations' ); ?>" loading="lazy">
-			<div class="sc-fane-diff__labels">
-				<?php foreach ( $sc_diff as $d ) : ?>
-					<div class="sc-fane-diff__label"><span class="sc-fane-diff__dot" aria-hidden="true"></span><div><strong><?php echo esc_html( $d[0] ); ?></strong><span><?php echo esc_html( $d[1] ); ?></span></div></div>
-				<?php endforeach; ?>
-			</div>
-		</div>
-	</div>
 </section>
 
 <section class="sc-section sc-fane-alt" id="fane-heritage">
@@ -150,6 +113,25 @@ $sc_arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-w
 			</div>
 			<div class="sc-fane-heritage__img">
 				<img src="<?php echo esc_url( $sc_img . '/fane-building.jpg' ); ?>" alt="<?php esc_attr_e( 'FANE manufacturing building', 'soundcreations' ); ?>" loading="lazy">
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="sc-section" id="fane-difference">
+	<div class="sc-container sc-fane-diff">
+		<div class="sc-fane-diff__intro">
+			<p class="sc-eyebrow"><?php esc_html_e( 'The FANE difference', 'soundcreations' ); ?></p>
+			<h2><?php echo esc_html( sc_setting( 'fane_diff_title', 'Built from the inside out.' ) ); ?></h2>
+			<p class="sc-support-sub"><?php echo sc_rich_e( sc_setting( 'fane_diff_body', 'Every FANE component is designed and engineered to work in perfect harmony - delivering the performance, reliability and consistency professionals depend on.' ) ); ?></p>
+			<a class="sc-btn sc-btn--ghost" href="#fane-products"><?php esc_html_e( 'Discover Our Technology', 'soundcreations' ); ?> <?php echo $sc_arrow; ?></a>
+		</div>
+		<div class="sc-fane-diff__media">
+			<img src="<?php echo esc_url( $sc_img . '/fane-exploded.jpg' ); ?>" alt="<?php esc_attr_e( 'Exploded view of a FANE loudspeaker driver', 'soundcreations' ); ?>" loading="lazy">
+			<div class="sc-fane-diff__labels">
+				<?php foreach ( $sc_diff as $d ) : ?>
+					<div class="sc-fane-diff__label"><span class="sc-fane-diff__dot" aria-hidden="true"></span><div><strong><?php echo esc_html( $d[0] ); ?></strong><span><?php echo esc_html( $d[1] ); ?></span></div></div>
+				<?php endforeach; ?>
 			</div>
 		</div>
 	</div>
@@ -181,21 +163,6 @@ $sc_arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-w
 			<button type="button" class="sc-prod-nav sc-prod-nav--next" data-sc-scroll="next" aria-label="Scroll right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
 		</div>
 		<p class="sc-prod-note">A selection of the FANE range. For the complete lineup and full specifications, <a href="https://www.fane-international.com/" target="_blank" rel="noopener noreferrer">visit the FANE website</a> or <a href="#fane-catalogue">download the catalogue below</a>.</p>
-	</div>
-</section>
-
-<section class="sc-section">
-	<div class="sc-container">
-		<p class="sc-eyebrow"><?php esc_html_e( 'Why professionals choose FANE', 'soundcreations' ); ?></p>
-		<div class="sc-fane-why">
-			<?php foreach ( $sc_why as $w ) : ?>
-				<div class="sc-fane-why__item">
-					<span class="sc-fane-why__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><?php echo $w[2]; ?></svg></span>
-					<h3><?php echo esc_html( $w[0] ); ?></h3>
-					<p><?php echo esc_html( $w[1] ); ?></p>
-				</div>
-			<?php endforeach; ?>
-		</div>
 	</div>
 </section>
 
