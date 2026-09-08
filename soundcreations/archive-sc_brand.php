@@ -28,13 +28,6 @@ if ( empty( $sc_products_url ) ) {
 	$sc_products_url = home_url( '/products/' );
 }
 
-$sc_pills = array(
-	array( 'Curated Excellence', 'Carefully selected global brands we trust.', '<polygon points="12 2 15 9 22 9 16 14 18 21 12 17 6 21 8 14 2 9 9 9 12 2"/>' ),
-	array( 'Proven Performance', 'Industry-leading technology built to perform.', '<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>' ),
-	array( 'Full Integration', 'Seamless compatibility and system reliability.', '<rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/>' ),
-	array( 'Local Support', 'Backed by our technical experts across the region.', '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>' ),
-);
-
 $sc_cats = array(
 	array( 'Loudspeaker Components', '<rect x="6" y="3" width="12" height="18" rx="2"/><circle cx="12" cy="14" r="3"/><circle cx="12" cy="7" r="1"/>' ),
 	array( 'Loudspeaker Systems', '<rect x="5" y="2" width="6" height="20" rx="1"/><rect x="13" y="2" width="6" height="20" rx="1"/><circle cx="8" cy="8" r="1.5"/><circle cx="16" cy="8" r="1.5"/>' ),
@@ -60,16 +53,7 @@ $sc_arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-w
 	<div class="sc-container sc-support-hero__inner">
 		<nav class="sc-crumb" aria-label="Breadcrumb"><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> <span aria-hidden="true">&rsaquo;</span> <span class="sc-crumb__cur"><?php esc_html_e( 'Products', 'soundcreations' ); ?></span></nav>
 		<p class="sc-eyebrow"><?php echo esc_html( sc_setting( 'products_eyebrow', 'What we offer' ) ); ?></p>
-		<h1 class="sc-support-hero__title"><?php echo esc_html( sc_setting( 'products_title', 'Products' ) ); ?></h1>
 		<p class="sc-lead sc-support-hero__lead"><?php echo esc_html( sc_setting( 'products_lead', 'Professional sound and acoustic solutions.' ) ); ?></p>
-		<div class="sc-support-pills">
-			<?php foreach ( $sc_pills as $p ) : ?>
-				<div class="sc-contact-pill">
-					<span class="sc-contact-pill__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><?php echo $p[2]; ?></svg></span>
-					<div class="sc-contact-pill__text"><strong><?php echo esc_html( $p[0] ); ?></strong><span><?php echo esc_html( $p[1] ); ?></span></div>
-				</div>
-			<?php endforeach; ?>
-		</div>
 	</div>
 </section>
 
@@ -78,7 +62,7 @@ $sc_arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-w
 		<div class="sc-res-head">
 			<div>
 				<p class="sc-eyebrow"><?php esc_html_e( 'Our represented products brands', 'soundcreations' ); ?></p>
-				<h2 style="margin:.15rem 0 0;"><?php echo esc_html( sc_setting( 'brands_grid_title', 'Partnering with the world’s best.' ) ); ?></h2>
+				<h2 style="margin:.15rem 0 0;"><?php echo esc_html( sc_setting( 'brands_grid_title', 'Partnering with the world class brands.' ) ); ?></h2>
 			</div>
 		</div>
 		<?php
