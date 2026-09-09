@@ -158,6 +158,7 @@ function sc_core_settings_fields() {
 			'fane_eyebrow'         => array( 'FANE hero: eyebrow line', 'text' ),
 			'fane_title'           => array( 'FANE hero: headline', 'text' ),
 			'fane_lead'            => array( 'FANE hero: intro paragraph', 'wysiwyg' ),
+			'fane_hero_image'      => array( 'FANE hero: photo (upload to Media, paste URL)', 'image' ),
 			'fane_diff_title'      => array( 'FANE "difference" section: heading', 'text' ),
 			'fane_diff_body'       => array( 'FANE "difference" section: text', 'wysiwyg' ),
 			'fane_heritage_title'  => array( 'FANE heritage section: heading', 'text' ),
@@ -289,7 +290,7 @@ function sc_core_render_settings_page() {
 						);
 						echo '</td></tr>';
 					} elseif ( 'image' === $type ) {
-					$sc_is_img = ( substr( $key, -4 ) === '_img' ) || in_array( $key, array( 'home_hero_poster', 'home_cta_image', 'about_hero_image' ), true );
+					$sc_is_img = ( substr( $key, -4 ) === '_img' ) || in_array( $key, array( 'home_hero_poster', 'home_cta_image', 'about_hero_image', 'fane_hero_image' ), true );
 					$sc_mtype  = $sc_is_img ? 'image' : '';
 					$sc_btn    = $sc_is_img ? 'Select image' : 'Select file';
 					$sc_prev   = '';

@@ -658,7 +658,7 @@ img { max-width: 100%; height: auto; display: block; }
 .sc-fane-hero__title { font-size: clamp(2.4rem, 5.2vw, 4rem); line-height: 1.02; letter-spacing: -.02em; margin: .2rem 0 1rem; }
 .sc-fane-hero__lead { max-width: 46ch; margin: 0 0 1.75rem; }
 .sc-fane-hero__cta { display: flex; gap: .85rem; flex-wrap: wrap; }
-.sc-fane-hero__media img { width: 100%; height: 100%; max-height: 430px; object-fit: cover; border-radius: 16px; }
+.sc-fane-hero__media img { width: 100%; height: auto; display: block; border-radius: 0; }
 .sc-fane-stats { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 2.5rem; border: 1px solid var(--sc-border); border-radius: 14px; overflow: hidden; background: rgba(255,255,255,.02); }
 .sc-fane-stat { display: flex; align-items: center; gap: .8rem; padding: 1.15rem 1.25rem; border-left: 1px solid var(--sc-border); }
 .sc-fane-stat:first-child { border-left: 0; }
@@ -1116,7 +1116,7 @@ img { max-width: 100%; height: auto; display: block; }
 /* ============================================================
    FANE brand hub — clean corporate polish
    ============================================================ */
-.sc-fane-hero__media img { box-shadow: 0 30px 70px rgba(0,0,0,.55); border: 1px solid var(--sc-border); }
+.sc-fane-hero__media img { box-shadow: none; border: 0; }
 .sc-fane-stats { box-shadow: 0 18px 44px rgba(0,0,0,.28); }
 .sc-fane-stat { transition: background .2s var(--sc-ease, ease); }
 .sc-fane-stat:hover { background: rgba(186,11,11,.06); }
@@ -1812,3 +1812,6 @@ h3 { font-size: 1.35rem; font-weight: 700; line-height: 1.22; letter-spacing: -.
 	.sc-about-hero .sc-journey { grid-template-columns: 1fr; }
 	.sc-about-hero__media { min-height: 300px; }
 }
+
+/* --- FANE difference: 2x2 parts + full-width Complete Driver summary --- */
+.sc-fane-diff__label:last-child { grid-column: 1 / -1; border-top: 1px solid var(--sc-border); margin-top: .4rem; padding-top: .9rem; }
