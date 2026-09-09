@@ -94,6 +94,10 @@ $sc_arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-w
 					$sc_logo  = (string) get_post_meta( $sc_id, '_sc_logo', true );
 					$sc_rel   = 'assets/img/brands/logos/' . $sc_logo . '.png';
 					$sc_logo_url = ( '' !== $sc_logo && file_exists( get_theme_file_path( $sc_rel ) ) ) ? get_theme_file_uri( $sc_rel ) : '';
+					// Prefer a logo set in wp-admin (Featured image) so brand-logo edits reflect on the front end.
+					if ( has_post_thumbnail( $sc_id ) ) {
+						$sc_logo_url = get_the_post_thumbnail_url( $sc_id, 'full' );
+					}
 
 					$sc_slug = get_post_field( 'post_name', $sc_id );
 					if ( 'fane' === $sc_slug ) {
