@@ -1815,3 +1815,10 @@ h3 { font-size: 1.35rem; font-weight: 700; line-height: 1.22; letter-spacing: -.
 
 /* --- FANE difference: 2x2 parts + full-width Complete Driver summary --- */
 .sc-fane-diff__label:last-child { grid-column: 1 / -1; border-top: 1px solid var(--sc-border); margin-top: .4rem; padding-top: .9rem; }
+
+
+/* Solutions: with the sidebar removed the main column runs full width;
+   the closing CTA band breaks out to the full page width. */
+.sc-svc-body--wide { grid-template-columns: minmax(0, 1fr); }
+.sc-cta-band--full { margin-inline: calc(50% - 50vw); border-radius: 0; border-inline: 0; padding-inline: 0; }
+.sc-cta-band--full .sc-cta-band__inner { max-width: 680px; }

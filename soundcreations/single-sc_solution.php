@@ -25,6 +25,7 @@ while ( have_posts() ) :
 	$sc_includes = (string) sc_render_ticklist( sc_field( 'includes' ) );
 	$sc_outcome  = (string) sc_field( 'outcome' );
 	$sc_apps     = (string) sc_term_tags( get_the_ID(), 'sc_application' );
+	$sc_aside_has = ( strlen( $sc_includes ) > 0 || strlen( $sc_outcome ) > 0 || strlen( $sc_apps ) > 0 );
 	$sc_eyebrow  = sc_primary_term_name( get_the_ID(), 'sc_solution_area', __( 'Solution', 'soundcreations' ) );
 
 	$sc_tl = strtolower( (string) get_the_title() );
@@ -56,6 +57,12 @@ while ( have_posts() ) :
 	$sc_raw_body = trim( wp_strip_all_tags( get_the_content() ) );
 	$sc_has_body = ( '' !== $sc_raw_body && false === stripos( $sc_raw_body, 'CONTENT TO BE CONFIRMED' ) );
 	$sc_main_has = ( $sc_has_body || count( $sc_caps ) > 0 );
+	$sc_body_mod = '';
+	if ( $sc_main_has === true && $sc_aside_has === false ) {
+		$sc_body_mod = ' sc-svc-body--wide';
+	} elseif ( $sc_main_has === false && $sc_aside_has === true ) {
+		$sc_body_mod = ' sc-svc-body--solo';
+	}
 	?>
 
 	<article class="sc-svc">
@@ -121,7 +128,7 @@ while ( have_posts() ) :
 		<?php endif; ?>
 
 		<section class="sc-section sc-section--tight">
-			<div class="sc-container sc-svc-body<?php echo $sc_main_has ? '' : ' sc-svc-body--solo'; ?>">
+			<div class="sc-container sc-svc-body<?php echo $sc_body_mod; ?>">
 				<?php if ( $sc_main_has ) : ?>
 				<div class="sc-svc-main">
 					<?php if ( $sc_has_body ) : ?><div class="sc-prose"><?php the_content(); ?></div><?php endif; ?>
@@ -143,6 +150,7 @@ while ( have_posts() ) :
 				</div>
 				<?php endif; ?>
 
+				<?php if ( $sc_aside_has ) : ?>
 				<aside class="sc-svc-aside">
 					<div class="sc-svc-sidecard">
 						<?php if ( strlen( $sc_includes ) > 0 ) : ?>
@@ -155,20 +163,9 @@ while ( have_posts() ) :
 						<?php if ( strlen( $sc_apps ) > 0 ) : ?>
 							<div class="sc-svc-fact"><span class="sc-svc-fact__k"><?php esc_html_e( 'Applications', 'soundcreations' ); ?></span><div class="sc-svc-tags"><?php echo $sc_apps; ?></div></div>
 						<?php endif; ?>
-						<div class="sc-svc-sidecard__cta">
-							<span class="sc-svc-sidecard__label"><?php esc_html_e( 'Talk to our team', 'soundcreations' ); ?></span>
-							<p class="sc-svc-sidecard__cue"><?php esc_html_e( 'Tell us about your space and application and our technical team will help you specify the right system.', 'soundcreations' ); ?></p>
-							<a class="sc-btn sc-btn--primary" href="<?php echo esc_url( home_url( '/request-a-consultation/' ) ); ?>"><?php esc_html_e( 'Request a Consultation', 'soundcreations' ); ?></a>
-							<ul class="sc-svc-contact">
-								<li><span class="sc-svc-contact__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></span><a href="<?php echo esc_url( sc_setting( 'map_url', 'https://share.google/K15Qu2ngP7wlNnd0Y' ) ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( sc_setting( 'address', 'Mpaka Plaza, Mpaka Road, Westlands, Nairobi' ) ); ?></a></li>
-								<li><span class="sc-svc-contact__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></span><a href="<?php echo esc_url( sc_setting( 'phone_link', 'tel:+254715754758' ) ); ?>"><?php echo esc_html( sc_setting( 'phone', '+254 715 754 758' ) ); ?></a></li>
-								<li><span class="sc-svc-contact__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></span><a href="mailto:<?php echo esc_attr( sc_setting( 'email', 'info@soundcreationsltd.com' ) ); ?>"><?php echo esc_html( sc_setting( 'email', 'info@soundcreationsltd.com' ) ); ?></a></li>
-								<li><span class="sc-svc-contact__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><polyline points="12 7 12 12 15 14"></polyline></svg></span><span><?php echo esc_html( sc_setting( 'hours_week', 'Mon - Fri: 9am - 5:30pm' ) ); ?></span></li>
-							</ul>
-							<a class="sc-svc-sidecard__link" href="<?php echo esc_url( home_url( '/contact/' ) ); ?>"><?php esc_html_e( 'Or contact us directly', 'soundcreations' ); ?> &rarr;</a>
-						</div>
 					</div>
 				</aside>
+				<?php endif; ?>
 			</div>
 		</section>
 
@@ -293,9 +290,9 @@ while ( have_posts() ) :
 		}
 		?>
 
-		<section class="sc-section">
-			<div class="sc-container">
-				<div class="sc-cta-band sc-cta-band--photo" style="background-image:url('<?php echo esc_url( sc_setting( 'home_cta_image', SC_THEME_URI . '/assets/img/cta-building.jpg' ) ); ?>');">
+		<section class="sc-section sc-section--ctafull">
+			<div class="sc-cta-band sc-cta-band--photo sc-cta-band--full" style="background-image:url('<?php echo esc_url( sc_setting( 'home_cta_image', SC_THEME_URI . '/assets/img/cta-building.jpg' ) ); ?>');">
+				<div class="sc-container">
 					<div class="sc-cta-band__inner">
 						<h2><?php esc_html_e( 'Have a project in mind?', 'soundcreations' ); ?></h2>
 						<p class="sc-lead" style="margin:0 0 .9rem;"><?php esc_html_e( 'Tell us about your space and application. Our technical team will help you specify the right system.', 'soundcreations' ); ?></p>
