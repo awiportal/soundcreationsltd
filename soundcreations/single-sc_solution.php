@@ -222,8 +222,6 @@ while ( have_posts() ) :
 			<div class="sc-container">
 				<div class="sc-solsec__head">
 					<p class="sc-eyebrow"><?php esc_html_e( 'Industries we serve', 'soundcreations' ); ?></p>
-					<h2 class="sc-svc-h2"><?php esc_html_e( 'Sound for every space', 'soundcreations' ); ?></h2>
-					<p class="sc-solsec__intro"><?php esc_html_e( 'From retail floors to concert stages, we design, install and tune audio around the way each space is actually used.', 'soundcreations' ); ?></p>
 				</div>
 				<div class="sc-inds">
 					<button class="sc-inds__nav sc-inds__nav--prev" type="button" aria-label="Scroll to previous industries">&larr;</button>

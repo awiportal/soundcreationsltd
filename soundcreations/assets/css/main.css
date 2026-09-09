@@ -1878,3 +1878,14 @@ h3 { font-size: 1.35rem; font-weight: 700; line-height: 1.22; letter-spacing: -.
 .sc-cta-band--photo::before {
 	background: linear-gradient(90deg, rgba(120,16,24,.90) 0%, rgba(120,16,24,.72) 50%, rgba(120,16,24,.90) 100%);
 }
+
+
+/* ===== Fix .sc-svc class collision =====
+   .sc-svc is a service CARD component (icon/title/desc/hover-lift). The solution
+   template also wraps the whole page in <article class="sc-svc">, so the card's
+   display:flex + align-items:flex-start collapsed every child <section> to its
+   content width (the ~55% left-hang) and added a hover-lift to the whole page.
+   Neutralize the card chrome on the <article> only; real <a class="sc-svc"> cards
+   are untouched. */
+article.sc-svc { display: block; padding: 0; border: 0; border-radius: 0; background: none; transition: none; }
+article.sc-svc:hover { transform: none; border-color: transparent; box-shadow: none; }
