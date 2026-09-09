@@ -225,50 +225,50 @@ while ( have_posts() ) :
 					<h2 class="sc-svc-h2"><?php esc_html_e( 'Sound for every space', 'soundcreations' ); ?></h2>
 					<p class="sc-solsec__intro"><?php esc_html_e( 'From retail floors to concert stages, we design, install and tune audio around the way each space is actually used.', 'soundcreations' ); ?></p>
 				</div>
-			</div>
-			<div class="sc-inds">
-				<button class="sc-inds__nav sc-inds__nav--prev" type="button" aria-label="Scroll to previous industries">&larr;</button>
-				<div class="sc-inds__track">
-					<?php
-					$sc_industries = array(
-						array( 'Retail', 'Sound that sells', 'Balanced background music and clear announcements that set the mood on your floor without ever competing with the shopper.', 'retail' ),
-						array( 'Restaurants & Bars', 'Set the tone', 'Warm, even coverage that keeps conversation easy and the energy right, zone by zone from the bar to the terrace.', 'restaurants' ),
-						array( 'Hospitality', 'An effortless guest experience', 'Consistent, refined audio across lobbies, ballrooms, restaurants and outdoor areas, all controlled from one place.', 'hospitality' ),
-						array( 'Worship', 'Every word, every seat', 'Intelligible speech and full-range music for services of any style, engineered around your room and its acoustics.', 'worship' ),
-						array( 'Live Performance & Events', 'Built for the moment', 'Concert-grade line arrays, monitoring and control for productions that have to sound right the first time.', 'live' ),
-						array( 'Sports & Fitness', 'Feel the energy', 'High-output, high-impact sound that carries across courts, studios and stands while staying clear and controlled.', 'sports' ),
-						array( 'Corporate & Conferencing', 'Heard, clearly', 'Networked microphones and loudspeakers for boardrooms and hybrid meetings where every voice has to land.', 'corporate' ),
-						array( 'Education', 'Clarity that carries', 'Reliable, easy-to-run sound for lecture halls, auditoriums and campus spaces, from the front row to the back.', 'education' ),
-					);
-					foreach ( $sc_industries as $sc_ind ) :
-					?>
-					<article class="sc-ind">
-						<span class="sc-ind__img" style="background-image:url('<?php echo esc_url( SC_THEME_URI . '/assets/img/industries/' . $sc_ind[3] . '.jpg' ); ?>');"></span>
-						<span class="sc-ind__scrim"></span>
-						<span class="sc-ind__body">
-							<span class="sc-ind__eyebrow"><?php echo esc_html( $sc_ind[0] ); ?></span>
-							<h3 class="sc-ind__title"><?php echo esc_html( $sc_ind[1] ); ?></h3>
-							<p class="sc-ind__desc"><?php echo esc_html( $sc_ind[2] ); ?></p>
-						</span>
-					</article>
-					<?php
-					endforeach;
-					?>
+				<div class="sc-inds">
+					<button class="sc-inds__nav sc-inds__nav--prev" type="button" aria-label="Scroll to previous industries">&larr;</button>
+					<div class="sc-inds__track">
+						<?php
+						$sc_industries = array(
+							array( 'Retail', 'Sound that sells', 'Balanced background music and clear announcements that set the mood on your floor without ever competing with the shopper.', 'retail' ),
+							array( 'Restaurants & Bars', 'Set the tone', 'Warm, even coverage that keeps conversation easy and the energy right, zone by zone from the bar to the terrace.', 'restaurants' ),
+							array( 'Hospitality', 'An effortless guest experience', 'Consistent, refined audio across lobbies, ballrooms, restaurants and outdoor areas, all controlled from one place.', 'hospitality' ),
+							array( 'Worship', 'Every word, every seat', 'Intelligible speech and full-range music for services of any style, engineered around your room and its acoustics.', 'worship' ),
+							array( 'Live Performance & Events', 'Built for the moment', 'Concert-grade line arrays, monitoring and control for productions that have to sound right the first time.', 'live' ),
+							array( 'Sports & Fitness', 'Feel the energy', 'High-output, high-impact sound that carries across courts, studios and stands while staying clear and controlled.', 'sports' ),
+							array( 'Corporate & Conferencing', 'Heard, clearly', 'Networked microphones and loudspeakers for boardrooms and hybrid meetings where every voice has to land.', 'corporate' ),
+							array( 'Education', 'Clarity that carries', 'Reliable, easy-to-run sound for lecture halls, auditoriums and campus spaces, from the front row to the back.', 'education' ),
+						);
+						foreach ( $sc_industries as $sc_ind ) :
+						?>
+						<article class="sc-ind">
+							<span class="sc-ind__img" style="background-image:url('<?php echo esc_url( SC_THEME_URI . '/assets/img/industries/' . $sc_ind[3] . '.jpg' ); ?>');"></span>
+							<span class="sc-ind__scrim"></span>
+							<span class="sc-ind__body">
+								<span class="sc-ind__eyebrow"><?php echo esc_html( $sc_ind[0] ); ?></span>
+								<h3 class="sc-ind__title"><?php echo esc_html( $sc_ind[1] ); ?></h3>
+								<p class="sc-ind__desc"><?php echo esc_html( $sc_ind[2] ); ?></p>
+							</span>
+						</article>
+						<?php
+						endforeach;
+						?>
+					</div>
+					<button class="sc-inds__nav sc-inds__nav--next" type="button" aria-label="Scroll to more industries">&rarr;</button>
+					<script>
+					(function(){
+						var wrap = document.currentScript.closest('.sc-inds');
+						if ( wrap ) {
+							var track = wrap.querySelector('.sc-inds__track');
+							var prev = wrap.querySelector('.sc-inds__nav--prev');
+							var next = wrap.querySelector('.sc-inds__nav--next');
+							var step = function(){ var c = track.querySelector('.sc-ind'); return c ? c.getBoundingClientRect().width + 18 : 300; };
+							if ( prev ) { prev.addEventListener('click', function(){ track.scrollBy({ left: -step(), behavior: 'smooth' }); }); }
+							if ( next ) { next.addEventListener('click', function(){ track.scrollBy({ left: step(), behavior: 'smooth' }); }); }
+						}
+					})();
+					</script>
 				</div>
-				<button class="sc-inds__nav sc-inds__nav--next" type="button" aria-label="Scroll to more industries">&rarr;</button>
-				<script>
-				(function(){
-					var wrap = document.currentScript.closest('.sc-inds');
-					if ( wrap ) {
-						var track = wrap.querySelector('.sc-inds__track');
-						var prev = wrap.querySelector('.sc-inds__nav--prev');
-						var next = wrap.querySelector('.sc-inds__nav--next');
-						var step = function(){ var c = track.querySelector('.sc-ind'); return c ? c.getBoundingClientRect().width + 18 : 300; };
-						if ( prev ) { prev.addEventListener('click', function(){ track.scrollBy({ left: -step(), behavior: 'smooth' }); }); }
-						if ( next ) { next.addEventListener('click', function(){ track.scrollBy({ left: step(), behavior: 'smooth' }); }); }
-					}
-				})();
-				</script>
 			</div>
 		</section>
 		<?php endif; ?>

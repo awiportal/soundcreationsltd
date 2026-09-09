@@ -1828,12 +1828,14 @@ h3 { font-size: 1.35rem; font-weight: 700; line-height: 1.22; letter-spacing: -.
 .sc-svc-body { grid-template-columns: 1fr; }
 .sc-svc-body .sc-svc-aside { position: static; }
 .sc-svc-body .sc-svc-sidecard { max-width: none; }
+.sc-svc-body .sc-prose { max-width: none; }
+.sc-svc-main { max-width: none; }
 .sc-cta-band--photo { min-height: 220px; display: flex; align-items: center; }
 
 /* ===== Professional Audio: "Industries we serve" image slideshow (no links) ===== */
 .sc-industries { overflow: hidden; }
 .sc-inds { position: relative; margin-top: clamp(1rem, .75rem + 1.5vw, 2rem); }
-.sc-inds__track { display: flex; flex-wrap: nowrap; gap: clamp(.9rem, .6rem + 1vw, 1.4rem); overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; padding: .5rem clamp(1rem, 5vw, 5rem) 1.6rem; scrollbar-color: rgba(225,29,42,.6) rgba(255,255,255,.08); }
+.sc-inds__track { display: flex; flex-wrap: nowrap; gap: clamp(.9rem, .6rem + 1vw, 1.4rem); overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; padding: .5rem 0 1.4rem; scrollbar-color: rgba(225,29,42,.6) rgba(255,255,255,.08); }
 .sc-inds__track::-webkit-scrollbar { height: 8px; }
 .sc-inds__track::-webkit-scrollbar-track { background: rgba(255,255,255,.06); border-radius: 999px; }
 .sc-inds__track::-webkit-scrollbar-thumb { background: rgba(225,29,42,.55); border-radius: 999px; }
@@ -1851,6 +1853,6 @@ h3 { font-size: 1.35rem; font-weight: 700; line-height: 1.22; letter-spacing: -.
 .sc-ind:hover::after, .sc-ind:focus-within::after { width: calc(100% - 2.8rem); }
 .sc-inds__nav { position: absolute; top: calc(50% - .5rem); transform: translateY(-50%); z-index: 4; width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--sc-border); background: rgba(18,20,26,.9); color: #fff; cursor: pointer; font-size: 1.2rem; line-height: 1; display: grid; place-items: center; transition: border-color .2s ease, background .2s ease; }
 .sc-inds__nav:hover { border-color: rgba(225,29,42,.7); background: rgba(30,10,14,.95); }
-.sc-inds__nav--prev { left: clamp(.25rem, 1.5vw, 1rem); }
-.sc-inds__nav--next { right: clamp(.25rem, 1.5vw, 1rem); }
+.sc-inds__nav--prev { left: -.6rem; }
+.sc-inds__nav--next { right: -.6rem; }
 @media (max-width: 700px) { .sc-inds__nav { display: none; } .sc-inds__track { padding-inline: 1rem; } }
