@@ -1856,3 +1856,25 @@ h3 { font-size: 1.35rem; font-weight: 700; line-height: 1.22; letter-spacing: -.
 .sc-inds__nav--prev { left: -.6rem; }
 .sc-inds__nav--next { right: -.6rem; }
 @media (max-width: 700px) { .sc-inds__nav { display: none; } .sc-inds__track { padding-inline: 1rem; } }
+
+
+/* ===== Solutions polish r4: full-width solsec head + centered CTA band ===== */
+/* "Turnkey sound and acoustic integration" (and other .sc-solsec heads) fill the page; audio "Industries" head is .sc-industries (unaffected) */
+.sc-solsec .sc-solsec__head { max-width: none; }
+/* CTA band: guaranteed full-width block with centered content (was rendering ~55% under display:flex) */
+.sc-cta-band--photo {
+	display: block;
+	width: 100%;
+	min-height: 0;
+	text-align: center;
+	padding-block: clamp(2rem, 1.5rem + 3vw, 3.5rem);
+}
+.sc-cta-band--photo > .sc-cta-band__inner {
+	max-width: 820px;
+	margin-inline: auto;
+	text-align: center;
+}
+.sc-cta-band--photo .sc-lead { max-width: none; margin-inline: auto; }
+.sc-cta-band--photo::before {
+	background: linear-gradient(90deg, rgba(120,16,24,.90) 0%, rgba(120,16,24,.72) 50%, rgba(120,16,24,.90) 100%);
+}
