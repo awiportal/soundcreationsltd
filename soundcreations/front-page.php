@@ -64,6 +64,15 @@ $sc_hero_poster = sc_setting( 'home_hero_poster', SC_THEME_URI . '/assets/img/he
 			);
 			foreach ( $sc_services as $sc_s ) :
 				$sc_img  = sc_setting( $sc_s[5], SC_THEME_URI . '/assets/img/home/' . $sc_s[0] );
+				// Corrected rebranded photos shipped with the theme, forced to override any stale
+				// Customizer pick that still points at an old-branding upload (What We Do cards).
+				$sc_img_fix = array(
+					'distribution' => SC_THEME_URI . '/assets/img/home/service-distribution.webp',
+					'integration'  => SC_THEME_URI . '/assets/img/home/service-integration.webp',
+				);
+				if ( isset( $sc_img_fix[ $sc_s[1] ] ) ) {
+					$sc_img = $sc_img_fix[ $sc_s[1] ];
+				}
 				$sc_href = home_url( $sc_s[4] );
 				foreach ( $sc_service_links as $sc_l ) {
 					$sc_hit = false;
