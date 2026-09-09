@@ -15,13 +15,6 @@ get_header();
 
 $sc_hero_video  = sc_setting( 'hero_video' );
 $sc_hero_poster = sc_setting( 'home_hero_poster', SC_THEME_URI . '/assets/img/hero-poster.jpg' );
-
-$sc_hc1_l = sc_setting( 'home_hero_cta1_label', 'Request a Consultation' );
-$sc_hc1_u = sc_setting( 'home_hero_cta1_url', '/request-a-consultation/' );
-$sc_hc2_l = sc_setting( 'home_hero_cta2_label', 'Explore Our Solutions' );
-$sc_hc2_u = sc_setting( 'home_hero_cta2_url', '/solutions/' );
-$sc_hc1_h = ( 0 === strpos( $sc_hc1_u, 'http' ) ) ? $sc_hc1_u : home_url( $sc_hc1_u );
-$sc_hc2_h = ( 0 === strpos( $sc_hc2_u, 'http' ) ) ? $sc_hc2_u : home_url( $sc_hc2_u );
 ?>
 
 <section class="sc-hero sc-hero--video" style="background-image:url('<?php echo esc_url( $sc_hero_poster ); ?>');">
@@ -32,11 +25,7 @@ $sc_hc2_h = ( 0 === strpos( $sc_hc2_u, 'http' ) ) ? $sc_hc2_u : home_url( $sc_hc
 	<?php endif; ?>
 	<span class="sc-hero__scrim" aria-hidden="true"></span>
 	<div class="sc-container sc-hero__inner">
-		<h1 class="sc-hero__title"><?php echo esc_html( sc_setting( 'home_hero_title', 'Engineering exceptional sound. Delivering complete solutions.' ) ); ?></h1>
-		<div class="sc-hero__cta">
-			<?php if ( '' !== $sc_hc1_l ) : ?><a class="sc-btn sc-btn--primary" href="<?php echo esc_url( $sc_hc1_h ); ?>"><?php echo esc_html( $sc_hc1_l ); ?></a><?php endif; ?>
-			<?php if ( '' !== $sc_hc2_l ) : ?><a class="sc-btn sc-btn--ghost" href="<?php echo esc_url( $sc_hc2_h ); ?>"><?php echo esc_html( $sc_hc2_l ); ?></a><?php endif; ?>
-		</div>
+		<h1 class="sc-hero__title"><?php echo esc_html( sc_setting( 'home_hero_title', 'Delivering experiential solutions' ) ); ?></h1>
 	</div>
 </section>
 
