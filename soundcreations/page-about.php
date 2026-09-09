@@ -45,7 +45,7 @@ $sc_exp_icons = array(
 			<h1 class="sc-about-hero__title"><?php echo esc_html( sc_setting( 'about_hero_title', 'If it sounds good, it’s Sound Creations' ) ); ?></h1>
 			<p class="sc-journey__lead"><?php echo sc_rich_e( sc_setting( 'about_journey_p1', 'Founded in 2004, Sound Creations Ltd has grown into a leading provider of professional audio, visual, lighting and acoustic solutions across East Africa and beyond. What began as a specialist audio company is today a full-service integrator — designing, supplying, installing and supporting complete systems for the region’s most demanding spaces.' ) ); ?></p>
 		</div>
-		<div class="sc-about-hero__media" style="align-self:stretch;min-height:480px;background-image:url('<?php echo esc_url( $sc_about_photo ); ?>');" role="img" aria-label="<?php esc_attr_e( 'Sound Creations at work', 'soundcreations' ); ?>"></div>
+		<div class="sc-about-hero__media" style="align-self:stretch;background-image:url('<?php echo esc_url( $sc_about_photo ); ?>');" role="img" aria-label="<?php esc_attr_e( 'Sound Creations at work', 'soundcreations' ); ?>"></div>
 	</div>
 </section>
 

@@ -1804,3 +1804,11 @@ h3 { font-size: 1.35rem; font-weight: 700; line-height: 1.22; letter-spacing: -.
 @media (max-width: 380px) {
   .sc-foot-nav { grid-template-columns: 1fr; }
 }
+
+/* --- About hero: balanced fit + clarity (v0.8.16) --- */
+.sc-about-hero .sc-journey { grid-template-columns: 1fr 1fr; align-items: stretch; }
+.sc-about-hero__media { min-height: 460px; }
+@media (max-width: 900px) {
+	.sc-about-hero .sc-journey { grid-template-columns: 1fr; }
+	.sc-about-hero__media { min-height: 300px; }
+}
