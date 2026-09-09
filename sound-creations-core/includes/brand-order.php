@@ -126,3 +126,71 @@ function sc_brand_order_hint() {
 	}
 }
 add_action( 'admin_notices', 'sc_brand_order_hint' );
+
+/**
+ * One-time: seed the team's requested initial brand display order.
+ *
+ * Assigns menu_order by matching brand titles to a priority list; any brand not
+ * in the list keeps its relative order after the listed ones. Runs a single time
+ * (guarded by the sc_brand_order_seed option) - after this it never runs again,
+ * and the drag-and-drop reordering above fully controls the order from then on.
+ */
+function sc_brand_order_seed_default() {
+	if ( '1' === get_option( 'sc_brand_order_seed' ) ) {
+		return;
+	}
+	$priority = array(
+		'bose professional',
+		'db technologies',
+		'shure',
+		'allen & heath',
+		'asona',
+		'rockfon',
+		'aid',
+		'barrisol',
+	);
+	$brands = get_posts(
+		array(
+			'post_type'   => 'sc_brand',
+			'post_status' => 'publish',
+			'numberposts' => -1,
+			'orderby'     => array(
+				'menu_order' => 'ASC',
+				'title'      => 'ASC',
+			),
+		)
+	);
+	if ( empty( $brands ) ) {
+		return; // No brands yet - retry on a later admin load.
+	}
+	$listed = array_flip( $priority );
+	$order  = 0;
+	// Listed brands first, in the requested order.
+	foreach ( $priority as $name ) {
+		foreach ( $brands as $b ) {
+			if ( strtolower( trim( $b->post_title ) ) === $name ) {
+				wp_update_post(
+					array(
+						'ID'         => $b->ID,
+						'menu_order' => $order,
+					)
+				);
+				++$order;
+			}
+		}
+	}
+	// Everything else after, keeping its existing relative order.
+	foreach ( $brands as $b ) {
+		if ( ! isset( $listed[ strtolower( trim( $b->post_title ) ) ] ) ) {
+			wp_update_post(
+				array(
+					'ID'         => $b->ID,
+					'menu_order' => $order,
+				)
+			);
+			++$order;
+		}
+	}
+	update_option( 'sc_brand_order_seed', '1' );
+}
+add_action( 'admin_init', 'sc_brand_order_seed_default' );
