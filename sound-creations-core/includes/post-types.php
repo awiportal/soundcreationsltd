@@ -16,7 +16,7 @@ function sc_core_register_post_types() {
 		'sc_brand'         => array( 'Brand', 'Brands', 'brands', 'dashicons-awards' ),
 		'sc_solution'      => array( 'Solution', 'Solutions', 'solutions', 'dashicons-analytics' ),
 		'sc_case_study'    => array( 'Case Study', 'Case Studies', 'case-studies', 'dashicons-media-document' ),
-		'sc_resource'      => array( 'Resource', 'Resources', 'resources', 'dashicons-download' ),
+		'sc_resource'      => array( 'Video', 'Videos', 'videos', 'dashicons-format-video' ),
 		'sc_fane_resource' => array( 'FANE Resource', 'FANE Resources', 'fane-resources', 'dashicons-format-audio' ),
 	);
 
@@ -94,6 +94,31 @@ function sc_core_redirect_product_archive() {
 	}
 }
 add_action( 'template_redirect', 'sc_core_redirect_product_archive' );
+
+/**
+ * The Resources archive was rebranded to "Videos" and now lives at /videos/.
+ * 301-redirect the old /resources/ archive and single URLs to the matching
+ * /videos/ path so existing links and bookmarks keep working.
+ */
+function sc_core_redirect_resources_to_videos() {
+	if ( is_admin() ) {
+		return;
+	}
+	$uri = isset( $_SERVER['REQUEST_URI'] ) ? (string) wp_unslash( $_SERVER['REQUEST_URI'] ) : '';
+	if ( '' === $uri ) {
+		return;
+	}
+	if ( preg_match( '#/resources(/|$)#', $uri ) === 1 ) {
+		$new = preg_replace( '#/resources(/|$)#', '/videos$1', $uri, 1 );
+		if ( is_string( $new ) ) {
+			$host = isset( $_SERVER['HTTP_HOST'] ) ? $_SERVER['HTTP_HOST'] : '';
+			$dest = ( is_ssl() ? 'https://' : 'http://' ) . $host . $new;
+			wp_safe_redirect( $dest, 301 );
+			exit;
+		}
+	}
+}
+add_action( 'template_redirect', 'sc_core_redirect_resources_to_videos' );
 
 /**
  * The Brands archive is presented as the "Products" page, so its document <title>

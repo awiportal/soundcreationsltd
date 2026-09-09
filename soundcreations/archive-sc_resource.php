@@ -64,8 +64,8 @@ if ( $sc_q->have_posts() ) {
 <section class="sc-support-hero" style="background-image:url('<?php echo esc_url( $sc_hero_img ); ?>');">
 	<span class="sc-support-hero__scrim" aria-hidden="true"></span>
 	<div class="sc-container sc-support-hero__inner">
-		<nav class="sc-crumb" aria-label="Breadcrumb"><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> <span aria-hidden="true">&rsaquo;</span> <span class="sc-crumb__cur"><?php esc_html_e( 'Resources', 'soundcreations' ); ?></span></nav>
-		<p class="sc-eyebrow"><?php echo esc_html( sc_setting( 'resources_eyebrow', 'Resources' ) ); ?></p>
+		<nav class="sc-crumb" aria-label="Breadcrumb"><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> <span aria-hidden="true">&rsaquo;</span> <span class="sc-crumb__cur"><?php esc_html_e( 'Videos', 'soundcreations' ); ?></span></nav>
+		<p class="sc-eyebrow"><?php echo esc_html( sc_setting( 'resources_eyebrow', 'Videos' ) ); ?></p>
 		<h1 class="sc-support-hero__title"><?php echo esc_html( sc_setting( 'resources_title', 'Videos & resources.' ) ); ?></h1>
 		<p class="sc-lead sc-support-hero__lead"><?php echo sc_rich_e( sc_setting( 'resources_lead', 'Watch demos, installations and product highlights, plus manuals and datasheets for the systems and brands we supply and support.' ) ); ?></p>
 	</div>
@@ -122,7 +122,7 @@ if ( $sc_q->have_posts() ) {
 <?php if ( count( $sc_videos ) === 0 && count( $sc_downloads ) === 0 ) : ?>
 <section class="sc-section">
 	<div class="sc-container">
-		<p class="sc-empty"><?php esc_html_e( 'No videos yet. In wp-admin, go to Resources > Add New, paste a YouTube link in the YouTube video URL field, and publish.', 'soundcreations' ); ?></p>
+		<p class="sc-empty"><?php esc_html_e( 'No videos yet. In wp-admin, go to Videos > Add New, paste a YouTube link in the YouTube video URL field, and publish.', 'soundcreations' ); ?></p>
 	</div>
 </section>
 <?php endif; ?>

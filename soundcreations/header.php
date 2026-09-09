@@ -105,7 +105,7 @@ function sc_primary_menu_fallback() {
 		) ),
 		array( 'Projects', '/projects/', array() ),
 		array( 'Fane Africa', '/fane/', array() ),
-		array( 'Resources', '/resources/', array() ),
+		array( 'Videos', '/videos/', array() ),
 		array( 'About Us', '/about/', array(
 			array( 'About Sound Creations', '/about/' ),
 			array( 'Training', '/training/' ),
