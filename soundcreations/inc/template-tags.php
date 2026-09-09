@@ -61,6 +61,12 @@ function sc_default_settings() {
 		'home_hero_cta1_url'   => '/request-a-consultation/',
 		'home_hero_cta2_label' => 'Explore Our Solutions',
 		'home_hero_cta2_url'   => '/solutions/',
+		// Homepage copy — surfaced so the Central Settings page shows these as grey placeholders
+		// (values match what the homepage already renders, so the live site is unchanged).
+		'home_hero_title'      => 'Delivering experiential solutions',
+		'home_projects_title'  => 'Real spaces. Real results.',
+		'home_cta_title'       => 'Have a project in mind?',
+		'home_cta_text'        => 'Tell us about your space and application. Our technical team will help you specify the right system.',
 		'home_whatwedo_eyebrow'=> 'What we do',
 		'home_solutions_eyebrow'=> 'Solutions',
 		'home_partners_label'  => 'Global Technology Partners',
