@@ -56,6 +56,9 @@ while ( have_posts() ) :
 	$sc_lead = strlen( $sc_summary ) > 0 ? $sc_summary : ( isset( $sc_leadmap[ $sc_sk ] ) ? $sc_leadmap[ $sc_sk ] : '' );
 	$sc_raw_body = trim( wp_strip_all_tags( get_the_content() ) );
 	$sc_has_body = ( '' !== $sc_raw_body && false === stripos( $sc_raw_body, 'CONTENT TO BE CONFIRMED' ) );
+	if ( $sc_sk === 'audio' ) {
+		$sc_has_body = false;
+	}
 	$sc_main_has = ( $sc_has_body || count( $sc_caps ) > 0 );
 	$sc_body_mod = '';
 	if ( $sc_main_has === true && $sc_aside_has === false ) {
@@ -71,7 +74,7 @@ while ( have_posts() ) :
 			if ( '' === (string) $sc_hero_img ) {
 				$sc_heromap = array(
 					'integration' => '/assets/img/solutions/installation.jpg',
-					'audio'       => '/assets/img/solutions/audio.jpg',
+					'audio'       => '/assets/img/solutions/audio-dbtech.jpg',
 					'acoustics'   => '/assets/img/solutions/acoustics.jpg',
 					'general'     => '/assets/img/solutions-hero.jpg',
 				);
@@ -127,6 +130,7 @@ while ( have_posts() ) :
 			</section>
 		<?php endif; ?>
 
+		<?php if ( $sc_main_has || $sc_aside_has ) : ?>
 		<section class="sc-section sc-section--tight">
 			<div class="sc-container sc-svc-body<?php echo $sc_body_mod; ?>">
 				<?php if ( $sc_main_has ) : ?>
@@ -168,6 +172,7 @@ while ( have_posts() ) :
 				<?php endif; ?>
 			</div>
 		</section>
+		<?php endif; ?>
 
 		<?php if ( 'acoustics' === $sc_sk ) : ?>
 			<section class="sc-section sc-section--tight sc-section--surface sc-acoustics">
@@ -213,51 +218,55 @@ while ( have_posts() ) :
 		<?php endif; ?>
 
 		<?php if ( 'audio' === $sc_sk ) : ?>
-			<section class="sc-section sc-section--tight sc-section--surface sc-solsec">
-				<div class="sc-container">
-					<div class="sc-solsec__head">
-						<p class="sc-eyebrow"><?php esc_html_e( 'Professional audio', 'soundcreations' ); ?></p>
-						<h2 class="sc-svc-h2"><?php esc_html_e( 'Capabilities', 'soundcreations' ); ?></h2>
-						<p class="sc-solsec__intro">We supply, install and tune complete professional audio systems - from the loudspeakers to the console and microphones - for live events, worship spaces, boardrooms and installations.</p>
-					</div>
-					<div class="sc-audio-caps">
-						<div class="sc-audio-cap">
-							<span class="sc-audio-cap__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"></rect><circle cx="12" cy="14" r="4"></circle><line x1="12" y1="6" x2="12.01" y2="6"></line></svg></span>
-							<h3><?php esc_html_e( 'Loudspeakers', 'soundcreations' ); ?></h3>
-							<p>Mid and full-range loudspeakers, line arrays and subwoofers for concerts, worship and installed sound - specified and tuned for your space.</p>
-							<ul class="sc-chips"><li>dBTechnologies INGENIA</li><li>dBTechnologies VIO</li><li>NEXO ID Series</li><li>Subwoofers</li></ul>
-						</div>
-						<div class="sc-audio-cap">
-							<span class="sc-audio-cap__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span>
-							<h3><?php esc_html_e( 'Conferencing', 'soundcreations' ); ?></h3>
-							<p>Networked ceiling and boardroom microphone systems for clear, intelligible meetings and hybrid conferencing.</p>
-							<ul class="sc-chips"><li>Shure MXA920</li><li>Shure MXA310</li><li>Microflex Wireless</li></ul>
-						</div>
-						<div class="sc-audio-cap">
-							<span class="sc-audio-cap__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg></span>
-							<h3><?php esc_html_e( 'Microphones', 'soundcreations' ); ?></h3>
-							<p>Wired and wireless microphone systems for speech, vocals and live performance - from handhelds to professional digital wireless.</p>
-							<ul class="sc-chips"><li>Shure SM58</li><li>Shure PGA48 / PGA58</li><li>BLX / SLXD / QLXD / ULXD</li></ul>
-						</div>
-						<div class="sc-audio-cap">
-							<span class="sc-audio-cap__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg></span>
-							<h3><?php esc_html_e( 'Mixers', 'soundcreations' ); ?></h3>
-							<p>Digital and analogue mixing consoles for live sound and installations, scaled from compact venues to large productions.</p>
-							<ul class="sc-chips"><li>Allen &amp; Heath ZED6</li><li>Allen &amp; Heath ZEDi10FX</li><li>Midas</li><li>Behringer</li></ul>
-						</div>
-					</div>
-					<div class="sc-showcase">
-						<figure class="sc-shot">
-							<img src="<?php echo esc_url( SC_THEME_URI . '/assets/img/solutions/audio-live.jpg' ); ?>" alt="<?php esc_attr_e( 'Line array system at a live concert by Sound Creations', 'soundcreations' ); ?>" loading="lazy" decoding="async">
-							<figcaption><span><?php esc_html_e( 'Live events and concerts', 'soundcreations' ); ?></span></figcaption>
-						</figure>
-						<figure class="sc-shot">
-							<img src="<?php echo esc_url( SC_THEME_URI . '/assets/img/solutions/audio-worship.jpg' ); ?>" alt="<?php esc_attr_e( 'Line array system installed in a house of worship', 'soundcreations' ); ?>" loading="lazy" decoding="async">
-							<figcaption><span><?php esc_html_e( 'Houses of worship', 'soundcreations' ); ?></span></figcaption>
-						</figure>
-					</div>
+		<section class="sc-section sc-section--tight sc-section--surface sc-industries">
+			<div class="sc-container">
+				<div class="sc-solsec__head">
+					<p class="sc-eyebrow"><?php esc_html_e( 'Industries we serve', 'soundcreations' ); ?></p>
+					<h2 class="sc-svc-h2"><?php esc_html_e( 'Sound for every space', 'soundcreations' ); ?></h2>
+					<p class="sc-solsec__intro"><?php esc_html_e( 'From retail floors to concert stages, we design, install and tune audio around the way each space is actually used.', 'soundcreations' ); ?></p>
 				</div>
-			</section>
+			</div>
+			<div class="sc-inds">
+				<button class="sc-inds__nav sc-inds__nav--prev" type="button" aria-label="Scroll to previous industries">&larr;</button>
+				<div class="sc-inds__track">
+					<?php
+					$sc_industries = array(
+						array( 'Retail', 'Sound that sells', 'Balanced background music and clear announcements that set the mood on your floor without ever competing with the shopper.' ),
+						array( 'Restaurants & Bars', 'Set the tone', 'Warm, even coverage that keeps conversation easy and the energy right, zone by zone from the bar to the terrace.' ),
+						array( 'Hospitality', 'An effortless guest experience', 'Consistent, refined audio across lobbies, ballrooms, restaurants and outdoor areas, all controlled from one place.' ),
+						array( 'Worship', 'Every word, every seat', 'Intelligible speech and full-range music for services of any style, engineered around your room and its acoustics.' ),
+						array( 'Live Performance & Events', 'Built for the moment', 'Concert-grade line arrays, monitoring and control for productions that have to sound right the first time.' ),
+						array( 'Sports & Fitness', 'Feel the energy', 'High-output, high-impact sound that carries across courts, studios and stands while staying clear and controlled.' ),
+						array( 'Corporate & Conferencing', 'Heard, clearly', 'Networked microphones and loudspeakers for boardrooms and hybrid meetings where every voice has to land.' ),
+						array( 'Education', 'Clarity that carries', 'Reliable, easy-to-run sound for lecture halls, auditoriums and campus spaces, from the front row to the back.' ),
+					);
+					foreach ( $sc_industries as $sc_ind ) :
+					?>
+					<article class="sc-ind">
+						<span class="sc-ind__eyebrow"><?php echo esc_html( $sc_ind[0] ); ?></span>
+						<h3 class="sc-ind__title"><?php echo esc_html( $sc_ind[1] ); ?></h3>
+						<p class="sc-ind__desc"><?php echo esc_html( $sc_ind[2] ); ?></p>
+					</article>
+					<?php
+					endforeach;
+					?>
+				</div>
+				<button class="sc-inds__nav sc-inds__nav--next" type="button" aria-label="Scroll to more industries">&rarr;</button>
+				<script>
+				(function(){
+					var wrap = document.currentScript.closest('.sc-inds');
+					if ( wrap ) {
+						var track = wrap.querySelector('.sc-inds__track');
+						var prev = wrap.querySelector('.sc-inds__nav--prev');
+						var next = wrap.querySelector('.sc-inds__nav--next');
+						var step = function(){ var c = track.querySelector('.sc-ind'); return c ? c.getBoundingClientRect().width + 20 : 320; };
+						if ( prev ) { prev.addEventListener('click', function(){ track.scrollBy({ left: -step(), behavior: 'smooth' }); }); }
+						if ( next ) { next.addEventListener('click', function(){ track.scrollBy({ left: step(), behavior: 'smooth' }); }); }
+					}
+				})();
+				</script>
+			</div>
+		</section>
 		<?php endif; ?>
 
 

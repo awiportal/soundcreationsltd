@@ -1822,3 +1822,22 @@ h3 { font-size: 1.35rem; font-weight: 700; line-height: 1.22; letter-spacing: -.
 .sc-svc-body--wide { grid-template-columns: minmax(0, 1fr); }
 .sc-cta-band--full { margin-inline: calc(50% - 50vw); border-radius: 0; border-inline: 0; padding-inline: 0; }
 .sc-cta-band--full .sc-cta-band__inner { max-width: 680px; }
+
+
+/* Professional Audio: "Industries we serve" horizontal slideshow (no links). */
+.sc-industries { overflow: hidden; }
+.sc-inds { position: relative; margin-top: clamp(1rem, .75rem + 1.5vw, 2rem); }
+.sc-inds__track { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(258px, 330px); gap: clamp(1rem, .75rem + 1vw, 1.5rem); overflow-x: auto; scroll-snap-type: x mandatory; scroll-behavior: smooth; padding: .5rem clamp(1rem, 5vw, 5rem) 1.4rem; scrollbar-width: none; -ms-overflow-style: none; }
+.sc-inds__track::-webkit-scrollbar { display: none; }
+.sc-ind { scroll-snap-align: start; position: relative; display: flex; flex-direction: column; justify-content: flex-end; min-height: 306px; padding: 1.5rem; border-radius: var(--sc-radius-lg); border: 1px solid var(--sc-border); background: linear-gradient(180deg, rgba(16,18,24,.15) 0%, rgba(9,10,14,.92) 78%), radial-gradient(130% 120% at 18% 0%, rgba(225,29,42,.20), transparent 62%); overflow: hidden; transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease; }
+.sc-ind::after { content: ""; position: absolute; left: 1.5rem; right: 1.5rem; bottom: 1.15rem; height: 2px; background: #E11D2A; transform: scaleX(.16); transform-origin: left; transition: transform .45s ease; }
+.sc-ind:hover, .sc-ind:focus-within { transform: translateY(-6px); border-color: rgba(225,29,42,.55); box-shadow: 0 26px 60px -30px rgba(0,0,0,.72); }
+.sc-ind:hover::after, .sc-ind:focus-within::after { transform: scaleX(1); }
+.sc-ind__eyebrow { font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; color: #E11D2A; font-weight: 700; }
+.sc-ind__title { margin: .5rem 0 .55rem; font-size: clamp(1.15rem, 1rem + .55vw, 1.5rem); line-height: 1.2; }
+.sc-ind__desc { color: var(--sc-muted); font-size: .95rem; line-height: 1.6; margin: 0 0 .9rem; }
+.sc-inds__nav { position: absolute; top: calc(50% + .5rem); transform: translateY(-50%); z-index: 3; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--sc-border); background: var(--sc-surface); color: inherit; cursor: pointer; font-size: 1.15rem; line-height: 1; display: grid; place-items: center; transition: border-color .2s ease, background .2s ease; }
+.sc-inds__nav:hover { border-color: rgba(225,29,42,.6); }
+.sc-inds__nav--prev { left: clamp(.25rem, 2vw, 1.25rem); }
+.sc-inds__nav--next { right: clamp(.25rem, 2vw, 1.25rem); }
+@media (max-width: 700px) { .sc-inds__nav { display: none; } .sc-inds__track { padding-inline: 1.1rem; } }
