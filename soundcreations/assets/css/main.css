@@ -1881,25 +1881,32 @@ article.sc-svc:hover { transform: none; border-color: transparent; box-shadow: n
 	.sc-hero--video { min-height: 60vh; height: auto; max-height: none; }
 	.sc-hero--video .sc-hero__inner {
 		padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
-		text-align: center;
+		text-align: left;
 	}
 	/* Centring and wrapping only -- NO font-size override. The base clamp
 	   (2.2rem, 0.5rem + 8.5vw, 7.2rem) already resolves to ~41px on a 390px
 	   phone, so re-declaring a size here is what used to create a step at the
 	   782/783 boundary. One curve owns every width; this query only centres.
 	   14ch keeps the headline on three balanced lines rather than one long
-	   line plus an orphan. Line-height is opened 1.06 -> 1.12 because centred
-	   multi-line display type needs more leading, and tracking is relaxed
-	   -.03em -> -.015em since tight negative tracking costs legibility at
-	   phone sizes. */
+	   line plus an orphan, and tracking is relaxed -.03em -> -.015em since
+	   tight negative tracking costs legibility at phone sizes. */
 	.sc-hero--video .sc-hero__title {
+		/* Centred BLOCK, left-aligned LINES. width:fit-content shrinks the box to
+		   its longest line, then margin-inline:auto centres that box -- so the
+		   headline sits optically centred while every line starts flush left.
+		   text-align:center would instead rag both edges, which is what this
+		   replaces. */
+		width: fit-content;
 		max-width: 14ch;
 		margin-inline: auto;
-		line-height: 1.12;
+		text-align: left;
+		/* Stacked display type at ~41px needs more leading than the desktop 1.06,
+		   or the descenders in "Delivering" crowd the line beneath. */
+		line-height: 1.2;
 		letter-spacing: -.015em;
 		text-wrap: balance;
 	}
-	.sc-hero--video .sc-lead { margin-inline: auto; }
+	.sc-hero--video .sc-lead { margin-inline: auto; text-align: left; }
 	.sc-hero--video .sc-hero__cta { justify-content: center; }
 }
 
