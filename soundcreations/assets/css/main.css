@@ -1480,8 +1480,7 @@ h3 { font-size: 1.35rem; font-weight: 700; line-height: 1.22; letter-spacing: -.
 
 /* ===== Homepage tuning (2026-09-06 pm): hero fit, CTA height, footer clearance ===== */
 .sc-hero--video{height:auto;max-height:none}
-.sc-hero--video .sc-hero__title{font-size:clamp(2.3rem, 1.2rem + 4.5vw, 7.9rem);line-height:1.06;letter-spacing:-.03em;max-width:15ch}
-@media (min-width:1025px){.sc-hero--video .sc-hero__title{font-size:122px}}
+.sc-hero--video .sc-hero__title{font-size:clamp(2.2rem, 0.39rem + 5.08vw, 4.2rem);line-height:1.06;letter-spacing:-.03em;max-width:15ch;text-wrap:balance}
 .home .sc-cta-band--photo{padding-block:clamp(1rem, .7rem + 1vw, 1.7rem)}
 .home .sc-cta-band__inner h2{margin:0 0 .5rem}
 @media (min-width:783px){.sc-footer__bottom{padding-right:184px}}
@@ -1880,6 +1879,23 @@ article.sc-svc:hover { transform: none; border-color: transparent; box-shadow: n
 /* ===== Homepage hero title responsive (fix min-content wrap + mobile sizing/clearance over .sc-mobabar) ===== */
 @media (max-width: 782px) {
 	.sc-hero--video { min-height: 60vh; height: auto; max-height: none; }
-	.sc-hero--video .sc-hero__inner { padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px)); }
-	.sc-hero--video .sc-hero__title { font-size: clamp(2.35rem, 1.15rem + 7vw, 3.8rem); max-width: 100%; line-height: 1.06; letter-spacing: -.02em; }
+	.sc-hero--video .sc-hero__inner {
+		padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+		text-align: center;
+	}
+	/* Centred, and sized so the headline lands on three balanced lines instead
+	   of one very large word per line. Line-height is opened from 1.06 to 1.16
+	   because centred multi-line display type needs more room to breathe, and
+	   the tracking is relaxed from -.02em to -.012em since tight negative
+	   tracking hurts legibility at phone sizes. */
+	.sc-hero--video .sc-hero__title {
+		font-size: clamp(2.05rem, 1.1rem + 5.2vw, 3rem);
+		max-width: 18ch;
+		margin-inline: auto;
+		line-height: 1.16;
+		letter-spacing: -.012em;
+		text-wrap: balance;
+	}
+	.sc-hero--video .sc-lead { margin-inline: auto; }
+	.sc-hero--video .sc-hero__cta { justify-content: center; }
 }
