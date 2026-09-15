@@ -25,6 +25,49 @@ function sc_core_get_or_create_term( $name, $taxonomy ) {
 	return (int) $res['term_id'];
 }
 
+/**
+ * Find an already-seeded post by slug, including ones the team has deleted.
+ *
+ * get_page_by_path() alone is not enough: since WP 4.5 wp_trash_post() renames
+ * post_name to "<slug>__trashed", so a bare-slug lookup returns nothing for
+ * anything sitting in Trash. The seeder then concludes the row is missing and
+ * inserts a brand-new published copy, resurrecting content the team removed on
+ * purpose and leaving the deleted original in Trash beside it. Repeated
+ * trash/restore cycles can also produce "__trashed-2" style names, which is why
+ * this falls back to a LIKE query rather than one exact match.
+ *
+ * Published rows win over trashed ones so a live post is never shadowed by an
+ * old deleted namesake.
+ *
+ * @param string $slug      Seed slug.
+ * @param string $post_type Post type to search.
+ * @return WP_Post|null
+ */
+function sc_core_find_seeded_post( $slug, $post_type ) {
+	$found = get_page_by_path( $slug, OBJECT, $post_type );
+	if ( $found ) {
+		return $found;
+	}
+	global $wpdb;
+	$sc_id = $wpdb->get_var(
+		$wpdb->prepare(
+			"SELECT ID FROM {$wpdb->posts}
+			 WHERE post_type = %s
+			   AND ( post_name = %s OR post_name LIKE %s )
+			 ORDER BY ( post_status = 'publish' ) DESC, ID ASC
+			 LIMIT 1",
+			$post_type,
+			$slug,
+			$wpdb->esc_like( $slug . '__trashed' ) . '%'
+		)
+	);
+	if ( empty( $sc_id ) ) {
+		return null;
+	}
+	$found = get_post( (int) $sc_id );
+	return $found ? $found : null;
+}
+
 function sc_core_seed_catalog() {
 	$report = array( 'brands' => 0, 'products' => 0, 'projects' => 0 );
 
@@ -49,8 +92,11 @@ function sc_core_seed_catalog() {
 	);
 	foreach ( $brands as $b ) {
 		list( $slug, $title, $origin, $cat, $tag, $order, $logo, $website ) = $b;
-		$existing = get_page_by_path( $slug, OBJECT, 'sc_brand' );
-		if ( $existing ) {
+		$existing = sc_core_find_seeded_post( $slug, 'sc_brand' );
+		if ( $existing && 'trash' === $existing->post_status ) {
+			continue; // Team deleted this on purpose; never resurrect it.
+		}
+				if ( $existing ) {
 			// Upsert: keep any team-edited body, but sync order + meta.
 			$id = (int) $existing->ID;
 			wp_update_post(
@@ -106,8 +152,8 @@ function sc_core_seed_catalog() {
 	);
 	foreach ( $products as $p ) {
 		list( $slug, $title, $kind ) = $p;
-		if ( get_page_by_path( $slug, OBJECT, 'sc_product' ) ) {
-			continue;
+		if ( sc_core_find_seeded_post( $slug, 'sc_product' ) ) {
+			continue; // Covers trashed copies too, so deletions stick.
 		}
 		$content = $kind . '. [VERIFY] Add the full product description and datasheet specifications from the FANE datasheet before publishing.';
 		$id      = wp_insert_post(
@@ -143,8 +189,11 @@ function sc_core_seed_catalog() {
 	foreach ( $projects as $pr ) {
 		list( $slug, $title, $client, $loc, $industry, $cat, $badge, $sol, $img, $summary, $order ) = $pr;
 		$body     = isset( $project_bodies[ $slug ] ) ? $project_bodies[ $slug ] : '';
-		$existing = get_page_by_path( $slug, OBJECT, 'sc_project' );
-		if ( $existing ) {
+		$existing = sc_core_find_seeded_post( $slug, 'sc_project' );
+		if ( $existing && 'trash' === $existing->post_status ) {
+			continue; // Team deleted this on purpose; never resurrect it.
+		}
+				if ( $existing ) {
 			$id  = (int) $existing->ID;
 			$upd = array( 'ID' => $id, 'menu_order' => $order );
 			// Refresh the body only while it is still the seeded [VERIFY] stub, so real
@@ -199,8 +248,11 @@ function sc_core_seed_catalog() {
 		foreach ( $services as $sv ) {
 			list( $slug, $title, $img, $summary, $order ) = $sv;
 			$body     = isset( $service_bodies[ $slug ] ) ? $service_bodies[ $slug ] : '';
-			$existing = get_page_by_path( $slug, OBJECT, 'sc_service' );
-			if ( $existing ) {
+			$existing = sc_core_find_seeded_post( $slug, 'sc_service' );
+			if ( $existing && 'trash' === $existing->post_status ) {
+				continue; // Team deleted this on purpose; never resurrect it.
+			}
+						if ( $existing ) {
 				$id  = (int) $existing->ID;
 				$upd = array( 'ID' => $id, 'menu_order' => $order );
 				// Refresh the body only while it is still the seeded [VERIFY] stub.
@@ -342,7 +394,7 @@ function sc_core_retire_placeholder_projects() {
 	);
 	$sc_done = 0;
 	foreach ( $sc_slugs as $sc_slug ) {
-		$sc_post = get_page_by_path( $sc_slug, OBJECT, 'sc_project' );
+		$sc_post = sc_core_find_seeded_post( $sc_slug, 'sc_project' );
 		if ( empty( $sc_post ) ) {
 			continue;
 		}
@@ -366,7 +418,8 @@ add_action(
 		}
 		sc_core_retire_placeholder_projects();
 		update_option( 'sc_core_retired_projects', '1', false );
-	}
+	},
+	11
 );
 
 // Auto re-run the (idempotent) seeder once after a plugin update so brand order,
@@ -374,7 +427,11 @@ add_action(
 add_action(
 	'admin_init',
 	function () {
-		if ( get_option( 'sc_core_seed_version' ) === SC_CORE_SEED_VERSION ) {
+		// Only ever move forward. An equal or higher stored version must skip the
+		// seeder: its upsert path rewrites _sc_category, _sc_badge, _sc_summary and
+		// friends on every existing row, undoing the team's wp-admin edits.
+		$sc_seeded = (string) get_option( 'sc_core_seed_version' );
+		if ( strlen( $sc_seeded ) > 0 && version_compare( $sc_seeded, SC_CORE_SEED_VERSION, '>=' ) ) {
 			return;
 		}
 		if ( function_exists( 'sc_core_seed_catalog' ) ) {
