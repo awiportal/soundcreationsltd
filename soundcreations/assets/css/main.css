@@ -74,7 +74,7 @@ img { max-width: 100%; height: auto; display: block; }
 
 /* Hero */
 .sc-hero { position: relative; padding-block: clamp(4rem, 3rem + 8vw, 9rem); overflow: hidden; }
-.sc-hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(1200px 600px at 15% -10%, rgba(96,68,136,.20), transparent 60%), radial-gradient(900px 500px at 100% 0%, rgba(186,11,11,.16), transparent 55%); pointer-events: none; }
+.sc-hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(1200px 600px at 15% -10%, rgba(98,68,137,.22), transparent 60%), radial-gradient(900px 500px at 100% 0%, rgba(186,11,11,.16), transparent 55%); pointer-events: none; }
 .sc-hero__title { max-width: 16ch; }
 .sc-hero__pills { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1.5rem 0; }
 .sc-pill { border: 1px solid var(--sc-border); border-radius: 999px; padding: .35rem .9rem; font-size: .82rem; color: var(--sc-muted); font-family: var(--sc-font-display); }
@@ -104,7 +104,7 @@ img { max-width: 100%; height: auto; display: block; }
 .sc-card p { color: var(--sc-muted); margin: 0; font-size: .95rem; }
 
 /* CTA band */
-.sc-cta-band { background: linear-gradient(120deg, rgba(96,68,136,.18), rgba(186,11,11,.14)); border: 1px solid var(--sc-border); border-radius: var(--sc-radius-lg); padding: clamp(2rem, 1.5rem + 3vw, 4rem); text-align: center; }
+.sc-cta-band { background: linear-gradient(120deg, rgba(98,68,137,.20), rgba(186,11,11,.14)); border: 1px solid var(--sc-border); border-radius: var(--sc-radius-lg); padding: clamp(2rem, 1.5rem + 3vw, 4rem); text-align: center; }
 
 /* Footer */
 .sc-footer { background: var(--sc-surface); border-top: 1px solid var(--sc-border); padding-block: 3.5rem 2rem; margin-top: 3rem; }
@@ -233,7 +233,7 @@ img { max-width: 100%; height: auto; display: block; }
 @media (max-width: 620px) { .sc-expertise { grid-template-columns: 1fr; } }
 
 /* Build-brands callout */
-.sc-buildbrands { text-align: center; border: 1px solid var(--sc-border); border-radius: var(--sc-radius-lg); padding: clamp(2.5rem, 2rem + 4vw, 4.5rem) 1.5rem; background: linear-gradient(120deg, rgba(96,68,136,.16), rgba(186,11,11,.12)); }
+.sc-buildbrands { text-align: center; border: 1px solid var(--sc-border); border-radius: var(--sc-radius-lg); padding: clamp(2.5rem, 2rem + 4vw, 4.5rem) 1.5rem; background: linear-gradient(120deg, rgba(98,68,137,.18), rgba(186,11,11,.12)); }
 .sc-buildbrands h2 { margin: 0 auto; max-width: 20ch; font-size: clamp(1.6rem, 1.2rem + 2.4vw, 2.6rem); }
 
 /* Brands grid */
@@ -1898,4 +1898,98 @@ article.sc-svc:hover { transform: none; border-color: transparent; box-shadow: n
 	}
 	.sc-hero--video .sc-lead { margin-inline: auto; }
 	.sc-hero--video .sc-hero__cta { justify-content: center; }
+}
+
+/* ============================================================
+   BRAND COLOUR SYSTEM  (purple #624489 / red #BA0B0B / white)
+
+   Purple was defined in tokens but used zero times, while var(--sc-red)
+   was used 137 times, so the site was effectively a one-colour brand. This
+   block gives purple the structural role the logo gives it, and leaves all
+   137 red usages untouched so red stays the action colour.
+
+   The logo is the spec: purple is the wordmark mass, red is the waveform
+   mark, and on dark backgrounds the brand swaps purple for WHITE while red
+   stays constant. The tokens mirror that, which is why white carries the
+   structural mass in dark mode and purple carries it in light mode.
+
+   Everything here resolves through semantic tokens so a theme switch is
+   automatically correct. The one exception is flagged inline: surfaces that
+   are ALWAYS dark (video hero, photo scrims) must NOT follow the theme, or
+   their text becomes unreadable in light mode.
+   ============================================================ */
+
+/* ---- 1. Utility band: brand masthead, #624489 in both themes ---- */
+.sc-utility {
+  background: var(--sc-utility-bg);
+  color: var(--sc-utility-fg);
+  border-bottom: 1px solid var(--sc-utility-line);
+}
+.sc-utility a,
+.sc-utility__zone--center a { color: var(--sc-utility-strong); }
+.sc-utility__regions,
+.sc-utility__hours { color: var(--sc-utility-fg); }
+.sc-utility__dot { color: var(--sc-utility-fg); opacity: .5; }
+
+/* Hover resolves to white, deliberately NOT red: red on purple is both a
+   contrast failure and a mixed signal about what is actionable. */
+.sc-utility a:hover,
+.sc-utility__zone--center a:hover {
+  color: var(--sc-utility-strong);
+  text-decoration: underline;
+  text-underline-offset: .2em;
+}
+
+.sc-utility__soc { border-color: var(--sc-utility-line); color: var(--sc-utility-fg); }
+.sc-utility__soc:hover {
+  color: var(--sc-purple);
+  border-color: var(--sc-utility-strong);
+  background: var(--sc-utility-strong);
+}
+
+/* ---- 2. Eyebrows: purple is the section-label colour site-wide ---- */
+.sc-eyebrow { color: var(--sc-eyebrow); }
+.sc-eyebrow::before { background: var(--sc-brand-mark); }
+
+/* Always-dark contexts pin to the lightened purple in BOTH themes. They sit
+   on video or photography, never on the page background, so the theme token
+   would resolve to #624489 on near-black in light mode. */
+.sc-hero--video .sc-eyebrow,
+.sc-support-hero .sc-eyebrow,
+.sc-cta-band--photo .sc-eyebrow { color: var(--sc-purple-300); }
+
+/* FANE hero eyebrow was red; in this system eyebrows are purple. */
+.sc-fane-hero__eyebrow { color: var(--sc-eyebrow); }
+
+/* ---- 3. Focus ring: purple, so focus never reads as an action ---- */
+:focus-visible { outline: 2px solid var(--sc-focus); outline-offset: 3px; }
+
+/* ---- 4. Selection ---- */
+::selection { background: var(--sc-selection-bg); color: var(--sc-selection-fg); }
+
+/* ---- 5. A brand rule that closes the page, echoing the masthead band ---- */
+.sc-footer { border-top: 1px solid var(--sc-brand-line); }
+.sc-footer::before {
+  content: "";
+  display: block;
+  height: 2px;
+  margin-bottom: 2rem;
+  background: linear-gradient(90deg, var(--sc-purple) 0%, var(--sc-purple-300) 45%, var(--sc-red) 100%);
+  opacity: .9;
+}
+
+/* ---- 6. Breadcrumb current page: purple wayfinding, not red ---- */
+.sc-crumb__cur { color: var(--sc-brand-mark); }
+
+/* ---- 7. Light theme: the dark-mode washes are invisible on white, so the
+   brand tint is re-stated at light-appropriate strength. ---- */
+[data-theme="light"] .sc-hero::after {
+  background:
+    radial-gradient(1200px 600px at 15% -10%, var(--sc-brand-tint), transparent 60%),
+    radial-gradient(900px 500px at 100% 0%, rgba(186,11,11,.07), transparent 55%);
+}
+[data-theme="light"] .sc-cta-band,
+[data-theme="light"] .sc-buildbrands {
+  background: linear-gradient(120deg, var(--sc-brand-tint), rgba(186,11,11,.06));
+  border-color: var(--sc-brand-line);
 }
