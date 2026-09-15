@@ -47,6 +47,13 @@ add_filter( 'emoji_svg_url', '__return_false' );
 /* 3. Disable oEmbed discovery links and the front-end wp-embed.js. */
 remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
 remove_action( 'wp_head', 'wp_oembed_add_host_js' );
+
+/* 1b. Drop the site-wide Comments Feed <link>. The feed itself answers 403 (this
+   site takes no comments), so advertising it in wp_head published a broken link
+   on every single page -- it was one of only two bad links found in a 32-page
+   crawl. feed_links_show_comments_feed is the narrow switch for exactly that one
+   link; the main content feed is left advertised and working. */
+add_filter( 'feed_links_show_comments_feed', '__return_false' );
 add_action(
 	'wp_enqueue_scripts',
 	function () {

@@ -486,3 +486,44 @@ add_action(
 		exit;
 	}
 );
+
+/**
+ * Never show the seeder's [VERIFY] editorial reminder to visitors.
+ *
+ * Seeded stubs carry a sentence such as "[VERIFY] Confirm the scope, equipment
+ * supplied and completion date before publishing." That is a note to staff, but
+ * it was published: a crawl found it live and visible to the public on
+ * /projects/all-saints-cathedral/, directly beneath a real client name.
+ *
+ * This strips only the sentence containing the marker and leaves the rest of the
+ * copy alone, so the surrounding text still reads normally. It filters display
+ * output only -- the stored content is untouched and the reminder stays fully
+ * visible in wp-admin, so the team can still see which entries need real copy.
+ * No project detail is invented to fill the gap.
+ *
+ * @param string $content Post content.
+ * @return string
+ */
+function sc_core_strip_verify_notes( $content ) {
+	if ( is_admin() ) {
+		return $content;
+	}
+	if ( is_string( $content ) === false ) {
+		return $content;
+	}
+	if ( strpos( $content, '[VERIFY]' ) === false ) {
+		return $content;
+	}
+	$sc_parts = preg_split( '/(?<=[.?' . chr( 33 ) . '])\s+/', $content );
+	if ( is_array( $sc_parts ) === false ) {
+		return $content;
+	}
+	$sc_keep = array();
+	foreach ( $sc_parts as $sc_part ) {
+		if ( strpos( $sc_part, '[VERIFY]' ) === false ) {
+			$sc_keep[] = $sc_part;
+		}
+	}
+	return trim( implode( ' ', $sc_keep ) );
+}
+add_filter( 'the_content', 'sc_core_strip_verify_notes', 9 );
