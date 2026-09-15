@@ -25,7 +25,16 @@ $sc_hero_poster = sc_setting( 'home_hero_poster', SC_THEME_URI . '/assets/img/he
 	<?php endif; ?>
 	<span class="sc-hero__scrim" aria-hidden="true"></span>
 	<div class="sc-container sc-hero__inner">
-		<h1 class="sc-hero__title"><?php echo esc_html( sc_setting( 'home_hero_title', 'Delivering experiential solutions' ) ); ?></h1>
+		<?php
+		// Hero headline removed at the owner's request (2026-09-15). The setting is kept
+		// so a headline can be restored from Sound Creations -> Settings at any time; the
+		// h1 is emitted only when it actually holds text, so an empty value leaves no
+		// stray empty heading in the markup.
+		$sc_hero_title = trim( (string) sc_setting( 'home_hero_title', '' ) );
+		if ( strlen( $sc_hero_title ) > 0 ) :
+			?>
+			<h1 class="sc-hero__title"><?php echo esc_html( $sc_hero_title ); ?></h1>
+		<?php endif; ?>
 	</div>
 </section>
 
