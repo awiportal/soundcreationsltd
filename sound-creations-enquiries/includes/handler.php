@@ -60,34 +60,20 @@ function sc_enq_summary( $form, $data, $file_url, $ip ) {
 	return implode( "\n", $lines );
 }
 
-function sc_enq_handle_upload() {
-	require_once ABSPATH . 'wp-admin/includes/file.php';
-	if ( empty( $_FILES['sc_file']['name'] ) ) {
-		return '';
-	}
-	if ( isset( $_FILES['sc_file']['size'] ) && (int) $_FILES['sc_file']['size'] > 8 * 1024 * 1024 ) {
-		return '';
-	}
-	$mimes     = array(
-		'pdf'  => 'application/pdf',
-		'doc'  => 'application/msword',
-		'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-		'jpg'  => 'image/jpeg',
-		'jpeg' => 'image/jpeg',
-		'png'  => 'image/png',
-	);
-	$overrides = array( 'test_form' => false, 'mimes' => $mimes );
-	$moved     = wp_handle_upload( $_FILES['sc_file'], $overrides );
-	if ( is_array( $moved ) && isset( $moved['url'] ) && empty( $moved['error'] ) ) {
-		return esc_url_raw( $moved['url'] );
-	}
-	return '';
-}
-
 function sc_enq_handle() {
 	$forms    = sc_enq_forms();
 	$type     = isset( $_POST['sc_type'] ) ? sanitize_key( wp_unslash( $_POST['sc_type'] ) ) : '';
 	$redirect = isset( $_POST['sc_redirect'] ) ? esc_url_raw( wp_unslash( $_POST['sc_redirect'] ) ) : home_url( '/' );
+
+	// Resolve the client once; every abuse control below keys off it.
+	$ip = sc_enq_client_ip();
+
+	// Hard per-IP ceiling, counted on EVERY attempt including ones that go on to
+	// fail validation, so a bot cannot hammer the endpoint for free by
+	// deliberately submitting garbage.
+	if ( sc_enq_throttle( 'attempt', 12, 10 * MINUTE_IN_SECONDS, $ip ) ) {
+		sc_enq_redirect( $redirect, 'error', 'rate' );
+	}
 
 	$nonce = isset( $_POST['sc_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['sc_nonce'] ) ) : '';
 	if ( ! wp_verify_nonce( $nonce, 'sc_enquiry_submit' ) ) {
@@ -100,16 +86,21 @@ function sc_enq_handle() {
 	if ( ! empty( $_POST['sc_website'] ) ) {
 		sc_enq_redirect( $redirect, 'sent', '1' );
 	}
-	// Time trap.
+	// Time trap: a human cannot read and complete the form in under 3 seconds.
 	$rendered = isset( $_POST['sc_rendered'] ) ? absint( $_POST['sc_rendered'] ) : 0;
 	if ( $rendered && ( time() - $rendered ) < 3 ) {
 		sc_enq_redirect( $redirect, 'error', 'spam' );
 	}
-	// Rate limit.
-	$ip    = isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
-	$rlkey = 'sc_enq_rl_' . md5( $ip );
-	$count = (int) get_transient( $rlkey );
-	if ( $count >= 8 ) {
+	// Stale render stamp: a replayed or scripted payload, not a live form.
+	if ( $rendered && ( time() - $rendered ) > DAY_IN_SECONDS ) {
+		sc_enq_redirect( $redirect, 'error', 'spam' );
+	}
+	// A real browser always sends a User-Agent.
+	if ( empty( $_SERVER['HTTP_USER_AGENT'] ) ) {
+		sc_enq_redirect( $redirect, 'error', 'spam' );
+	}
+	// Sustained-volume cap over a longer window.
+	if ( sc_enq_throttle( 'submit', 5, HOUR_IN_SECONDS, $ip ) ) {
 		sc_enq_redirect( $redirect, 'error', 'rate' );
 	}
 
@@ -144,6 +135,18 @@ function sc_enq_handle() {
 		$data[ $name ] = $val;
 	}
 
+	// Content-based spam scoring. Silently 'accepted' so the bot sees success and
+	// does not retry, but never stored or mailed -- staff are not trained to
+	// ignore a noisy queue.
+	if ( sc_enq_spam_score( $data ) >= 5 ) {
+		sc_enq_redirect( $redirect, 'sent', '1' );
+	}
+
+	// Byte-identical payload already received from this client.
+	if ( sc_enq_is_duplicate( $type, $data, $ip ) ) {
+		sc_enq_redirect( $redirect, 'sent', '1' );
+	}
+
 	$file_url = sc_enq_handle_upload();
 
 	$country = isset( $data['country'] ) ? $data['country'] : '';
@@ -176,12 +179,18 @@ function sc_enq_handle() {
 	$body      = sc_enq_summary( $form, $data, $file_url, '' ) . "\n\nSource: " . $redirect;
 	$headers   = array( 'Content-Type: text/plain; charset=UTF-8' );
 	if ( ! empty( $data['email'] ) && is_email( $data['email'] ) ) {
-		$from_name = ! empty( $data['name'] ) ? $data['name'] : 'Website enquiry';
-		$headers[] = 'Reply-To: ' . $from_name . ' <' . $data['email'] . '>';
+		// The display name is attacker-supplied: scrub CR/LF and quoting
+		// characters so it can never forge an extra header or spoof a sender.
+		$from_name = sc_enq_header_safe( ! empty( $data['name'] ) ? $data['name'] : 'Website enquiry' );
+		$from_addr = sanitize_email( $data['email'] );
+		if ( '' === $from_name ) {
+			$from_name = 'Website enquiry';
+		}
+		if ( $from_addr && is_email( $from_addr ) ) {
+			$headers[] = 'Reply-To: ' . $from_name . ' <' . $from_addr . '>';
+		}
 	}
 	wp_mail( $recipient, $subject, $body, $headers );
-
-	set_transient( $rlkey, $count + 1, 600 );
 
 	sc_enq_redirect( $redirect, 'sent', '1' );
 }

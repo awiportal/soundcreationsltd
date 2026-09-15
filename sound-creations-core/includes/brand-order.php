@@ -92,7 +92,9 @@ add_action( 'admin_enqueue_scripts', 'sc_brand_order_enqueue' );
  * Persist a new order: write menu_order 0,1,2,... following the posted sequence.
  */
 function sc_brand_order_save() {
-	if ( ! current_user_can( 'edit_posts' ) ) {
+	if ( ! current_user_can( 'edit_others_posts' ) ) {
+		// Brand order changes what every visitor sees site-wide, so it needs more
+		// than Contributor-level 'edit_posts'. Editors and administrators only.
 		wp_send_json_error( 'forbidden', 403 );
 	}
 	$nonce = isset( $_POST['_nonce'] ) ? sanitize_text_field( wp_unslash( $_POST['_nonce'] ) ) : '';

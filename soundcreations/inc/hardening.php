@@ -75,8 +75,15 @@ add_filter(
 		$headers['Referrer-Policy']        = 'strict-origin-when-cross-origin';
 		$headers['Permissions-Policy']     = 'geolocation=(), microphone=(), camera=()';
 		$headers['Cross-Origin-Opener-Policy'] = 'same-origin';
+		$headers['X-Permitted-Cross-Domain-Policies'] = 'none';
+		// A deliberately narrow CSP. It sets NO script-src or style-src: the theme
+		// ships inline scripts and Seraphinite Accelerator injects its own inline
+		// CSS/JS, so a strict policy would break the site. These three directives
+		// close real attack paths (clickjacking, plugin embedding, <base>
+		// hijacking) with no risk of blocking legitimate assets.
+		$headers['Content-Security-Policy'] = "frame-ancestors 'self'; object-src 'none'; base-uri 'self'";
 		if ( is_ssl() ) {
-			$headers['Strict-Transport-Security'] = 'max-age=31536000';
+			$headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains';
 		}
 		return $headers;
 	}
@@ -229,5 +236,95 @@ add_action(
 			wp_safe_redirect( admin_url() );
 			exit;
 		}
+	}
+);
+
+/* ============================================================
+   11. Login brute-force throttle.
+
+   WordPress ships no limit on failed logins, which makes wp-login.php the
+   most attacked endpoint on any install. Five wrong passwords from one IP
+   buys a 15-minute lockout; fifteen buys an hour. A successful login clears
+   the counter immediately.
+
+   Forwarded IP headers are trivially spoofable, so they are honoured ONLY
+   when the connecting peer is a proxy the site owner has declared:
+
+     add_filter( 'sc_trusted_proxies', function ( $ips ) {
+         $ips[] = '203.0.113.10';
+         return $ips;
+     } );
+   ============================================================ */
+
+function sc_client_ip() {
+	$remote = isset( $_SERVER['REMOTE_ADDR'] ) ? trim( (string) wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '';
+	$remote = filter_var( $remote, FILTER_VALIDATE_IP ) ? $remote : '';
+
+	$trusted = apply_filters( 'sc_trusted_proxies', array() );
+	if ( '' === $remote || is_array( $trusted ) === false || in_array( $remote, $trusted, true ) === false ) {
+		return $remote;
+	}
+	foreach ( array( 'HTTP_CF_CONNECTING_IP', 'HTTP_X_REAL_IP', 'HTTP_X_FORWARDED_FOR' ) as $header ) {
+		if ( empty( $_SERVER[ $header ] ) ) {
+			continue;
+		}
+		$parts = explode( ',', (string) wp_unslash( $_SERVER[ $header ] ) );
+		$first = trim( $parts[0] );
+		if ( filter_var( $first, FILTER_VALIDATE_IP ) ) {
+			return $first;
+		}
+	}
+	return $remote;
+}
+
+function sc_login_throttle_key( $ip ) {
+	return 'sc_login_fail_' . md5( ( '' === $ip ? 'unknown' : $ip ) . '|' . wp_salt( 'nonce' ) );
+}
+
+/* Refuse the attempt before any password is checked. */
+add_filter(
+	'authenticate',
+	function ( $user, $username ) {
+		unset( $username );
+		$fails = (int) get_transient( sc_login_throttle_key( sc_client_ip() ) );
+		if ( $fails >= 15 ) {
+			return new WP_Error( 'sc_locked', __( 'Too many failed attempts. Try again in an hour.', 'soundcreations' ) );
+		}
+		if ( $fails >= 5 ) {
+			return new WP_Error( 'sc_locked', __( 'Too many failed attempts. Try again in 15 minutes.', 'soundcreations' ) );
+		}
+		return $user;
+	},
+	5,
+	2
+);
+
+add_action(
+	'wp_login_failed',
+	function () {
+		$key   = sc_login_throttle_key( sc_client_ip() );
+		$fails = (int) get_transient( $key ) + 1;
+		set_transient( $key, $fails, $fails >= 15 ? HOUR_IN_SECONDS : 15 * MINUTE_IN_SECONDS );
+	}
+);
+
+add_action(
+	'wp_login',
+	function () {
+		delete_transient( sc_login_throttle_key( sc_client_ip() ) );
+	}
+);
+
+/* 12. Block REST media enumeration for logged-out visitors. Enquiry
+   attachments live under uploads with unguessable names; they should not be
+   listable either. */
+add_filter(
+	'rest_endpoints',
+	function ( $endpoints ) {
+		if ( is_user_logged_in() ) {
+			return $endpoints;
+		}
+		unset( $endpoints['/wp/v2/media'] );
+		return $endpoints;
 	}
 );
