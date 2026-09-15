@@ -3,7 +3,8 @@
  * Solutions landing page (renders at /solutions/, the sc_solution archive).
  * The Our Solutions and Featured Projects sections mirror the homepage:
  * the same solution cards (shared home_sol*_img settings) and the same
- * live sc_project carousel. Hero, pills and CTA band remain editable in
+ * live sc_project carousel. The hero is the compact style used on /brands/;
+ * hero and CTA band copy remain editable in
  * Sound Creations -> Settings (Solutions page content).
  *
  * @package SoundCreations
@@ -17,27 +18,14 @@ get_header();
 $sc_sol_hero  = SC_THEME_URI . '/assets/img/solutions-hero.jpg';
 $sc_cta_photo = SC_THEME_URI . '/assets/img/cta-building.jpg';
 
-$sc_pills = array(
-	array( 'End-to-end expertise', 'From concept to commissioning and beyond.', '<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>' ),
-	array( 'World-class technology', 'The best brands, engineered for your environment.', '<circle cx="12" cy="8" r="6"/><path d="M8.21 13.89 7 22l5-3 5 3-1.21-8.11"/>' ),
-	array( 'Long-term partnership', 'Reliable support that keeps you performing.', '<path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>' ),
-);
 ?>
 
-<section class="sc-hero sc-hero--video sc-hero--solutions" style="background-image:url('<?php echo esc_url( $sc_sol_hero ); ?>');">
-	<span class="sc-hero__scrim" aria-hidden="true"></span>
-	<div class="sc-container sc-hero__inner">
-		<?php echo sc_breadcrumb( array( array( 'Home', home_url( '/' ) ), array( 'Solutions', '' ) ) ); ?>
-		<h1 class="sc-hero__title"><?php echo esc_html( sc_setting( 'sol_hero_title', 'Engineered solutions. Exceptional experiences.' ) ); ?></h1>
-		<p class="sc-lead"><?php echo sc_rich_e( sc_setting( 'sol_hero_lead', 'We design, integrate and support professional audio, visual, lighting and acoustic solutions for every space, application and performance.' ) ); ?></p>
-		<div class="sc-hero-pills">
-			<?php foreach ( $sc_pills as $p ) : ?>
-				<div class="sc-hero-pill">
-					<span class="sc-hero-pill__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><?php echo $p[2]; ?></svg></span>
-					<div class="sc-hero-pill__text"><strong><?php echo esc_html( $p[0] ); ?></strong><span><?php echo esc_html( $p[1] ); ?></span></div>
-				</div>
-			<?php endforeach; ?>
-		</div>
+<section class="sc-support-hero sc-solutions-hero" style="background-image:url('<?php echo esc_url( $sc_sol_hero ); ?>');">
+	<span class="sc-support-hero__scrim" aria-hidden="true"></span>
+	<div class="sc-container sc-support-hero__inner">
+		<nav class="sc-crumb" aria-label="Breadcrumb"><a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a> <span aria-hidden="true">&rsaquo;</span> <span class="sc-crumb__cur"><?php esc_html_e( 'Solutions', 'soundcreations' ); ?></span></nav>
+		<h1 class="sc-support-hero__title"><?php echo esc_html( sc_setting( 'sol_hero_title', 'Engineered solutions. Exceptional experiences.' ) ); ?></h1>
+		<p class="sc-lead sc-support-hero__lead"><?php echo sc_rich_e( sc_setting( 'sol_hero_lead', 'We design, integrate and support professional audio, visual, lighting and acoustic solutions for every space, application and performance.' ) ); ?></p>
 	</div>
 </section>
 
