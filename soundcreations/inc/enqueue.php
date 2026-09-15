@@ -78,3 +78,62 @@ function sc_defer_scripts( $tag, $handle ) {
 	return $tag;
 }
 add_filter( 'script_loader_tag', 'sc_defer_scripts', 10, 2 );
+
+
+/* ============================================================
+   Navigation speed: Speculation Rules API.
+
+   Chromium prerenders a page when the visitor hovers or starts pressing a
+   link, so the next navigation paints from memory and feels instant. Falls
+   back silently to normal navigation in browsers without support.
+
+   Patterns are derived from the real site path, because this install lives in
+   a subdirectory (/newwebsite/) -- hardcoded '/wp-admin/*' style patterns
+   would never match here.
+
+   Excluded: wp-admin, wp-login, wp-json, wp-comments-post, the enquiry POST
+   endpoint, and anything carrying a query string, so nothing with a side
+   effect is ever speculatively fetched. Logged-in users are skipped entirely
+   (their pages are personalised and uncacheable).
+   ============================================================ */
+add_action(
+	'wp_head',
+	function () {
+		if ( is_user_logged_in() ) {
+			return;
+		}
+
+		$base = wp_parse_url( home_url( '/' ), PHP_URL_PATH );
+		if ( is_string( $base ) === false || '' === $base ) {
+			$base = '/';
+		}
+		$base = trailingslashit( $base );
+
+		$rules = array(
+			'prerender' => array(
+				array(
+					'where'     => array(
+						'and' => array(
+							array( 'href_matches' => $base . '*' ),
+							array(
+								'not' => array(
+									'href_matches' => array(
+										$base . 'wp-admin/*',
+										$base . 'wp-login.php',
+										$base . 'wp-json/*',
+										$base . 'wp-comments-post.php',
+										$base . '*\?*',
+									),
+								),
+							),
+						),
+					),
+					'eagerness' => 'moderate',
+				),
+			),
+		);
+
+		echo '<script type="speculationrules">' . wp_json_encode( $rules ) . '</script>' . "\n";
+	},
+	3
+);
