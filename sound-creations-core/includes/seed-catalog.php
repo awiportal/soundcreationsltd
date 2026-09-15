@@ -186,29 +186,6 @@ function sc_core_seed_catalog() {
 		}
 	}
 
-	// Projects that were seeded as generic placeholders and are not ours to show
-	// on /projects/. Trashed rather than force-deleted (unlike the retired brands
-	// above) because the team may have written real copy into them since seeding;
-	// they stay recoverable under Projects -> Trash.
-	$sc_retired_projects = array(
-		'pcea-chuka',
-		'kabarak-university',
-		'nairobi-chapel',
-		'hotel-audio-solution',
-		'corporate-boardroom',
-		'live-event-production',
-	);
-	foreach ( $sc_retired_projects as $sc_gone_project ) {
-		$sc_gone_p = get_page_by_path( $sc_gone_project, OBJECT, 'sc_project' );
-		if ( empty( $sc_gone_p ) ) {
-			continue;
-		}
-		if ( 'trash' === $sc_gone_p->post_status ) {
-			continue;
-		}
-		wp_trash_post( (int) $sc_gone_p->ID );
-	}
-
 	// Services shown in the homepage "What we do" section, with single pages at
 	// /service/{slug}/. Tuple: slug, title, image (relative to assets/img/), summary, order.
 	$services = array(
@@ -335,6 +312,62 @@ HTML;
 		'after-sale-services'     => $aftersale,
 	);
 }
+
+/**
+ * One-time cleanup: remove the six generic placeholder projects that were
+ * seeded onto /projects/ but are not Sound Creations work (PCEA Chuka,
+ * Kabarak University, Nairobi Chapel, Hotel Audio Solution, Corporate
+ * Boardroom, Live Event Production).
+ *
+ * Deliberately NOT part of sc_core_seed_catalog() and NOT gated on
+ * SC_CORE_SEED_VERSION. Bumping that constant re-runs the entire seeder, and
+ * its update path rewrites _sc_client, _sc_location, _sc_summary,
+ * _sc_category, _sc_badge, _sc_solution and _sc_image unconditionally on
+ * every already-seeded brand, product and project. That would clobber the
+ * team's wp-admin edits -- CITAM Buruburu is filed under "Audio" on the live
+ * site while its seed tuple still says "Worship", for one. So this runs on
+ * its own one-shot flag and touches nothing else.
+ *
+ * Posts are trashed rather than force-deleted, so any real copy written into
+ * them since seeding stays recoverable under Projects -> Trash.
+ */
+function sc_core_retire_placeholder_projects() {
+	$sc_slugs = array(
+		'pcea-chuka',
+		'kabarak-university',
+		'nairobi-chapel',
+		'hotel-audio-solution',
+		'corporate-boardroom',
+		'live-event-production',
+	);
+	$sc_done = 0;
+	foreach ( $sc_slugs as $sc_slug ) {
+		$sc_post = get_page_by_path( $sc_slug, OBJECT, 'sc_project' );
+		if ( empty( $sc_post ) ) {
+			continue;
+		}
+		if ( 'trash' === $sc_post->post_status ) {
+			continue;
+		}
+		wp_trash_post( (int) $sc_post->ID );
+		$sc_done++;
+	}
+	return $sc_done;
+}
+
+add_action(
+	'admin_init',
+	function () {
+		if ( '1' === get_option( 'sc_core_retired_projects' ) ) {
+			return;
+		}
+		if ( post_type_exists( 'sc_project' ) === false ) {
+			return;
+		}
+		sc_core_retire_placeholder_projects();
+		update_option( 'sc_core_retired_projects', '1', false );
+	}
+);
 
 // Auto re-run the (idempotent) seeder once after a plugin update so brand order,
 // logos and new brands sync without visiting the Sample Catalog page manually.
