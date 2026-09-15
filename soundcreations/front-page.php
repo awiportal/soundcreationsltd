@@ -61,7 +61,22 @@ $sc_hero_poster = sc_setting( 'home_hero_poster', SC_THEME_URI . '/assets/img/he
 			if ( $sc_svc_q->have_posts() ) {
 				while ( $sc_svc_q->have_posts() ) {
 					$sc_svc_q->the_post();
-					$sc_service_links[] = array( 't' => strtolower( get_the_title() ), 'u' => get_permalink() );
+					// Featured Image is what the Service editor exposes and what
+					// single-sc_service.php already renders, so it is the owner-facing
+					// source of truth for each card. _sc_image is the seeder's older key,
+					// kept as a fallback for services that predate the Featured Image.
+					$sc_svc_img = '';
+					if ( has_post_thumbnail() ) {
+						$sc_svc_img = (string) get_the_post_thumbnail_url( get_the_ID(), 'large' );
+					}
+					if ( strlen( $sc_svc_img ) === 0 ) {
+						$sc_svc_img = (string) get_post_meta( get_the_ID(), '_sc_image', true );
+					}
+					$sc_service_links[] = array(
+						't'   => strtolower( get_the_title() ),
+						'u'   => get_permalink(),
+						'img' => $sc_svc_img,
+					);
 				}
 				wp_reset_postdata();
 			}
@@ -73,15 +88,10 @@ $sc_hero_poster = sc_setting( 'home_hero_poster', SC_THEME_URI . '/assets/img/he
 			);
 			foreach ( $sc_services as $sc_s ) :
 				$sc_img  = sc_setting( $sc_s[5], SC_THEME_URI . '/assets/img/home/' . $sc_s[0] );
-				// Corrected rebranded photos shipped with the theme, forced to override any stale
-				// Customizer pick that still points at an old-branding upload (What We Do cards).
-				$sc_img_fix = array(
-					'distribution' => SC_THEME_URI . '/assets/img/home/service-distribution.webp',
-					'integration'  => SC_THEME_URI . '/assets/img/home/service-integration.webp',
-				);
-				if ( isset( $sc_img_fix[ $sc_s[1] ] ) ) {
-					$sc_img = $sc_img_fix[ $sc_s[1] ];
-				}
+				// Resolution order: Service page upload > Settings pick > bundled theme
+				// default. The forced-override map that pinned Distribution and Integration
+				// to bundled photos is gone -- it outranked every upload, which is why
+				// changing those two images on their Service pages had no effect.
 				$sc_href = home_url( $sc_s[4] );
 				foreach ( $sc_service_links as $sc_l ) {
 					$sc_hit = false;
@@ -92,6 +102,9 @@ $sc_hero_poster = sc_setting( 'home_hero_poster', SC_THEME_URI . '/assets/img/he
 					}
 					if ( $sc_hit === true ) {
 						$sc_href = $sc_l['u'];
+						if ( strlen( $sc_l['img'] ) > 0 ) {
+							$sc_img = $sc_l['img'];
+						}
 						break;
 					}
 				}
