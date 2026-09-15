@@ -138,12 +138,6 @@ function sc_core_seed_catalog() {
 	$projects = array(
 		array( 'citam-buruburu', 'CITAM Buruburu', 'CITAM Buruburu', 'Nairobi, Kenya', 'Houses of Worship', 'Worship', 'Worship', 'Professional Audio', 'citam-buruburu', 'A full dB Technologies T-Series system - T12/T8 front-of-house, S30 subwoofers, IG1 under-balcony fills and FMX15 monitors - driven by an Allen & Heath Avantis console for clear, powerful worship sound.', 10 ),
 		array( 'all-saints-cathedral', 'All Saints Cathedral', 'All Saints Cathedral', 'Nairobi, Kenya', 'Houses of Worship', 'Worship', 'Worship', 'Acoustics', 'all-saints-cathedral', 'Acoustic treatment and audio enhancement for one of Africa’s largest cathedrals.', 20 ),
-		array( 'pcea-chuka', 'PCEA Chuka', 'PCEA Chuka', 'Chuka, Kenya', 'Houses of Worship', 'Worship', 'Acoustics', 'Acoustics', 'pcea-chuka', 'Acoustic treatment of a highly reverberant church sanctuary with 740 square metres of Rockfon stone-wool ceiling panels, cutting reverberation from 3.3s to 1.1s for clear, intelligible speech.', 30 ),
-		array( 'kabarak-university', 'Kabarak University', 'Kabarak University', 'Nairobi, Kenya', 'Education', 'Education', 'Education', 'System Integration', 'kabarak-university', 'Campus-wide PA system, lecture capture and auditorium integration.', 40 ),
-		array( 'nairobi-chapel', 'Nairobi Chapel', 'Nairobi Chapel', 'Nairobi, Kenya', 'Houses of Worship', 'Worship', 'Worship', 'Professional Audio', 'chapel', 'High-performance audio solution delivering clarity and impact for modern worship.', 50 ),
-		array( 'hotel-audio-solution', 'Hotel Audio Solution', 'Hotel Audio Solution', 'Dubai, UAE', 'Hospitality', 'Hospitality', 'Hospitality', 'Professional Audio', 'hotel', 'Distributed audio system for guest areas, restaurants and conference facilities.', 60 ),
-		array( 'corporate-boardroom', 'Corporate Boardroom', 'Corporate Boardroom', 'Kigali, Rwanda', 'Corporate & Offices', 'Corporate', 'Corporate', 'System Integration', 'boardroom', 'Integrated AV solution for executive meetings and hybrid collaboration.', 70 ),
-		array( 'live-event-production', 'Live Event Production', 'Live Event Production', 'DRC Congo', 'Entertainment', 'Entertainment', 'Entertainment', 'Live Events', 'performance', 'Full sound reinforcement solution for large-scale live events and concerts.', 80 ),
 	);
 	$project_bodies = sc_core_project_bodies();
 	foreach ( $projects as $pr ) {
@@ -190,6 +184,29 @@ function sc_core_seed_catalog() {
 			}
 			$report['projects']++;
 		}
+	}
+
+	// Projects that were seeded as generic placeholders and are not ours to show
+	// on /projects/. Trashed rather than force-deleted (unlike the retired brands
+	// above) because the team may have written real copy into them since seeding;
+	// they stay recoverable under Projects -> Trash.
+	$sc_retired_projects = array(
+		'pcea-chuka',
+		'kabarak-university',
+		'nairobi-chapel',
+		'hotel-audio-solution',
+		'corporate-boardroom',
+		'live-event-production',
+	);
+	foreach ( $sc_retired_projects as $sc_gone_project ) {
+		$sc_gone_p = get_page_by_path( $sc_gone_project, OBJECT, 'sc_project' );
+		if ( empty( $sc_gone_p ) ) {
+			continue;
+		}
+		if ( 'trash' === $sc_gone_p->post_status ) {
+			continue;
+		}
+		wp_trash_post( (int) $sc_gone_p->ID );
 	}
 
 	// Services shown in the homepage "What we do" section, with single pages at
