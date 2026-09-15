@@ -345,3 +345,80 @@ add_action(
 		}
 	}
 );
+
+/**
+ * One-time: promote the built-in defaults into the saved settings so every field
+ * on the Central Settings screen shows real, editable content instead of an
+ * empty box with grey placeholder text.
+ *
+ * Output-safe by construction. sc_setting() already falls back to exactly these
+ * strings, so writing them into the option cannot change a single pixel on the
+ * live site -- it only makes the values visible and editable in wp-admin, which
+ * is the whole point. The screen's "leave blank to use the default" behaviour
+ * still works for anything cleared afterwards.
+ *
+ * Three guards, in order:
+ *  - the key must be a real editable field on the screen (headings skipped), so
+ *    stray defaults never become phantom rows;
+ *  - the default must be non-empty, so no field is filled with invented copy;
+ *  - any value the team has already typed always wins and is never overwritten.
+ *
+ * @return int Number of fields filled.
+ */
+function sc_core_prefill_settings_from_defaults() {
+	if ( function_exists( 'sc_default_settings' ) === false ) {
+		return 0;
+	}
+	$sc_defaults = sc_default_settings();
+	if ( is_array( $sc_defaults ) === false ) {
+		return 0;
+	}
+	$sc_fields = sc_core_settings_fields();
+	$sc_opts   = get_option( 'soundcreations_settings', array() );
+	if ( is_array( $sc_opts ) === false ) {
+		$sc_opts = array();
+	}
+	$sc_filled = 0;
+	foreach ( $sc_defaults as $sc_key => $sc_val ) {
+		if ( isset( $sc_fields[ $sc_key ] ) === false ) {
+			continue;
+		}
+		$sc_type = isset( $sc_fields[ $sc_key ][1] ) ? $sc_fields[ $sc_key ][1] : 'text';
+		if ( 'heading' === $sc_type ) {
+			continue;
+		}
+		if ( strlen( trim( (string) $sc_val ) ) === 0 ) {
+			continue;
+		}
+		$sc_cur = isset( $sc_opts[ $sc_key ] ) ? (string) $sc_opts[ $sc_key ] : '';
+		if ( strlen( trim( $sc_cur ) ) > 0 ) {
+			continue;
+		}
+		$sc_opts[ $sc_key ] = $sc_val;
+		$sc_filled++;
+	}
+	if ( $sc_filled > 0 ) {
+		update_option( 'soundcreations_settings', $sc_opts );
+	}
+	return $sc_filled;
+}
+
+// Runs once, on its own flag, at priority 12 so it lands after the theme has
+// registered sc_default_settings() and after the catalog seeder.
+add_action(
+	'admin_init',
+	function () {
+		if ( '1' === get_option( 'sc_core_settings_prefilled' ) ) {
+			return;
+		}
+		if ( current_user_can( 'manage_options' ) === false ) {
+			return;
+		}
+		if ( function_exists( 'sc_default_settings' ) === false ) {
+			return;
+		}
+		sc_core_prefill_settings_from_defaults();
+		update_option( 'sc_core_settings_prefilled', '1', false );
+	},
+	12
+);

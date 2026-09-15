@@ -86,6 +86,38 @@ function sc_default_settings() {
 		'footer_address'     => "Mpaka Plaza, Mpaka Road\nWestlands Nairobi",
 		'footer_hours_label' => 'Open Hours',
 		'footer_hours'       => "Mon – Fri: 9 am – 5:30 pm\nSat: 9 am – 1:30 pm\nSunday: CLOSED",
+
+		// --- Promoted from template inline fallbacks (2026-09-15). These strings were
+		// already what the live pages render via sc_setting( 'key', 'fallback' ), but
+		// because they lived in the templates rather than here, the Central Settings
+		// screen showed no placeholder and no value -- the fields looked empty even
+		// though the pages were not. Registering them here makes them visible and
+		// editable. No copy is invented; every value is lifted verbatim.
+
+		'about_exp_eyebrow' => 'What We Do', // page-about.php
+		'about_hero_title' => 'If it sounds good, it’s Sound Creations', // page-about.php
+		'about_journey_p1' => 'Founded in 2004, Sound Creations Ltd has grown into a leading provider of professional audio, visual, lighting and acoustic solutions across East Africa and beyond. What began as a specialist audio company is today a full-service integrator — designing, supplying, installing and supporting complete systems for the region’s most demanding spaces.', // page-about.php
+		'about_partners_eyebrow' => 'Our Brands', // page-about.php
+		'about_partners_title' => 'World-class brands, supported locally', // page-about.php
+		'fane_cta_text' => 'We’re building the FANE dealer network across Kenya, Rwanda, DRC Congo and the UAE. Sound Creations focuses on large, project-based installations, so we partner with distributors who can stock and sell FANE components at the local level.', // page-fane.php
+		'fane_cta_title' => 'Become a FANE distributor.', // page-fane.php
+		'fane_diff_body' => 'Every FANE component is designed and engineered to work in perfect harmony - delivering the performance, reliability and consistency professionals depend on.', // page-fane.php
+		'fane_diff_title' => 'Built from the inside out.', // page-fane.php
+		'fane_eyebrow' => 'Engineered in the UK. Trusted worldwide.', // page-fane.php
+		'fane_heritage_title' => '70+ years of loudspeaker engineering.', // page-fane.php
+		'fane_lead' => 'Precision-engineered loudspeaker components built for demanding professional applications, trusted by sound professionals around the world.', // page-fane.php
+		'fane_products_title' => 'The FANE component range.', // page-fane.php
+		'fane_social_text' => 'See FANE loudspeakers, live demos and installations on the channels we use to bring the brand to East Africa and the Middle East.', // page-fane.php
+		'fane_social_title' => 'Follow FANE with Sound Creations', // page-fane.php
+		'fane_title' => 'Engineering sound since 1954.', // page-fane.php
+		'resources_cta_text' => 'Our technical team can point you to the right video, manual or datasheet for your system.', // archive-sc_resource.php
+		'resources_cta_title' => 'Looking for something specific?', // archive-sc_resource.php
+		'resources_eyebrow' => 'Videos', // archive-sc_resource.php
+		'resources_grid_title' => 'Manuals, datasheets & guides.', // archive-sc_resource.php
+		'resources_lead' => 'Watch demos, installations and product highlights, plus manuals and datasheets for the systems and brands we supply and support.', // archive-sc_resource.php
+		'resources_title' => 'Videos & resources.', // archive-sc_resource.php
+		'resources_videos_title' => 'Videos', // archive-sc_resource.php
+
 	);
 }
 
