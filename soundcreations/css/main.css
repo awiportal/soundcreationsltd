@@ -1830,3 +1830,111 @@ h3 { font-size: 1.35rem; font-weight: 700; line-height: 1.22; letter-spacing: -.
   .sc-prod-card__media--flip .sc-prod-card__rear { opacity: 0; }
   .sc-prod-card__flip-hint { display: none; }
 }
+
+
+/* ===== FANE page (2026-09-22): de-boxed hero, four-up component rail =====
+
+   HERO -- why the box is removed rather than softened.
+
+   The hero read as a white box pasted onto the dark page, from two causes at
+   once: the photograph carried a pure-white studio backdrop, and the theme
+   wrapped it in a 1px border, a 16px radius and a drop shadow, so every edge
+   announced itself.
+
+   Feathering the edges with a radial mask was the obvious fix and was rejected
+   on measurement: the driver fills 94.6% of the frame width, leaving only 17-20px
+   of white margin, so any edge fade cuts into the product itself. Blend modes are
+   no help either -- on a near-black page, `darken` replaces the white backdrop
+   with the page colour but takes the mid-grey cone with it.
+
+   So the backdrop is removed at source instead. The hero image is now a
+   transparent WebP cropped to its own content, which is what makes a true
+   white-to-dark blend possible: there is no white left to blend. The box
+   treatment is therefore deleted, not disguised, and the earlier
+   border/box-shadow override further up this file is explicitly unset here. */
+.sc-fane-hero__media { position: relative; display: flex; align-items: center; justify-content: center; }
+/* Soft brand-purple wash so the driver is grounded instead of floating in a void.
+   Purple is the brand/structure role in the token system; red stays reserved for
+   action. Pinned to the lightened purple because this sits on a dark surface in
+   both themes. */
+.sc-fane-hero__media::before {
+  content: ""; position: absolute; z-index: 0; pointer-events: none;
+  left: 50%; top: 52%; transform: translate(-50%, -50%);
+  width: 104%; aspect-ratio: 1 / 1;
+  background: radial-gradient(circle at 50% 50%, rgba(169,139,214,.20) 0%, rgba(98,68,137,.12) 42%, transparent 70%);
+}
+.sc-fane-hero__media img {
+  position: relative; z-index: 1;
+  width: 100%; height: auto; max-height: none;
+  object-fit: contain;
+  border: 0; border-radius: 0; box-shadow: none; background: none;
+  filter: drop-shadow(0 26px 34px rgba(0,0,0,.62));
+}
+
+/* COMPONENT RAIL -- four cards on a laptop, the fifth peeking.
+
+   The card width was a hardcoded `flex: 0 0 240px`, so how many landed in view
+   was an accident of viewport width. It is now derived from the track width, so
+   exactly four fit and a deliberate sliver of the fifth remains visible -- which
+   is the affordance that tells a visitor the rail scrolls, without needing a
+   fade overlay whose colour would have to be kept in sync with the section
+   background.
+
+   The arithmetic: four cards sit alongside four gaps (three between them, one
+   before the peek), so card = (track - 4*gap - peek) / 4. Gap is the 1rem set on
+   .sc-prod-track. Peek is ~3.25rem, wide enough to read as a real card edge
+   rather than a rendering glitch. */
+@media (min-width: 1025px) {
+  .sc-prod-card { flex: 0 0 calc((100% - 4rem - 3.25rem) / 4); }
+}
+@media (min-width: 769px) and (max-width: 1024px) {
+  .sc-prod-card { flex: 0 0 calc((100% - 3rem - 2.75rem) / 3); }
+}
+@media (min-width: 521px) and (max-width: 768px) {
+  .sc-prod-card { flex: 0 0 calc((100% - 2rem - 2.5rem) / 2); }
+}
+@media (max-width: 520px) {
+  .sc-prod-card { flex: 0 0 calc(100% - 3.25rem); }
+}
+/* Snapping relaxed from mandatory to proximity. Mandatory snapping fights the
+   peek: it forces the nearest card flush to the left edge, which repeatedly
+   snaps the deliberate sliver out of view. */
+.sc-prod-track { scroll-snap-type: x proximity; }
+
+/* The component photographs are now transparent cut-outs, so the hard black
+   media box they used to need is gone. Two consequences handled here:
+   - The card-melt gradient (.sc-prod-card__media::after, set in the 2026-09-07
+     image-blend batch) painted the surface colour up over the bottom of the
+     photo. That was right for a full-bleed photo box and wrong for a cut-out --
+     it washed out the driver's base -- so it is cancelled for these cards only.
+   - object-fit switches cover -> contain so the whole driver is visible instead
+     of being cropped to fill. The box keeps a fixed 4/3 ratio rather than
+     following each image, so all five cards stay the same height and their
+     titles align; every crop lands between 1.20 and 1.34, so dead space is
+     minimal. */
+.sc-prod-card__media {
+  background: radial-gradient(72% 62% at 50% 56%, rgba(255,255,255,.055) 0%, rgba(255,255,255,.015) 48%, transparent 72%);
+}
+.sc-prod-card__media::after { background: none; }
+.sc-prod-card__media img {
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 14px rgba(0,0,0,.5));
+}
+/* No padding on the media box on purpose: the rear image is positioned with
+   inset:0, which resolves against the PADDING box, while the face image sits in
+   the content box. Any padding would therefore render the two at different
+   sizes and the hover swap would visibly jump. The ~2% transparent margin baked
+   into each crop supplies the breathing room instead. */
+
+/* Nav buttons: centred on the media band and lifted clear of the cards. */
+.sc-prod-nav {
+  top: 38%; width: 44px; height: 44px;
+  background: rgba(10,10,12,.92);
+  box-shadow: 0 10px 26px rgba(0,0,0,.5);
+}
+.sc-prod-nav--prev { left: -18px; }
+.sc-prod-nav--next { right: -18px; }
+@media (max-width: 680px) {
+  .sc-prod-nav { display: none; }
+}
