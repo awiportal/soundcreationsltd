@@ -2003,3 +2003,160 @@ article.sc-svc:hover { transform: none; border-color: transparent; box-shadow: n
   background: linear-gradient(120deg, var(--sc-brand-tint), rgba(186,11,11,.06));
   border-color: var(--sc-brand-line);
 }
+
+
+/* ============================================================
+   FANE page (2026-09-22)
+   Component face/rear swap, un-boxed hero, four-up component rail.
+
+   NOTE ON FILE LOCATION: this belongs here, in assets/css/main.css, because
+   inc/enqueue.php enqueues '/assets/css/main.css'. The repo also contains
+   soundcreations/css/main.css, which is a STALE, DIVERGED copy that nothing
+   loads -- it has no .sc-ind rules at all, for instance. Earlier commits in
+   this series wrote these blocks to that dead file, so they had no effect on
+   the live site. Put FANE and solution-page CSS here.
+   ============================================================ */
+
+/* --- Component cards: real face + rear photography ---------------------- */
+/* Each component ships two genuine FANE photographs. The face shot is the
+   default; the rear shot -- the one carrying the FANE badge and the printed
+   model/power legend -- crossfades in on hover or keyboard focus.
+
+   - The rear image is stacked absolutely over the face and revealed by opacity,
+     so the card never changes height and nothing reflows on hover.
+   - The media box is focusable (tabindex="0" in page-fane.php) and
+     :focus-visible triggers the same swap, so the rear view is reachable
+     without a pointer.
+   - Face and rear are cropped to a SHARED union bounding box per component
+     (verified identical per pair), so the two frames register exactly.
+   - The hint chip gets z-index 2 because .sc-prod-card__media::after paints a
+     gloss gradient over the media box.
+   - Reduced motion drops the crossfade but keeps the swap working. */
+.sc-prod-card__media--flip { position: relative; overflow: hidden; }
+.sc-prod-card__media--flip .sc-prod-card__face,
+.sc-prod-card__media--flip .sc-prod-card__rear { transition: opacity .35s var(--sc-ease, ease); }
+.sc-prod-card__media--flip .sc-prod-card__rear { position: absolute; inset: 0; opacity: 0; }
+.sc-prod-card:hover .sc-prod-card__media--flip .sc-prod-card__rear,
+.sc-prod-card__media--flip:focus-visible .sc-prod-card__rear { opacity: 1; }
+.sc-prod-card:hover .sc-prod-card__media--flip .sc-prod-card__face,
+.sc-prod-card__media--flip:focus-visible .sc-prod-card__face { opacity: 0; }
+.sc-prod-card__media--flip:focus-visible { outline: 2px solid #A98BD6; outline-offset: -2px; }
+.sc-prod-card__flip-hint {
+  position: absolute; z-index: 2; left: .5rem; bottom: .5rem;
+  padding: .18rem .45rem; border-radius: 999px;
+  font-size: .64rem; letter-spacing: .04em; text-transform: uppercase; font-weight: 600;
+  color: #fff; background: rgba(0,0,0,.55); border: 1px solid rgba(255,255,255,.18);
+  opacity: 0; transition: opacity .35s var(--sc-ease, ease);
+}
+.sc-prod-card:hover .sc-prod-card__flip-hint,
+.sc-prod-card__media--flip:focus-visible .sc-prod-card__flip-hint { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .sc-prod-card__media--flip .sc-prod-card__face,
+  .sc-prod-card__media--flip .sc-prod-card__rear,
+  .sc-prod-card__flip-hint { transition: none; }
+}
+/* Touch devices have no hover: pin the face and hide a hint that cannot be
+   acted on. The rear shot stays in the DOM for keyboard and assistive tech. */
+@media (hover: none) {
+  .sc-prod-card__media--flip .sc-prod-card__rear { opacity: 0; }
+  .sc-prod-card__flip-hint { display: none; }
+}
+
+/* --- Hero: no box ------------------------------------------------------- */
+/* The hero read as a white box on the dark page. On THIS file the image
+   already carries border:0 / box-shadow:none / border-radius:0, so the box was
+   never a border treatment -- it was the photograph's own pure-white studio
+   backdrop.
+
+   Feathering the edges with a radial mask was rejected on measurement: the
+   driver fills 94.6% of the frame width, leaving only 17-20px of white margin,
+   so any edge fade cuts into the product. Blend modes fail too -- on a
+   near-black page `darken` swaps the white backdrop for the page colour but
+   takes the mid-grey cone with it.
+
+   So the backdrop is removed at source: fane-hero.webp is a transparent
+   cut-out cropped to its content. There is no white left to blend, which is
+   what makes the white-to-dark transition correct rather than disguised. Only
+   the grounding treatment is needed here. */
+.sc-fane-hero__media { position: relative; display: flex; align-items: center; justify-content: center; }
+/* Soft brand-purple wash so the driver is grounded instead of floating in a
+   void. Purple is the brand/structure role in the token system; red stays
+   reserved for action. Pinned to the lightened purple because this sits on a
+   dark surface in both themes. */
+.sc-fane-hero__media::before {
+  content: ""; position: absolute; z-index: 0; pointer-events: none;
+  left: 50%; top: 52%; transform: translate(-50%, -50%);
+  width: 104%; aspect-ratio: 1 / 1;
+  background: radial-gradient(circle at 50% 50%, rgba(169,139,214,.20) 0%, rgba(98,68,137,.12) 42%, transparent 70%);
+}
+.sc-fane-hero__media img {
+  position: relative; z-index: 1;
+  filter: drop-shadow(0 26px 34px rgba(0,0,0,.62));
+}
+
+/* --- Component rail: four on a laptop, fifth peeking -------------------- */
+/* Card width was a hardcoded `flex: 0 0 240px`, so how many landed in view was
+   an accident of viewport width. It is now derived from the track: four cards
+   plus four gaps plus a deliberate sliver of the fifth, which is the affordance
+   that tells a visitor the rail scrolls.
+
+   card = (track - 4*gap - peek) / 4, where gap is the 1rem on .sc-prod-track
+   and peek is ~3.25rem -- wide enough to read as a real card edge rather than a
+   rendering glitch.
+
+   Chose the peek over a gradient fade overlay deliberately: a fade must
+   hardcode a colour matching .sc-fane-alt, which breaks silently the next time
+   that section background or the light theme changes. */
+@media (min-width: 1025px) {
+  .sc-prod-card { flex: 0 0 calc((100% - 4rem - 3.25rem) / 4); }
+}
+@media (min-width: 769px) and (max-width: 1024px) {
+  .sc-prod-card { flex: 0 0 calc((100% - 3rem - 2.75rem) / 3); }
+}
+@media (min-width: 521px) and (max-width: 768px) {
+  .sc-prod-card { flex: 0 0 calc((100% - 2rem - 2.5rem) / 2); }
+}
+@media (max-width: 520px) {
+  .sc-prod-card { flex: 0 0 calc(100% - 3.25rem); }
+}
+/* Snapping relaxed mandatory -> proximity. Mandatory forces the nearest card
+   flush to the left edge, which repeatedly snapped the deliberate sliver of the
+   fifth card back out of view. */
+.sc-prod-track { scroll-snap-type: x proximity; }
+
+/* The component photographs are transparent cut-outs now, so the hard black
+   media box is gone. Two consequences handled here:
+   - .sc-prod-card__media::after (the card-melt gradient from the 2026-09-07
+     image-blend batch) painted the surface colour up over the bottom of the
+     frame. Right for a full-bleed photo, wrong for a cut-out, where it washed
+     out the driver's base. Cancelled for these cards only.
+   - object-fit switches cover -> contain so the whole driver is visible. The
+     box keeps a fixed 4/3 ratio rather than following each image, so all five
+     cards stay the same height and their titles align; every crop lands between
+     1.20 and 1.34, so dead space is minimal. */
+.sc-prod-card__media {
+  background: radial-gradient(72% 62% at 50% 56%, rgba(255,255,255,.055) 0%, rgba(255,255,255,.015) 48%, transparent 72%);
+}
+.sc-prod-card__media::after { background: none; }
+.sc-prod-card__media img {
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 14px rgba(0,0,0,.5));
+}
+/* No padding on the media box on purpose: the rear image resolves inset:0
+   against the PADDING box while the face sits in the content box, so any
+   padding would render the two at different sizes and the swap would visibly
+   jump. The ~2% transparent margin baked into each crop supplies the breathing
+   room instead. */
+
+/* Nav buttons: centred on the media band and lifted clear of the cards. */
+.sc-prod-nav {
+  top: 38%; width: 44px; height: 44px;
+  background: rgba(10,10,12,.92);
+  box-shadow: 0 10px 26px rgba(0,0,0,.5);
+}
+.sc-prod-nav--prev { left: -18px; }
+.sc-prod-nav--next { right: -18px; }
+@media (max-width: 680px) {
+  .sc-prod-nav { display: none; }
+}
