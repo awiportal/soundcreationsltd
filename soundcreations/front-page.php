@@ -82,7 +82,7 @@ $sc_hero_poster = sc_setting( 'home_hero_poster', SC_THEME_URI . '/assets/img/he
 			}
 			$sc_services = array(
 				array( 'service-consultancy.webp', 'consultancy', 'Consultancy', 'Design and consultation across audio, acoustics, lighting and visuals - at every phase of your project.', '/request-a-consultation/', 'home_svc1_img', array( 'consult' ) ),
-				array( 'service-distribution.webp', 'distribution', 'Distribution & Dealership', 'Certified exclusive dealers for leading global brands, with reliable regional distribution and logistics.', '/brands/', 'home_svc2_img', array( 'distribut', 'dealer' ) ),
+				array( 'service-distribution-showroom.webp', 'distribution', 'Distribution & Dealership', 'Certified exclusive dealers for leading global brands, with reliable regional distribution and logistics.', '/brands/', 'home_svc2_img', array( 'distribut', 'dealer' ) ),
 				array( 'service-integration.webp', 'integration', 'Integration', 'Site mapping, system design, installation, commissioning, training and support for every audio and acoustic need.', '/solutions/', 'home_svc3_img', array( 'integ' ) ),
 				array( 'service-aftersale.webp', 'aftersale', 'After-Sale Services', 'Warranty management, genuine spare parts, servicing and technical support that keep your systems performing.', '/contact/', 'home_svc4_img', array( 'after', 'sale' ) ),
 			);

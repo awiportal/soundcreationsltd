@@ -43,10 +43,10 @@ while ( have_posts() ) :
 	// When no featured image / custom field is set, reuse the matching homepage
 	// "What we do" card image so the card and the page hero always match.
 	$sc_kind_imgs = array(
-		'consultancy'  => 'home/service-consultancy.jpg',
-		'distribution' => 'home/service-distribution.jpg',
-		'integration'  => 'home/service-integration.jpg',
-		'aftersale'    => 'home/service-aftersale.jpg',
+		'consultancy'  => 'home/service-consultancy.webp',
+		'distribution' => 'home/service-distribution-showroom.webp',
+		'integration'  => 'home/service-integration.webp',
+		'aftersale'    => 'home/service-aftersale.webp',
 	);
 	if ( strlen( $sc_img ) === 0 && isset( $sc_kind_imgs[ $sc_kind ] ) ) {
 		$sc_img = SC_THEME_URI . '/assets/img/' . $sc_kind_imgs[ $sc_kind ];
