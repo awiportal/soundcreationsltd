@@ -46,7 +46,7 @@ while ( have_posts() ) :
 		'consultancy'  => 'home/service-consultancy.webp',
 		'distribution' => 'home/service-distribution-showroom.webp',
 		'integration'  => 'home/service-integration.webp',
-		'aftersale'    => 'home/service-aftersale.webp',
+		'aftersale'    => 'home/service-aftersale-rack.webp',
 	);
 	if ( strlen( $sc_img ) === 0 && isset( $sc_kind_imgs[ $sc_kind ] ) ) {
 		$sc_img = SC_THEME_URI . '/assets/img/' . $sc_kind_imgs[ $sc_kind ];
