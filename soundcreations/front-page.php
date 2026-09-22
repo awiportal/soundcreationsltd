@@ -42,6 +42,16 @@ $sc_hero_poster = sc_setting( 'home_hero_poster', SC_THEME_URI . '/assets/img/he
 		if ( strlen( $sc_hero_title ) > 0 ) :
 			?>
 			<h1 class="sc-hero__title"><?php echo esc_html( $sc_hero_title ); ?></h1>
+		<?php else : ?>
+			<?php
+			// The visible headline was removed at the owner's request, but a page with
+			// no h1 at all is an SEO and screen-reader defect -- the homepage was the
+			// only page on the site missing one. This keeps the design exactly as the
+			// owner wants it while giving the document a single top-level heading.
+			// Visually hidden inline (not display:none, which hides it from assistive
+			// tech too, defeating the point).
+			?>
+			<h1 style="position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0;"><?php echo esc_html( sc_setting( 'tagline', get_bloginfo( 'name' ) ) ); ?></h1>
 		<?php endif; ?>
 	</div>
 </section>
