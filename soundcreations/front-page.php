@@ -19,9 +19,17 @@ $sc_hero_poster = sc_setting( 'home_hero_poster', SC_THEME_URI . '/assets/img/he
 
 <section class="sc-hero sc-hero--video" style="background-image:url('<?php echo esc_url( $sc_hero_poster ); ?>');">
 	<?php if ( $sc_hero_video ) : ?>
-		<video class="sc-hero__video" autoplay muted loop playsinline preload="metadata" poster="<?php echo esc_url( $sc_hero_poster ); ?>">
-			<source src="<?php echo esc_url( $sc_hero_video ); ?>" type="video/mp4">
-		</video>
+		<?php
+		// Deferred on purpose. An autoplaying <video> with a src in the markup is
+		// fetched immediately and in full, so this ~23MB file was competing with the
+		// stylesheet, fonts and the LCP image for bandwidth on every first visit.
+		// No autoplay, no src, preload="none": assets/js/theme.js attaches the source
+		// after the load event. The poster is already painted as this section's CSS
+		// background, so the hero looks identical while the video is still absent.
+		?>
+		<video class="sc-hero__video" muted loop playsinline preload="none"
+			data-sc-hero-video="<?php echo esc_url( $sc_hero_video ); ?>"
+			poster="<?php echo esc_url( $sc_hero_poster ); ?>"></video>
 	<?php endif; ?>
 	<span class="sc-hero__scrim" aria-hidden="true"></span>
 	<div class="sc-container sc-hero__inner">

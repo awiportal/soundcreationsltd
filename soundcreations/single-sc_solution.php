@@ -78,7 +78,7 @@ while ( have_posts() ) :
 				// so if a Featured Image is set on the Professional Audio solution post
 				// in wp-admin, that image renders and this file is never reached.
 				$sc_heromap = array(
-					'integration' => '/assets/img/solutions/installation.jpg',
+					'integration' => '/assets/img/solutions/installation.webp',
 					'audio'       => '/assets/img/solutions/audio-db10.webp',
 					'acoustics'   => '/assets/img/solutions/acoustics.jpg',
 					'general'     => '/assets/img/solutions-hero.jpg',
@@ -240,7 +240,7 @@ while ( have_posts() ) :
 						// uses a real Sound Creations install shot) instead of being locked to
 						// "<slug>.jpg".
 						$sc_industries = array(
-							array( 'Hospitality, Restaurants & Bars', 'An effortless guest experience', 'Warm, even coverage that keeps conversation easy and the energy right - consistent, refined audio across lobbies, ballrooms, restaurants, bars and outdoor areas, all controlled from one place.', 'hospitality.webp' ),
+							array( 'Hospitality, Restaurants & Bars', 'An effortless guest experience', 'Warm, even coverage that keeps conversation easy and the energy right - consistent, refined audio across lobbies, ballrooms, restaurants, bars and outdoor areas, all controlled from one place.', 'hospitality-card.webp' ),
 							array( 'Worship', 'Every word, every seat', 'Intelligible speech and full-range music for services of any style, engineered around your room and its acoustics.', 'worship.webp' ),
 							array( 'Live Performance & Events', 'Built for the moment', 'Concert-grade line arrays, monitoring and control for productions that have to sound right the first time.', 'live.webp' ),
 							array( 'Corporate & Conferencing', 'Heard, clearly', 'Networked microphones and loudspeakers for boardrooms and hybrid meetings where every voice has to land.', 'corporate.webp' ),
@@ -312,7 +312,7 @@ while ( have_posts() ) :
 
 		<section class="sc-section sc-section--tight">
 			<div class="sc-container">
-				<div class="sc-cta-band sc-cta-band--photo" style="background-image:url('<?php echo esc_url( sc_setting( 'home_cta_image', SC_THEME_URI . '/assets/img/cta-building.jpg' ) ); ?>');">
+				<div class="sc-cta-band sc-cta-band--photo" style="background-image:url('<?php echo esc_url( sc_setting( 'home_cta_image', SC_THEME_URI . '/assets/img/cta-building.webp' ) ); ?>');">
 					<div class="sc-cta-band__inner">
 						<h2><?php esc_html_e( 'Have a project in mind?', 'soundcreations' ); ?></h2>
 						<p class="sc-lead" style="margin:0 0 .9rem;"><?php esc_html_e( 'Tell us about your space and application. Our technical team will help you specify the right system.', 'soundcreations' ); ?></p>

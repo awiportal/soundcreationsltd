@@ -242,3 +242,69 @@
 		for (var i = 0; i < maps.length; i++) { initContacts(maps[i]); }
 	});
 })();
+
+/* Homepage hero video: deferred load.
+
+   The markup deliberately ships no <source> and no autoplay (see front-page.php).
+   An autoplaying video with a src is fetched immediately and in full, and this
+   file is ~23MB, so it was saturating the connection while the stylesheet, fonts
+   and the LCP poster were still in flight.
+
+   The poster is painted as the hero section's CSS background, so the hero is
+   complete and correct before this runs -- attaching the video late changes
+   nothing visually except that motion begins a moment later.
+
+   Held back entirely when the visitor has Data Saver on, is on a 2g-class
+   connection, or has asked for reduced motion: in those cases the poster is the
+   better experience and 23MB would be actively hostile. */
+(function () {
+	function attach(v) {
+		if (v.getAttribute('data-sc-loaded') === '1') { return; }
+		var src = v.getAttribute('data-sc-hero-video');
+		if (!src) { return; }
+		v.setAttribute('data-sc-loaded', '1');
+		var s = document.createElement('source');
+		s.setAttribute('src', src);
+		s.setAttribute('type', 'video/mp4');
+		v.appendChild(s);
+		v.preload = 'auto';
+		v.load();
+		var p = v.play();
+		// Autoplay can still be refused (power saving, platform policy). The poster
+		// stays put, so a rejection is a non-event -- swallow it rather than logging.
+		if (p && typeof p.catch === 'function') { p.catch(function () {}); }
+	}
+
+	function init() {
+		var v = document.querySelector('[data-sc-hero-video]');
+		if (!v) { return; }
+
+		var c = navigator.connection || navigator.webkitConnection || {};
+		if (c.saveData === true) { return; }
+		if (typeof c.effectiveType === 'string' && c.effectiveType.indexOf('2g') !== -1) { return; }
+		if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { return; }
+
+		if (typeof window.IntersectionObserver === 'function') {
+			var io = new IntersectionObserver(function (entries) {
+				for (var i = 0; i < entries.length; i++) {
+					if (entries[i].isIntersecting) {
+						io.disconnect();
+						attach(v);
+						return;
+					}
+				}
+			}, { rootMargin: '200px' });
+			io.observe(v);
+		} else {
+			attach(v);
+		}
+	}
+
+	// Wait for load, not DOMContentLoaded: everything that makes the page usable
+	// should have its bandwidth first.
+	if (document.readyState === 'complete') {
+		init();
+	} else {
+		window.addEventListener('load', init);
+	}
+})();
