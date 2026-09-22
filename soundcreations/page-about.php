@@ -16,26 +16,43 @@ get_header();
 
 $sc_about_photo = sc_setting( 'about_hero_image', SC_THEME_URI . '/assets/img/about-photo.jpg' );
 
-$sc_exp_default = "Distribution | Importation and distribution of world-class audio, visual, lighting and acoustic equipment.\nSystem Integration | Design, installation and integration of complete audio-visual and control systems.\nAcoustic Consultancy | Acoustic design, analysis and treatment for optimal sound performance.\nTechnical Training | Manufacturer-certified training for technicians, consultants and end users.\nProduct Demonstrations | In-house and on-site demos to help you experience the right technology.\nDealer Development | Supporting partners with tools, training and go-to-market strategies.\nWarranty Support | Official product warranty management and technical back-up.\nAfter-Sales Service | Ongoing support, maintenance and service to keep your systems performing.";
-$sc_exp_raw   = sc_setting( 'about_exp_items', $sc_exp_default );
-$sc_exp_items = array();
-foreach ( preg_split( "/\r\n|\r|\n/", $sc_exp_raw ) as $sc_line ) {
+/*
+ * Our Work Process (2026-09-22, owner request).
+ *
+ * Replaces the eight-card "What We Do" grid with the four-step work process
+ * carried on the original site's homepage (soundcreationsltd.com). Titles and
+ * copy are lifted verbatim from there; the only edit is a stray space before
+ * the full stop in the Distribution line ("warranties ." -> "warranties.").
+ *
+ * NEW SETTING KEYS ON PURPOSE. The old section read 'about_exp_eyebrow', which
+ * IS present in sc_default_settings() and was therefore written into the
+ * soundcreations_settings option by the one-shot
+ * sc_core_prefill_settings_from_defaults() pass. sc_setting() prefers a stored
+ * value over any default, so re-pointing that key at new copy would have been
+ * silently overridden by the stored "What We Do" and the change would not have
+ * appeared on the live site. 'about_process_eyebrow' and 'about_process_items'
+ * have no stored value, so these defaults resolve immediately -- and both keys
+ * are registered in the core plugin so the owner can still edit them.
+ */
+$sc_proc_default = "Consultation & Design | We listen, we visualize with our new client, we propose, we reach agreements & we represent the solution.\nDistribution | From the most affordable to the substantial investments, we keep the quality 100% and the warranties.\nIntegration | Our promise is professional installations, system trainings, seamless handovers and guaranteed.\nSupport & Training | Comprehensive after-sales support, including a 1-year warranty service after installation.";
+$sc_proc_raw   = sc_setting( 'about_process_items', $sc_proc_default );
+$sc_proc_items = array();
+foreach ( preg_split( "/\r\n|\r|\n/", $sc_proc_raw ) as $sc_line ) {
 	$sc_line = trim( $sc_line );
 	if ( $sc_line === '' ) {
 		continue;
 	}
-	$sc_parts       = array_map( 'trim', explode( '|', $sc_line, 2 ) );
-	$sc_exp_items[] = array( 'title' => $sc_parts[0], 'desc' => isset( $sc_parts[1] ) ? $sc_parts[1] : '' );
+	$sc_parts        = array_map( 'trim', explode( '|', $sc_line, 2 ) );
+	$sc_proc_items[] = array( 'title' => $sc_parts[0], 'desc' => isset( $sc_parts[1] ) ? $sc_parts[1] : '' );
 }
-$sc_exp_icons = array(
-	'<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="M3.27 6.96 12 12.01l8.73-5.05"/><path d="M12 22.08V12"/>',
-	'<rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v2"/><path d="M15 2v2"/><path d="M9 20v2"/><path d="M15 20v2"/><path d="M20 9h2"/><path d="M20 14h2"/><path d="M2 9h2"/><path d="M2 14h2"/>',
-	'<path d="M12 3v18"/><path d="M8 6v12"/><path d="M4 9v6"/><path d="M16 6v12"/><path d="M20 9v6"/>',
-	'<path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c0 1 2 2 6 2s6-1 6-2v-5"/>',
-	'<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/>',
-	'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
-	'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/>',
-	'<path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>',
+// Icons follow the original site's set: consultation (speech + group),
+// distribution (globe), integration (operator at a console), support (gear).
+// Indexed modulo the array so an owner adding a fifth step still renders.
+$sc_proc_icons = array(
+	'<path d="M2.5 5A1.5 1.5 0 0 1 4 3.5h7A1.5 1.5 0 0 1 12.5 5v3.5A1.5 1.5 0 0 1 11 10H6l-3.5 2.5V10z"/><path d="M15 6.5h5A1.5 1.5 0 0 1 21.5 8v3.5a1.5 1.5 0 0 1-1.5 1.5v2l-2.5-2h-2"/><circle cx="6" cy="17" r="1.5"/><circle cx="12" cy="17" r="1.5"/><circle cx="18" cy="17" r="1.5"/><path d="M3 22a3 3 0 0 1 6 0"/><path d="M9 22a3 3 0 0 1 6 0"/><path d="M15 22a3 3 0 0 1 6 0"/>',
+	'<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.6 2.5 4 5.6 4 9s-1.4 6.5-4 9c-2.6-2.5-4-5.6-4-9s1.4-6.5 4-9z"/>',
+	'<circle cx="12" cy="6.4" r="2.6"/><path d="M8.5 13.4a3.5 3.5 0 0 1 7 0"/><path d="M5 17h14l1.6 3.6H3.4z"/>',
+	'<circle cx="12" cy="12" r="3.2"/><path d="M19.2 14.9a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-2.9 1.22V21a2 2 0 1 1-4 0v-.11a1.7 1.7 0 0 0-2.9-1.22l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0-1.22-2.9H3a2 2 0 1 1 0-4h.11a1.7 1.7 0 0 0 1.22-2.9l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 2.9-1.22V3a2 2 0 1 1 4 0v.11a1.7 1.7 0 0 0 2.9 1.22l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0 1.22 2.9H21a2 2 0 1 1 0 4h-.11a1.7 1.7 0 0 0-1.56 1.03z"/>',
 );
 ?>
 
@@ -51,23 +68,21 @@ $sc_exp_icons = array(
 	</div>
 </section>
 
-<section class="sc-section sc-section--tight" id="what-we-do">
+<section class="sc-section sc-section--tight" id="work-process">
 	<div class="sc-container">
-		<div class="sc-expertise-wrap">
-			<div class="sc-expertise-head">
-				<div>
-					<p class="sc-eyebrow"><?php echo esc_html( sc_setting( 'about_exp_eyebrow', 'What We Do' ) ); ?></p>
+		<div class="sc-workproc__head">
+			<p class="sc-eyebrow"><?php echo esc_html( sc_setting( 'about_process_eyebrow', 'Our Work Process' ) ); ?></p>
+		</div>
+		<div class="sc-workproc">
+			<?php foreach ( $sc_proc_items as $sc_i => $sc_step ) : ?>
+				<div class="sc-workproc__item">
+					<span class="sc-workproc__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><?php echo $sc_proc_icons[ $sc_i % count( $sc_proc_icons ) ]; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG. ?></svg></span>
+					<h3 class="sc-workproc__title"><?php echo esc_html( $sc_step['title'] ); ?></h3>
+					<?php if ( '' !== $sc_step['desc'] ) : ?>
+						<p class="sc-workproc__desc"><?php echo esc_html( $sc_step['desc'] ); ?></p>
+					<?php endif; ?>
 				</div>
-			</div>
-			<div class="sc-exp-grid">
-				<?php foreach ( $sc_exp_items as $sc_i => $sc_card ) : ?>
-					<div class="sc-exp-card">
-						<span class="sc-exp-card__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><?php echo $sc_exp_icons[ $sc_i % count( $sc_exp_icons ) ]; ?></svg></span>
-						<h3><?php echo esc_html( $sc_card['title'] ); ?></h3>
-						<p><?php echo esc_html( $sc_card['desc'] ); ?></p>
-					</div>
-				<?php endforeach; ?>
-			</div>
+			<?php endforeach; ?>
 		</div>
 	</div>
 </section>

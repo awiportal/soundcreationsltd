@@ -2160,3 +2160,53 @@ article.sc-svc:hover { transform: none; border-color: transparent; box-shadow: n
 @media (max-width: 680px) {
   .sc-prod-nav { display: none; }
 }
+
+
+/* ============================================================
+   About: Our Work Process (2026-09-22)
+
+   Replaces the eight-card .sc-exp-grid "What We Do" block with the four-step
+   process row from the original site: a centred outlined circular icon above a
+   title and a short description.
+
+   Named .sc-workproc, NOT .sc-process -- that class already exists further up
+   this file for an unrelated inline text row (.sc-process span / .sc-process
+   .sep) and reusing it would have collided.
+
+   The circle and glyph take --sc-text rather than a hardcoded white, so the row
+   inverts correctly in the light theme instead of drawing a white ring on a
+   white page. Red is used only on hover, which keeps it in the action role the
+   token system assigns it.
+   ============================================================ */
+.sc-workproc__head { margin-bottom: clamp(1.25rem, 1rem + 1.5vw, 2.25rem); }
+.sc-workproc {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(1.25rem, 1rem + 1.5vw, 2.5rem);
+}
+.sc-workproc__item { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.sc-workproc__icon {
+  display: grid; place-items: center;
+  width: 84px; height: 84px; flex: none;
+  border-radius: 50%;
+  border: 2px solid var(--sc-text);
+  color: var(--sc-text);
+  margin-bottom: 1.1rem;
+  transition: border-color .25s var(--sc-ease, ease), color .25s var(--sc-ease, ease), transform .25s var(--sc-ease, ease);
+}
+.sc-workproc__icon svg { width: 38px; height: 38px; }
+.sc-workproc__item:hover .sc-workproc__icon {
+  border-color: var(--sc-red);
+  color: var(--sc-red);
+  transform: translateY(-3px);
+}
+.sc-workproc__title { margin: 0 0 .55rem; font-size: clamp(1.02rem, .95rem + .35vw, 1.22rem); }
+.sc-workproc__desc {
+  margin: 0;
+  color: var(--sc-muted, #9aa0a6);
+  font-size: .92rem;
+  line-height: 1.6;
+  max-width: 30ch;
+}
+@media (max-width: 900px) { .sc-workproc { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .sc-workproc { grid-template-columns: 1fr; } }

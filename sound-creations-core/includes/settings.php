@@ -106,6 +106,13 @@ function sc_core_settings_fields() {
 		'about_exp_title'      => array( 'Expertise: heading', 'text' ),
 		'about_exp_intro'      => array( 'Expertise: intro', 'wysiwyg' ),
 		'about_exp_items'      => array( 'Expertise cards (one per line: Title | Description)', 'textarea' ),
+		// Our Work Process, the four-step row that replaced the "What We Do" grid on
+		// the About page. Deliberately NOT reusing about_exp_eyebrow: that key has a
+		// default in sc_default_settings() and was written into the saved option by
+		// the one-shot prefill pass, and sc_setting() prefers a stored value, so new
+		// copy on it would have been silently overridden by the stored "What We Do".
+		'about_process_eyebrow' => array( 'Work process: eyebrow', 'text' ),
+		'about_process_items'  => array( 'Work process steps (one per line: Title | Description)', 'textarea' ),
 		'about_operate_eyebrow'=> array( 'Where we operate: eyebrow', 'text' ),
 		'about_operate_title'  => array( 'Where we operate: heading', 'text' ),
 		'about_operate_body'   => array( 'Where we operate: body', 'textarea' ),

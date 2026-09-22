@@ -95,6 +95,21 @@ function sc_default_settings() {
 		// editable. No copy is invented; every value is lifted verbatim.
 
 		'about_exp_eyebrow' => 'What We Do', // page-about.php
+		// Our Work Process, the four-step row that replaced the "What We Do" grid on
+		// the About page. Copy is lifted verbatim from the original site's homepage
+		// (soundcreationsltd.com); the sole edit is a stray space before the full
+		// stop in the Distribution line ("warranties ." -> "warranties.").
+		//
+		// These live on NEW keys rather than reusing about_exp_eyebrow/about_exp_items
+		// because about_exp_eyebrow already has a default here and was written into
+		// the saved option by the one-shot sc_core_prefill_settings_from_defaults()
+		// pass. sc_setting() prefers a stored value over any default, so re-pointing
+		// that key would have been silently overridden by the stored "What We Do".
+		// Registering the defaults here (rather than leaving only the template's
+		// inline fallbacks) is what makes the two fields show real placeholder copy
+		// on the Central Settings screen instead of rendering as empty boxes.
+		'about_process_eyebrow' => 'Our Work Process', // page-about.php
+		'about_process_items' => "Consultation & Design | We listen, we visualize with our new client, we propose, we reach agreements & we represent the solution.\nDistribution | From the most affordable to the substantial investments, we keep the quality 100% and the warranties.\nIntegration | Our promise is professional installations, system trainings, seamless handovers and guaranteed.\nSupport & Training | Comprehensive after-sales support, including a 1-year warranty service after installation.", // page-about.php
 		'about_hero_title' => 'If it sounds good, it’s Sound Creations', // page-about.php
 		'about_journey_p1' => 'Founded in 2004, Sound Creations Ltd has grown into a leading provider of professional audio, visual, lighting and acoustic solutions across East Africa and beyond. What began as a specialist audio company is today a full-service integrator — designing, supplying, installing and supporting complete systems for the region’s most demanding spaces.', // page-about.php
 		'about_partners_eyebrow' => 'Our Brands', // page-about.php
