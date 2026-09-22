@@ -227,20 +227,24 @@ while ( have_posts() ) :
 					<button class="sc-inds__nav sc-inds__nav--prev" type="button" aria-label="Scroll to previous industries">&larr;</button>
 					<div class="sc-inds__track">
 						<?php
+						// Owner-requested set (2026-09-22): Retail and Sports & Fitness removed, and
+						// the separate Restaurants & Bars card merged into Hospitality -- one card
+						// now covers lobbies, ballrooms, restaurants, bars and outdoor areas.
+						// Element [3] is a full filename rather than a bare slug, so a card can
+						// point at a real photograph in any format (the merged Hospitality card
+						// uses a real Sound Creations install shot) instead of being locked to
+						// "<slug>.jpg".
 						$sc_industries = array(
-							array( 'Retail', 'Sound that sells', 'Balanced background music and clear announcements that set the mood on your floor without ever competing with the shopper.', 'retail' ),
-							array( 'Restaurants & Bars', 'Set the tone', 'Warm, even coverage that keeps conversation easy and the energy right, zone by zone from the bar to the terrace.', 'restaurants' ),
-							array( 'Hospitality', 'An effortless guest experience', 'Consistent, refined audio across lobbies, ballrooms, restaurants and outdoor areas, all controlled from one place.', 'hospitality' ),
-							array( 'Worship', 'Every word, every seat', 'Intelligible speech and full-range music for services of any style, engineered around your room and its acoustics.', 'worship' ),
-							array( 'Live Performance & Events', 'Built for the moment', 'Concert-grade line arrays, monitoring and control for productions that have to sound right the first time.', 'live' ),
-							array( 'Sports & Fitness', 'Feel the energy', 'High-output, high-impact sound that carries across courts, studios and stands while staying clear and controlled.', 'sports' ),
-							array( 'Corporate & Conferencing', 'Heard, clearly', 'Networked microphones and loudspeakers for boardrooms and hybrid meetings where every voice has to land.', 'corporate' ),
-							array( 'Education', 'Clarity that carries', 'Reliable, easy-to-run sound for lecture halls, auditoriums and campus spaces, from the front row to the back.', 'education' ),
+							array( 'Hospitality, Restaurants & Bars', 'An effortless guest experience', 'Warm, even coverage that keeps conversation easy and the energy right - consistent, refined audio across lobbies, ballrooms, restaurants, bars and outdoor areas, all controlled from one place.', 'hospitality.webp' ),
+							array( 'Worship', 'Every word, every seat', 'Intelligible speech and full-range music for services of any style, engineered around your room and its acoustics.', 'worship.jpg' ),
+							array( 'Live Performance & Events', 'Built for the moment', 'Concert-grade line arrays, monitoring and control for productions that have to sound right the first time.', 'live.jpg' ),
+							array( 'Corporate & Conferencing', 'Heard, clearly', 'Networked microphones and loudspeakers for boardrooms and hybrid meetings where every voice has to land.', 'corporate.jpg' ),
+							array( 'Education', 'Clarity that carries', 'Reliable, easy-to-run sound for lecture halls, auditoriums and campus spaces, from the front row to the back.', 'education.jpg' ),
 						);
 						foreach ( $sc_industries as $sc_ind ) :
 						?>
 						<article class="sc-ind">
-							<span class="sc-ind__img" style="background-image:url('<?php echo esc_url( SC_THEME_URI . '/assets/img/industries/' . $sc_ind[3] . '.jpg' ); ?>');"></span>
+							<span class="sc-ind__img" style="background-image:url('<?php echo esc_url( SC_THEME_URI . '/assets/img/industries/' . $sc_ind[3] ); ?>');"></span>
 							<span class="sc-ind__scrim"></span>
 							<span class="sc-ind__body">
 								<span class="sc-ind__eyebrow"><?php echo esc_html( $sc_ind[0] ); ?></span>
