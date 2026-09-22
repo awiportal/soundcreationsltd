@@ -52,21 +52,40 @@ function sc_seo_trim( $text, $limit = 158 ) {
  */
 function sc_seo_type_description( $post_type, $title = '' ) {
 	$brand = get_bloginfo( 'name' );
-	$map   = array(
-		'sc_solution' => 'Professional audio, acoustic and AV solutions engineered, installed and calibrated by %s across Kenya, Rwanda, DR Congo and the UAE.',
-		'sc_project'  => 'A completed %2$s installation by %1$s - system design, equipment and commissioning detail.',
+	$title = trim( (string) $title );
+
+	// Archive context has no single title to weave in. The templates below are
+	// written without a title placeholder for exactly that reason: substituting
+	// an empty string into the singular copy produced "products supplied and
+	// supported..." on /brands/ and "A completed  installation" (double space)
+	// on /projects/.
+	if ( '' === $title ) {
+		$archive = array(
+			'sc_solution' => 'Professional audio, acoustic and AV solutions engineered, installed and calibrated by %s across Kenya, Rwanda, DR Congo and the UAE.',
+			'sc_project'  => 'Completed audio, acoustic and AV installations by %s - venues, system design and commissioning detail from across Africa and the Middle East.',
+			'sc_service'  => 'Consultancy, distribution, integration and after-sale support from %s for professional audio, acoustic and AV systems.',
+			'sc_brand'    => 'The professional audio, acoustic and AV brands distributed and supported across East Africa by %s.',
+			'sc_product'  => 'Professional audio and loudspeaker components supplied by %s, authorised distributor across East Africa and the Middle East.',
+			'sc_resource' => 'Technical resources and documentation from %s for professional audio, acoustic and AV systems.',
+		);
+		if ( isset( $archive[ $post_type ] ) ) {
+			return sc_seo_trim( sprintf( $archive[ $post_type ], $brand ) );
+		}
+		return sc_core_get( 'tagline', get_bloginfo( 'description' ) );
+	}
+
+	$map = array(
+		'sc_solution' => '%2$s from %1$s - engineered, installed and calibrated for venues across Kenya, Rwanda, DR Congo and the UAE.',
+		'sc_project'  => '%2$s - a completed installation by %1$s, with system design, equipment and commissioning detail.',
 		'sc_service'  => '%2$s from %1$s: specialist support for audio, acoustic and AV systems across East Africa and the Middle East.',
 		'sc_brand'    => '%2$s products supplied and supported in East Africa by %1$s, an authorised distribution and dealership partner.',
 		'sc_product'  => '%2$s - specifications, applications and availability from %1$s, authorised distributor in East Africa.',
-		'sc_resource' => 'Technical resources and documentation from %s for professional audio, acoustic and AV systems.',
+		'sc_resource' => '%2$s - technical documentation from %1$s for professional audio, acoustic and AV systems.',
 	);
 	if ( isset( $map[ $post_type ] ) ) {
 		return sc_seo_trim( sprintf( $map[ $post_type ], $brand, $title ) );
 	}
-	if ( '' !== $title ) {
-		return sc_seo_trim( sprintf( '%1$s from %2$s - engineered audio, acoustic and AV solutions for Africa and the Middle East.', $title, $brand ) );
-	}
-	return sc_core_get( 'tagline', get_bloginfo( 'description' ) );
+	return sc_seo_trim( sprintf( '%1$s from %2$s - engineered audio, acoustic and AV solutions for Africa and the Middle East.', $title, $brand ) );
 }
 
 /** A description for a taxonomy term archive that has no term description set. */
