@@ -41,7 +41,10 @@ add_action(
 		if ( is_front_page() ) {
 			echo '<link rel="preload" as="image" fetchpriority="high" href="' . esc_url( $u . '/assets/img/hero-poster.webp' ) . '">' . "\n";
 		} elseif ( is_page( 'about' ) ) {
-			echo '<link rel="preload" as="image" fetchpriority="high" href="' . esc_url( $u . '/assets/img/about-photo.jpg' ) . '">' . "\n";
+			// Must match the About hero fallback in page-about.php. If these drift,
+			// the browser high-priority-fetches an image the page never paints and
+			// the real LCP image waits behind it.
+			echo '<link rel="preload" as="image" fetchpriority="high" href="' . esc_url( $u . '/assets/img/about-citam.webp' ) . '">' . "\n";
 		}
 	},
 	1

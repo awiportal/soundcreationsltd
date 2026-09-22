@@ -112,7 +112,7 @@ function sc_core_settings_fields() {
 		// the one-shot prefill pass, and sc_setting() prefers a stored value, so new
 		// copy on it would have been silently overridden by the stored "What We Do".
 		'about_process_eyebrow' => array( 'Work process: eyebrow', 'text' ),
-		'about_process_items'  => array( 'Work process steps (one per line: Title | Description)', 'textarea' ),
+		'about_process_items'  => array( 'Work process steps (one per line: Title | Description | Link path, e.g. /service/consultancy/)', 'textarea' ),
 		'about_operate_eyebrow'=> array( 'Where we operate: eyebrow', 'text' ),
 		'about_operate_title'  => array( 'Where we operate: heading', 'text' ),
 		'about_operate_body'   => array( 'Where we operate: body', 'textarea' ),

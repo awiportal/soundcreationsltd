@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'SC_CORE_VERSION', '0.5.23' );
+define( 'SC_CORE_VERSION', '0.5.24' );
 define( 'SC_CORE_SEED_VERSION', '9' );
 define( 'SC_CORE_DIR', plugin_dir_path( __FILE__ ) );
 

@@ -72,9 +72,14 @@ while ( have_posts() ) :
 		<?php
 			$sc_hero_img = has_post_thumbnail() ? get_the_post_thumbnail_url( get_the_ID(), 'large' ) : '';
 			if ( '' === (string) $sc_hero_img ) {
+				// Professional Audio now uses the dB Technologies VIO line-array install
+				// ("db 10", 2026-09-22 owner request), replacing audio-dbtech.jpg.
+				// NOTE: this map is only the FALLBACK. has_post_thumbnail() above wins,
+				// so if a Featured Image is set on the Professional Audio solution post
+				// in wp-admin, that image renders and this file is never reached.
 				$sc_heromap = array(
 					'integration' => '/assets/img/solutions/installation.jpg',
-					'audio'       => '/assets/img/solutions/audio-dbtech.jpg',
+					'audio'       => '/assets/img/solutions/audio-db10.webp',
 					'acoustics'   => '/assets/img/solutions/acoustics.jpg',
 					'general'     => '/assets/img/solutions-hero.jpg',
 				);

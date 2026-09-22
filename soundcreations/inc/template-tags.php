@@ -109,7 +109,12 @@ function sc_default_settings() {
 		// inline fallbacks) is what makes the two fields show real placeholder copy
 		// on the Central Settings screen instead of rendering as empty boxes.
 		'about_process_eyebrow' => 'Our Work Process', // page-about.php
-		'about_process_items' => "Consultation & Design | We listen, we visualize with our new client, we propose, we reach agreements & we represent the solution.\nDistribution | From the most affordable to the substantial investments, we keep the quality 100% and the warranties.\nIntegration | Our promise is professional installations, system trainings, seamless handovers and guaranteed.\nSupport & Training | Comprehensive after-sales support, including a 1-year warranty service after installation.", // page-about.php
+		// Third field is the link target. This value -- NOT the inline fallback in
+		// page-about.php -- is what actually renders, because sc_setting() checks
+		// sc_default_settings() before the $default argument. Paths are stored
+		// relative and resolved through home_url() in the template, which is
+		// required because this install lives in the /newwebsite/ subdirectory.
+		'about_process_items' => "Consultation & Design | We listen, we visualize with our new client, we propose, we reach agreements & we represent the solution. | /service/consultancy/\nDistribution | From the most affordable to the substantial investments, we keep the quality 100% and the warranties. | /distribution-dealership/\nIntegration | Our promise is professional installations, system trainings, seamless handovers and guaranteed. | /service/integration/\nSupport & Training | Comprehensive after-sales support, including a 1-year warranty service after installation. | /service/after-sale-services/", // page-about.php
 		'about_hero_title' => 'If it sounds good, it’s Sound Creations', // page-about.php
 		'about_journey_p1' => 'Founded in 2004, Sound Creations Ltd has grown into a leading provider of professional audio, visual, lighting and acoustic solutions across East Africa and beyond. What began as a specialist audio company is today a full-service integrator — designing, supplying, installing and supporting complete systems for the region’s most demanding spaces.', // page-about.php
 		'about_partners_eyebrow' => 'Our Brands', // page-about.php

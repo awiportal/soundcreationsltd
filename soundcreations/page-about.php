@@ -14,7 +14,15 @@ if ( defined( 'ABSPATH' ) === false ) {
 }
 get_header();
 
-$sc_about_photo = sc_setting( 'about_hero_image', SC_THEME_URI . '/assets/img/about-photo.jpg' );
+// About hero photo: the CITAM auditorium install (2026-09-22 owner request),
+// replacing about-photo.jpg. This is the FALLBACK only -- a URL saved in
+// Settings ("About hero: photo") wins, because sc_setting() prefers a stored
+// value. about_hero_image has no entry in sc_default_settings() and the image
+// pickers were deliberately left unprefilled, so this fallback is what renders
+// unless someone has pasted a URL into that field.
+// The matching LCP preload hint in inc/enqueue.php points at the same file and
+// must be kept in step with it.
+$sc_about_photo = sc_setting( 'about_hero_image', SC_THEME_URI . '/assets/img/about-citam.webp' );
 
 /*
  * Our Work Process (2026-09-22, owner request).
@@ -34,7 +42,7 @@ $sc_about_photo = sc_setting( 'about_hero_image', SC_THEME_URI . '/assets/img/ab
  * have no stored value, so these defaults resolve immediately -- and both keys
  * are registered in the core plugin so the owner can still edit them.
  */
-$sc_proc_default = "Consultation & Design | We listen, we visualize with our new client, we propose, we reach agreements & we represent the solution.\nDistribution | From the most affordable to the substantial investments, we keep the quality 100% and the warranties.\nIntegration | Our promise is professional installations, system trainings, seamless handovers and guaranteed.\nSupport & Training | Comprehensive after-sales support, including a 1-year warranty service after installation.";
+$sc_proc_default = "Consultation & Design | We listen, we visualize with our new client, we propose, we reach agreements & we represent the solution. | /service/consultancy/\nDistribution | From the most affordable to the substantial investments, we keep the quality 100% and the warranties. | /distribution-dealership/\nIntegration | Our promise is professional installations, system trainings, seamless handovers and guaranteed. | /service/integration/\nSupport & Training | Comprehensive after-sales support, including a 1-year warranty service after installation. | /service/after-sale-services/";
 $sc_proc_raw   = sc_setting( 'about_process_items', $sc_proc_default );
 $sc_proc_items = array();
 foreach ( preg_split( "/\r\n|\r|\n/", $sc_proc_raw ) as $sc_line ) {
@@ -42,8 +50,23 @@ foreach ( preg_split( "/\r\n|\r|\n/", $sc_proc_raw ) as $sc_line ) {
 	if ( $sc_line === '' ) {
 		continue;
 	}
-	$sc_parts        = array_map( 'trim', explode( '|', $sc_line, 2 ) );
-	$sc_proc_items[] = array( 'title' => $sc_parts[0], 'desc' => isset( $sc_parts[1] ) ? $sc_parts[1] : '' );
+	// Third field is an optional link target (2026-09-22 owner request). The
+	// limit is 3 so a description containing a pipe still parses, and a step
+	// written with only "Title | Description" keeps working -- it simply renders
+	// as a plain card rather than a link.
+	$sc_parts = array_map( 'trim', explode( '|', $sc_line, 3 ) );
+	$sc_url   = isset( $sc_parts[2] ) ? $sc_parts[2] : '';
+	// Relative paths MUST go through home_url(): this install lives in a
+	// subdirectory (/newwebsite/), so a bare "/service/consultancy/" would
+	// resolve against the domain root and 404. Absolute URLs pass through.
+	if ( '' !== $sc_url && 0 !== strpos( $sc_url, 'http' ) ) {
+		$sc_url = home_url( $sc_url );
+	}
+	$sc_proc_items[] = array(
+		'title' => $sc_parts[0],
+		'desc'  => isset( $sc_parts[1] ) ? $sc_parts[1] : '',
+		'url'   => $sc_url,
+	);
 }
 // Icons follow the original site's set: consultation (speech + group),
 // distribution (globe), integration (operator at a console), support (gear).
@@ -74,15 +97,25 @@ $sc_proc_icons = array(
 			<p class="sc-eyebrow"><?php echo esc_html( sc_setting( 'about_process_eyebrow', 'Our Work Process' ) ); ?></p>
 		</div>
 		<div class="sc-workproc">
-			<?php foreach ( $sc_proc_items as $sc_i => $sc_step ) : ?>
-				<div class="sc-workproc__item">
+			<?php
+			foreach ( $sc_proc_items as $sc_i => $sc_step ) :
+				// Each step links to its Service page when a third field is present.
+				// The whole card becomes the anchor so the icon, title and copy are
+				// one target, rather than burying a small "read more" link. Steps
+				// without a URL still render as a plain div.
+				$sc_has_link = ( '' !== $sc_step['url'] );
+				$sc_tag      = $sc_has_link ? 'a' : 'div';
+				?>
+				<<?php echo $sc_tag; ?> class="sc-workproc__item"<?php echo $sc_has_link ? ' href="' . esc_url( $sc_step['url'] ) . '"' : ''; ?>>
 					<span class="sc-workproc__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><?php echo $sc_proc_icons[ $sc_i % count( $sc_proc_icons ) ]; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static inline SVG. ?></svg></span>
 					<h3 class="sc-workproc__title"><?php echo esc_html( $sc_step['title'] ); ?></h3>
 					<?php if ( '' !== $sc_step['desc'] ) : ?>
 						<p class="sc-workproc__desc"><?php echo esc_html( $sc_step['desc'] ); ?></p>
 					<?php endif; ?>
-				</div>
-			<?php endforeach; ?>
+				</<?php echo $sc_tag; ?>>
+				<?php
+			endforeach;
+			?>
 		</div>
 	</div>
 </section>

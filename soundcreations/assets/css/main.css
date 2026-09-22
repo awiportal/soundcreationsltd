@@ -2210,3 +2210,88 @@ article.sc-svc:hover { transform: none; border-color: transparent; box-shadow: n
 }
 @media (max-width: 900px) { .sc-workproc { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 520px) { .sc-workproc { grid-template-columns: 1fr; } }
+
+/* Work-process steps link to their Service pages, so the whole card is an <a>.
+   The icon hover already keys off .sc-workproc__item, which the anchor carries,
+   so it keeps working unchanged. Focus ring sits outside the circle rather than
+   clipping it. */
+a.sc-workproc__item { text-decoration: none; color: inherit; }
+a.sc-workproc__item:hover .sc-workproc__title,
+a.sc-workproc__item:focus-visible .sc-workproc__title { color: var(--sc-red); }
+a.sc-workproc__item:focus-visible { outline: 2px solid var(--sc-red); outline-offset: 6px; border-radius: 14px; }
+
+
+/* ============================================================
+   Solution hero media: blend the photo into the page (2026-09-22)
+
+   The hero sat as a hard-edged rectangle beside the text column: a 1px border
+   plus a single 120deg scrim that only darkened the top-left corner, so the
+   photo's inner edge cut a straight line down the middle of the layout.
+
+   The inner edge now fades to var(--sc-bg) so the image melts toward the
+   copy instead of butting against it, and the border is dropped to a hairline.
+   Using the background token rather than a hardcoded dark value keeps this
+   correct in the light theme -- a fixed dark fade would smear grey across a
+   white page.
+
+   The fade runs left-to-right because .sc-svc-hero__grid puts the text column
+   first (1.02fr .98fr) on desktop. Below 1024px the grid collapses to one
+   column and the image sits under the text, where a left-edge fade would read
+   as a random gradient, so it is swapped for a top fade there.
+   ============================================================ */
+.sc-svc-hero__media {
+  border-color: rgba(255,255,255,.055);
+  box-shadow: 0 34px 78px -38px rgba(0,0,0,.8);
+}
+.sc-svc-hero__media::after {
+  background:
+    linear-gradient(90deg, var(--sc-bg) 0%, transparent 44%),
+    linear-gradient(200deg, rgba(6,8,12,.34) 0%, rgba(6,8,12,0) 62%);
+}
+@media (max-width: 1024px) {
+  .sc-svc-hero__media::after {
+    background:
+      linear-gradient(180deg, var(--sc-bg) 0%, transparent 38%),
+      linear-gradient(200deg, rgba(6,8,12,.30) 0%, rgba(6,8,12,0) 62%);
+  }
+}
+
+
+/* ============================================================
+   About hero media: blend the photo into the page (2026-09-22)
+
+   Same problem and same treatment as the solution hero above. The About photo
+   sat in a bordered, shadowed rectangle with only a 115deg corner scrim, so its
+   inner edge drew a hard vertical line down the middle of the layout.
+
+   This matters more here than on the solution hero because the new photo (the
+   CITAM auditorium) is a BRIGHT frame -- white coffered ceiling, pale floor --
+   dropped onto a near-black page. Without a transition the brightness reads as
+   a lightbox pasted over the design, so alongside the edge fade there is a
+   slightly stronger overall scrim to settle it into the dark surface.
+
+   The fade direction follows the layout: .sc-about-hero .sc-journey is
+   1fr 1fr with the copy first, so the image's LEFT edge is the inner one. At
+   900px .sc-journey collapses to a single column and the image moves below the
+   text, where a left-edge fade would look arbitrary -- so it becomes a top fade
+   at that breakpoint, matching where .sc-journey actually reflows.
+
+   var(--sc-bg) rather than a hardcoded dark value, so the light theme fades to
+   white instead of smearing grey across the page.
+   ============================================================ */
+.sc-about-hero__media {
+  border-color: rgba(255,255,255,.055);
+  box-shadow: 0 30px 70px -34px rgba(0,0,0,.75);
+}
+.sc-about-hero__media::after {
+  background:
+    linear-gradient(90deg, var(--sc-bg) 0%, transparent 46%),
+    linear-gradient(205deg, rgba(6,8,12,.40) 0%, rgba(6,8,12,.10) 55%, rgba(6,8,12,0) 100%);
+}
+@media (max-width: 900px) {
+  .sc-about-hero__media::after {
+    background:
+      linear-gradient(180deg, var(--sc-bg) 0%, transparent 40%),
+      linear-gradient(205deg, rgba(6,8,12,.34) 0%, rgba(6,8,12,0) 70%);
+  }
+}
