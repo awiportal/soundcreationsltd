@@ -22,6 +22,70 @@ function sc_core_get( $key, $default = '' ) {
 	return $default;
 }
 
+/**
+ * Trim a string to a meta-description length on a word boundary.
+ *
+ * Google renders roughly 155-160 characters. Cutting mid-word looks broken,
+ * so back up to the last space and add an ellipsis only if we actually cut.
+ */
+function sc_seo_trim( $text, $limit = 158 ) {
+	$text = trim( preg_replace( '/\s+/', ' ', wp_strip_all_tags( (string) $text ) ) );
+	if ( '' === $text ) {
+		return '';
+	}
+	if ( function_exists( 'mb_strlen' ) ? mb_strlen( $text ) <= $limit : strlen( $text ) <= $limit ) {
+		return $text;
+	}
+	$cut = function_exists( 'mb_substr' ) ? mb_substr( $text, 0, $limit ) : substr( $text, 0, $limit );
+	$sp  = strrpos( $cut, ' ' );
+	if ( false !== $sp && $sp > (int) ( $limit * 0.6 ) ) {
+		$cut = substr( $cut, 0, $sp );
+	}
+	return rtrim( $cut, " ,.;:-" ) . '...';
+}
+
+/**
+ * A description for a listing page, written from the thing being listed.
+ *
+ * Archives and template-rendered pages have no body text to summarise, so
+ * without this they all inherited the single site tagline.
+ */
+function sc_seo_type_description( $post_type, $title = '' ) {
+	$brand = get_bloginfo( 'name' );
+	$map   = array(
+		'sc_solution' => 'Professional audio, acoustic and AV solutions engineered, installed and calibrated by %s across Kenya, Rwanda, DR Congo and the UAE.',
+		'sc_project'  => 'A completed %2$s installation by %1$s - system design, equipment and commissioning detail.',
+		'sc_service'  => '%2$s from %1$s: specialist support for audio, acoustic and AV systems across East Africa and the Middle East.',
+		'sc_brand'    => '%2$s products supplied and supported in East Africa by %1$s, an authorised distribution and dealership partner.',
+		'sc_product'  => '%2$s - specifications, applications and availability from %1$s, authorised distributor in East Africa.',
+		'sc_resource' => 'Technical resources and documentation from %s for professional audio, acoustic and AV systems.',
+	);
+	if ( isset( $map[ $post_type ] ) ) {
+		return sc_seo_trim( sprintf( $map[ $post_type ], $brand, $title ) );
+	}
+	if ( '' !== $title ) {
+		return sc_seo_trim( sprintf( '%1$s from %2$s - engineered audio, acoustic and AV solutions for Africa and the Middle East.', $title, $brand ) );
+	}
+	return sc_core_get( 'tagline', get_bloginfo( 'description' ) );
+}
+
+/** A description for a taxonomy term archive that has no term description set. */
+function sc_seo_term_description( $term ) {
+	$brand = get_bloginfo( 'name' );
+	$name  = isset( $term->name ) ? $term->name : '';
+	$by_tax = array(
+		'sc_industry'         => '%2$s audio, acoustic and AV installations by %1$s - system design, equipment and commissioning.',
+		'sc_location'         => 'Audio, acoustic and AV projects delivered by %1$s in %2$s.',
+		'sc_brand_tax'        => '%2$s equipment supplied and supported in East Africa by %1$s.',
+		'sc_product_category' => '%2$s available from %1$s, authorised distributor across East Africa and the Middle East.',
+	);
+	$tax = isset( $term->taxonomy ) ? $term->taxonomy : '';
+	if ( isset( $by_tax[ $tax ] ) ) {
+		return sc_seo_trim( sprintf( $by_tax[ $tax ], $brand, $name ) );
+	}
+	return sc_seo_trim( sprintf( '%1$s - %2$s.', $name, $brand ) );
+}
+
 function sc_seo_description() {
 	if ( is_singular() ) {
 		$id = get_queried_object_id();
@@ -35,14 +99,38 @@ function sc_seo_description() {
 		}
 		$ex = get_the_excerpt( $id );
 		if ( $ex ) {
-			return wp_strip_all_tags( $ex );
+			return sc_seo_trim( $ex );
 		}
+		// Most pages here render from PHP templates rather than post_content,
+		// so get_the_excerpt() returns nothing and -- before this -- every one
+		// of them fell through to the site tagline. An audit on 22 Sep 2026
+		// found all 62 indexed URLs sharing one description, which Google
+		// generally discards in favour of its own snippet.
+		$post = get_post( $id );
+		if ( $post instanceof WP_Post ) {
+			$body = sc_seo_trim( strip_shortcodes( (string) $post->post_content ) );
+			if ( '' !== $body ) {
+				return $body;
+			}
+		}
+		return sc_seo_type_description( get_post_type( $id ), (string) get_the_title( $id ) );
 	}
-	if ( ( is_tax() || is_category() || is_tag() ) ) {
+	if ( is_tax() || is_category() || is_tag() ) {
 		$t = term_description();
 		if ( $t ) {
-			return wp_strip_all_tags( $t );
+			return sc_seo_trim( $t );
 		}
+		$term = get_queried_object();
+		if ( $term && ! is_wp_error( $term ) ) {
+			return sc_seo_term_description( $term );
+		}
+	}
+	if ( is_post_type_archive() ) {
+		$pt = get_query_var( 'post_type' );
+		if ( is_array( $pt ) ) {
+			$pt = reset( $pt );
+		}
+		return sc_seo_type_description( (string) $pt );
 	}
 	return sc_core_get( 'tagline', get_bloginfo( 'description' ) );
 }
@@ -532,5 +620,68 @@ add_filter(
 			}
 		}
 		return $parts;
+	}
+);
+
+/* ============================================================
+   Thin auto-generated archives.
+
+   A crawl of all 62 indexed URLs on 22 Sep 2026 found the taxonomy
+   archives carrying 10-37 words of unique content each -- /industry/worship/
+   had 10, /location/nairobi-kenya/ 28. They are machine-generated lists, and
+   indexing them means they compete in search against the real Solution,
+   Service and Project pages they point at.
+
+   noindex,follow is the right pairing, not noindex,nofollow: Google should
+   still crawl through them and pass authority on to the destinations, it
+   just should not offer the list itself as a search result.
+
+   Paged results (/page/2/ and beyond) are excluded for the same reason --
+   page 2 of a list is never the best landing page for a query.
+   ============================================================ */
+function sc_seo_thin_taxonomies() {
+	return array( 'sc_industry', 'sc_location', 'sc_brand_tax', 'sc_product_category' );
+}
+
+function sc_seo_is_thin_archive() {
+	if ( is_admin() || is_feed() ) {
+		return false;
+	}
+	if ( is_paged() ) {
+		return true;
+	}
+	if ( is_search() || is_author() || is_date() ) {
+		return true;
+	}
+	if ( is_tax( sc_seo_thin_taxonomies() ) ) {
+		return true;
+	}
+	return false;
+}
+
+// Use the wp_robots filter rather than echoing a second robots tag: WordPress
+// already prints one (max-image-preview:large), and two robots meta tags on a
+// page is ambiguous. This merges into the single existing tag.
+add_filter(
+	'wp_robots',
+	function ( $robots ) {
+		if ( sc_seo_is_thin_archive() ) {
+			$robots['noindex'] = true;
+			$robots['follow']  = true;
+			unset( $robots['index'] );
+		}
+		return $robots;
+	}
+);
+
+// Keep the same archives out of the XML sitemap. Leaving them listed while
+// telling Google not to index them sends contradictory signals.
+add_filter(
+	'wp_sitemaps_taxonomies',
+	function ( $taxonomies ) {
+		foreach ( sc_seo_thin_taxonomies() as $tax ) {
+			unset( $taxonomies[ $tax ] );
+		}
+		return $taxonomies;
 	}
 );
