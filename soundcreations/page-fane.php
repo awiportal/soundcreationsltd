@@ -54,13 +54,20 @@ $sc_apps = array(
 	array( 'Custom Design', $sc_img . '/app-custom.jpg' ),
 );
 
-// name, spec, power label, img, data-app, data-type, data-power(num), data-size
+// name, spec, power label, front img, data-app, data-type, data-power(num), data-size, back img
+//
+// Every image below is a real FANE product photograph supplied by the owner
+// (2026-09-22), replacing the previous renders. Each of the five components has
+// a face and a rear shot, so the card shows the face by default and reveals the
+// rear on hover or keyboard focus. The rear shot is the one that carries the
+// FANE badge and the printed model/power legend, which is why it is worth
+// showing rather than discarding.
 $sc_prod = array(
-	array( 'FANE Colossus 18XB', '18" High Power Bass Driver', '1600W AES · 8Ω', $sc_img . '/prod-colossus18xb.jpg', 'live-sound touring', 'bass', '1600', '18' ),
-	array( 'FANE Imperium 18XL', '18" High Power Bass Driver', '1200W AES · 8Ω', $sc_img . '/prod-imperium18xl.jpg', 'live-sound touring', 'bass', '1200', '18' ),
-	array( 'FANE Sovereign 15-600', '15" Mid Bass Driver', '600W AES · 8Ω', $sc_img . '/prod-sovereign15.jpg', 'installed-audio worship', 'mid-bass', '600', '15' ),
-	array( 'FANE Sovereign 12-250TC', '12" Midrange Driver', '250W AES · 8Ω', $sc_img . '/prod-sovereign12.jpg', 'installed-audio studio', 'midrange', '250', '12' ),
-	array( 'FANE CD140', '1.4" Compression Driver', '140W AES · 8Ω', $sc_img . '/prod-cd140.jpg', 'live-sound studio', 'compression', '140', '1.4' ),
+	array( 'FANE Colossus 18XB', '18" High Power Bass Driver', '1600W AES · 8Ω', $sc_img . '/prod-colossus18xb.webp', 'live-sound touring', 'bass', '1600', '18', $sc_img . '/prod-colossus18xb-back.webp' ),
+	array( 'FANE Imperium 18XL', '18" High Power Bass Driver', '1200W AES · 8Ω', $sc_img . '/prod-imperium18xl.webp', 'live-sound touring', 'bass', '1200', '18', $sc_img . '/prod-imperium18xl-back.webp' ),
+	array( 'FANE Sovereign 15-600', '15" Mid Bass Driver', '600W AES · 8Ω', $sc_img . '/prod-sovereign15.webp', 'installed-audio worship', 'mid-bass', '600', '15', $sc_img . '/prod-sovereign15-back.webp' ),
+	array( 'FANE Sovereign 12-250TC', '12" Midrange Driver', '250W AES · 8Ω', $sc_img . '/prod-sovereign12.webp', 'installed-audio studio', 'midrange', '250', '12', $sc_img . '/prod-sovereign12-back.webp' ),
+	array( 'FANE CD140', '1.4" Compression Driver', '140W AES · 8Ω', $sc_img . '/prod-cd140.webp', 'live-sound studio', 'compression', '140', '1.4', $sc_img . '/prod-cd140-back.webp' ),
 );
 
 $sc_why = array(
@@ -151,7 +158,13 @@ $sc_arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-w
 			<div class="sc-prod-track" data-sc-scroller>
 				<?php foreach ( $sc_prod as $pr ) : ?>
 					<div class="sc-prod-card" data-app="<?php echo esc_attr( $pr[4] ); ?>" data-type="<?php echo esc_attr( $pr[5] ); ?>" data-power="<?php echo esc_attr( $pr[6] ); ?>" data-size="<?php echo esc_attr( $pr[7] ); ?>">
-						<div class="sc-prod-card__media"><img src="<?php echo esc_url( $pr[3] ); ?>" alt="<?php echo esc_attr( $pr[0] ); ?>" loading="lazy"></div>
+						<div class="sc-prod-card__media<?php echo ( isset( $pr[8] ) && '' !== $pr[8] ) ? ' sc-prod-card__media--flip' : ''; ?>" tabindex="0">
+							<img class="sc-prod-card__face" src="<?php echo esc_url( $pr[3] ); ?>" alt="<?php echo esc_attr( $pr[0] ); ?>" loading="lazy" decoding="async" width="700" height="700">
+							<?php if ( isset( $pr[8] ) && '' !== $pr[8] ) : ?>
+								<img class="sc-prod-card__rear" src="<?php echo esc_url( $pr[8] ); ?>" alt="<?php echo esc_attr( $pr[0] . ' - rear view' ); ?>" loading="lazy" decoding="async" width="700" height="700">
+								<span class="sc-prod-card__flip-hint" aria-hidden="true">Rear view</span>
+							<?php endif; ?>
+						</div>
 						<div class="sc-prod-card__body">
 							<h3 class="sc-prod-card__name"><?php echo esc_html( $pr[0] ); ?></h3>
 							<p class="sc-prod-card__spec"><?php echo esc_html( $pr[1] ); ?></p>

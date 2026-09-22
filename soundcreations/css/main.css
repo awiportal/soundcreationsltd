@@ -1781,3 +1781,52 @@ h3 { font-size: 1.35rem; font-weight: 700; line-height: 1.22; letter-spacing: -.
 .sc-shot:hover img { transform: scale(1.04); }
 .sc-svc-hero__media { min-height: clamp(300px, 30vw, 460px); }
 @media (max-width: 720px) { .sc-svc-hero__media { min-height: 230px; } }
+
+
+/* ===== FANE component range (2026-09-22): real product photography, face + rear =====
+   Each of the five components now ships two real FANE photographs. The face shot is
+   the default; the rear shot -- the one carrying the FANE badge and the printed
+   model/power legend -- crossfades in on hover or keyboard focus.
+
+   Notes on why it is built this way:
+   - The rear image is stacked absolutely over the face and revealed by opacity, so
+     the card never changes height and nothing reflows on hover.
+   - The media box is focusable (tabindex="0" in the template) and :focus-visible
+     triggers the same swap, so the rear view is reachable without a pointer.
+   - Both images are object-fit: cover on a 1/1 box, inherited from the base rule at
+     .sc-prod-card__media img, so the two shots register against each other exactly.
+   - The existing .sc-prod-card__media::after gloss gradient is pointer-events: none
+     and sits above both images; the hint chip is given a higher z-index so it is not
+     washed out by it.
+   - Under prefers-reduced-motion the crossfade is dropped but the swap still works. */
+.sc-prod-card__media--flip { position: relative; overflow: hidden; }
+.sc-prod-card__media--flip .sc-prod-card__face,
+.sc-prod-card__media--flip .sc-prod-card__rear { transition: opacity .35s var(--sc-ease, ease); }
+.sc-prod-card__media--flip .sc-prod-card__rear {
+  position: absolute; inset: 0; opacity: 0;
+}
+.sc-prod-card:hover .sc-prod-card__media--flip .sc-prod-card__rear,
+.sc-prod-card__media--flip:focus-visible .sc-prod-card__rear { opacity: 1; }
+.sc-prod-card:hover .sc-prod-card__media--flip .sc-prod-card__face,
+.sc-prod-card__media--flip:focus-visible .sc-prod-card__face { opacity: 0; }
+.sc-prod-card__media--flip:focus-visible { outline: 2px solid var(--sc-purple-on-dark, #A98BD6); outline-offset: -2px; }
+.sc-prod-card__flip-hint {
+  position: absolute; z-index: 2; left: .5rem; bottom: .5rem;
+  padding: .18rem .45rem; border-radius: 999px;
+  font-size: .64rem; letter-spacing: .04em; text-transform: uppercase; font-weight: 600;
+  color: #fff; background: rgba(0,0,0,.55); border: 1px solid rgba(255,255,255,.18);
+  opacity: 0; transition: opacity .35s var(--sc-ease, ease);
+}
+.sc-prod-card:hover .sc-prod-card__flip-hint,
+.sc-prod-card__media--flip:focus-visible .sc-prod-card__flip-hint { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .sc-prod-card__media--flip .sc-prod-card__face,
+  .sc-prod-card__media--flip .sc-prod-card__rear,
+  .sc-prod-card__flip-hint { transition: none; }
+}
+/* Touch devices have no hover: show the face only, and hide the hint that cannot be
+   acted on. The rear shot is still in the DOM for keyboard and assistive tech. */
+@media (hover: none) {
+  .sc-prod-card__media--flip .sc-prod-card__rear { opacity: 0; }
+  .sc-prod-card__flip-hint { display: none; }
+}
