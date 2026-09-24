@@ -124,12 +124,12 @@ function sc_default_settings() {
 		'fane_diff_body' => 'Every FANE component is designed and engineered to work in perfect harmony - delivering the performance, reliability and consistency professionals depend on.', // page-fane.php
 		'fane_diff_title' => 'Built from the inside out.', // page-fane.php
 		'fane_eyebrow' => 'Engineered in the UK. Trusted worldwide.', // page-fane.php
-		'fane_heritage_title' => '70+ years of loudspeaker engineering.', // page-fane.php
+		'fane_heritage_title' => '65+ years of loudspeaker engineering.', // page-fane.php
 		'fane_lead' => 'Precision-engineered loudspeaker components built for demanding professional applications, trusted by sound professionals around the world.', // page-fane.php
 		'fane_products_title' => 'The FANE component range.', // page-fane.php
 		'fane_social_text' => 'See FANE loudspeakers, live demos and installations on the channels we use to bring the brand to East Africa and the Middle East.', // page-fane.php
 		'fane_social_title' => 'Follow FANE with Sound Creations', // page-fane.php
-		'fane_title' => 'Engineering sound since 1954.', // page-fane.php
+		'fane_title' => 'Engineering sound since 1958.', // page-fane.php
 		'resources_cta_text' => 'Our technical team can point you to the right video, manual or datasheet for your system.', // archive-sc_resource.php
 		'resources_cta_title' => 'Looking for something specific?', // archive-sc_resource.php
 		'resources_eyebrow' => 'Videos', // archive-sc_resource.php

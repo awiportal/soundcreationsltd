@@ -22,7 +22,7 @@ $sc_apps_url = sc_setting( 'fane_apps_url', home_url( '/projects/' ) );
 $sc_catalogue = trim( (string) sc_setting( 'fane_catalogue_url' ) );
 
 $sc_pills = array(
-	array( '70+', 'Years of Engineering Heritage', '<circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>' ),
+	array( '65+', 'Years of Engineering Heritage', '<circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>' ),
 	array( 'Precision', 'Engineered for performance', '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>' ),
 	array( 'Built to Last', 'Reliability in every environment', '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>' ),
 	array( 'Global Standards', 'Designed & engineered in the UK', '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>' ),
@@ -37,7 +37,7 @@ $sc_diff = array(
 );
 
 $sc_timeline = array(
-	array( '1954', 'FANE is founded in the UK with a passion for loudspeaker innovation.' ),
+	array( '1958', 'FANE is founded in the UK with a passion for loudspeaker innovation.' ),
 	array( '1960s - 70s', 'Growth and expansion of professional audio component technology.' ),
 	array( '1980s - 90s', 'FANE becomes a trusted name in professional loudspeaker components.' ),
 	array( '2000s', 'Continued innovation and investment in engineering excellence.' ),
@@ -92,7 +92,7 @@ $sc_arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-w
 		<div class="sc-fane-hero__left">
 			<div class="sc-fane-mark"><span class="sc-fane-mark__bar" aria-hidden="true"></span>Fane Africa</div>
 			<p class="sc-eyebrow sc-fane-hero__eyebrow"><?php echo esc_html( sc_setting( 'fane_eyebrow', 'Engineered in the UK. Trusted worldwide.' ) ); ?></p>
-			<h1 class="sc-fane-hero__title"><?php echo esc_html( sc_setting( 'fane_title', 'Engineering sound since 1954.' ) ); ?></h1>
+			<h1 class="sc-fane-hero__title"><?php echo esc_html( sc_setting( 'fane_title', 'Engineering sound since 1958.' ) ); ?></h1>
 			<p class="sc-lead sc-fane-hero__lead"><?php echo sc_rich_e( sc_setting( 'fane_lead', 'Precision-engineered loudspeaker components built for demanding professional applications, trusted by sound professionals around the world.' ) ); ?></p>
 			<div class="sc-fane-hero__cta">
 				<a class="sc-btn sc-btn--primary" href="#fane-products"><?php esc_html_e( 'Explore FANE Products', 'soundcreations' ); ?> <?php echo $sc_arrow; ?></a>
@@ -107,7 +107,7 @@ $sc_arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-w
 <section class="sc-section sc-fane-alt" id="fane-heritage">
 	<div class="sc-container">
 		<p class="sc-eyebrow"><?php esc_html_e( 'Our heritage', 'soundcreations' ); ?></p>
-		<h2 class="sc-fane-heritage__title"><?php echo esc_html( sc_setting( 'fane_heritage_title', '70+ years of loudspeaker engineering.' ) ); ?></h2>
+		<h2 class="sc-fane-heritage__title"><?php echo esc_html( sc_setting( 'fane_heritage_title', '65+ years of loudspeaker engineering.' ) ); ?></h2>
 		<div class="sc-fane-heritage">
 			<div class="sc-timeline">
 				<?php foreach ( $sc_timeline as $t ) : ?>
