@@ -673,7 +673,13 @@ img { max-width: 100%; height: auto; display: block; }
 
 .sc-fane-alt { background: var(--sc-surface); border-block: 1px solid var(--sc-border); }
 .sc-fane-heritage__title { font-size: clamp(1.6rem, 3vw, 2.3rem); margin: .3rem 0 2rem; }
-.sc-fane-heritage { display: grid; grid-template-columns: 1.4fr .6fr; gap: 2rem; align-items: center; }
+/* Single column at every width. The heritage photo is a 4.4:1 panorama of the
+   FANE building; in the old .6fr side column it rendered 330x74, an unreadable
+   sliver, and cropping it to that column's 1.79:1 would have thrown away 60% of
+   the frame. Stacked, the timeline keeps the full width it wants for five items
+   and the photo runs as a full-width band at its native shape. This is what the
+   section already did below 1024px, so the mobile layout is unchanged. */
+.sc-fane-heritage { display: grid; grid-template-columns: 1fr; gap: 2rem; }
 .sc-timeline { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; position: relative; }
 .sc-timeline::before { content: ""; position: absolute; top: 6px; left: 2%; right: 2%; height: 2px; background: linear-gradient(90deg, rgba(186,11,11,.15), var(--sc-red), rgba(186,11,11,.15)); }
 .sc-tl-item { position: relative; display: flex; flex-direction: column; gap: .35rem; padding-top: 1.6rem; }
@@ -735,7 +741,6 @@ img { max-width: 100%; height: auto; display: block; }
 @media (max-width: 1024px) {
 	.sc-fane-hero__grid { grid-template-columns: 1fr; }
 	.sc-fane-diff { grid-template-columns: 1fr; }
-	.sc-fane-heritage { grid-template-columns: 1fr; }
 	.sc-fane-dist { grid-template-columns: 1fr; }
 	.sc-fane-apps { grid-template-columns: repeat(4, 1fr); }
 	.sc-fane-why { grid-template-columns: repeat(2, 1fr); }

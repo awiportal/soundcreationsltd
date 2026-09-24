@@ -119,7 +119,7 @@ $sc_arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-w
 				<?php endforeach; ?>
 			</div>
 			<div class="sc-fane-heritage__img">
-				<img src="<?php echo esc_url( $sc_img . '/fane-building.jpg' ); ?>" alt="<?php esc_attr_e( 'FANE manufacturing building', 'soundcreations' ); ?>" loading="lazy">
+				<img src="<?php echo esc_url( $sc_img . '/fane-headquarters.webp' ); ?>" alt="<?php esc_attr_e( 'FANE headquarters and manufacturing facility', 'soundcreations' ); ?>" loading="lazy" width="1180" height="266">
 			</div>
 		</div>
 	</div>
