@@ -2307,3 +2307,21 @@ a.sc-workproc__item:focus-visible { outline: 2px solid var(--sc-red); outline-of
       linear-gradient(205deg, rgba(6,8,12,.34) 0%, rgba(6,8,12,0) 70%);
   }
 }
+
+
+/* --- FANE dealer CTA: sentence case ------------------------------------- */
+/* .sc-btn is uppercased site-wide (text-transform: uppercase, further down
+   this file, which overrides the text-transform: none on the base .sc-btn
+   rule near the top). Moses asked for this one button to read
+   "Become a FANE Dealer" rather than shouting it, so the transform is undone
+   here only -- along with the .07em tracking that goes with it, which is
+   tuned for capitals and looks gappy in sentence case.
+
+   Scoped to .sc-fane-cta__btns .sc-btn--primary. That is specificity 0,2,0
+   against the bare .sc-btn's 0,1,0, so it wins on specificity rather than on
+   source order, and no other button on the site is affected.
+
+   Deliberately NOT applied to the Download Catalogue button sitting beside
+   it: that one is .sc-btn--ghost and stays uppercase, so the two now differ.
+   Extend the selector to .sc-fane-cta__btns .sc-btn if both should match. */
+.sc-fane-cta__btns .sc-btn--primary { text-transform: none; letter-spacing: normal; }
