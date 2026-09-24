@@ -63,11 +63,11 @@ $sc_apps = array(
 // FANE badge and the printed model/power legend, which is why it is worth
 // showing rather than discarding.
 $sc_prod = array(
-	array( 'FANE Colossus 18XB', '18" High Power Bass Driver', '1600W AES · 8Ω', $sc_img . '/prod-colossus18xb.webp', 'live-sound touring', 'bass', '1600', '18', $sc_img . '/prod-colossus18xb-back.webp' ),
-	array( 'FANE Imperium 18XL', '18" High Power Bass Driver', '1200W AES · 8Ω', $sc_img . '/prod-imperium18xl.webp', 'live-sound touring', 'bass', '1200', '18', $sc_img . '/prod-imperium18xl-back.webp' ),
-	array( 'FANE Sovereign 15-600', '15" Mid Bass Driver', '600W AES · 8Ω', $sc_img . '/prod-sovereign15.webp', 'installed-audio worship', 'mid-bass', '600', '15', $sc_img . '/prod-sovereign15-back.webp' ),
-	array( 'FANE Sovereign 12-250TC', '12" Midrange Driver', '250W AES · 8Ω', $sc_img . '/prod-sovereign12.webp', 'installed-audio studio', 'midrange', '250', '12', $sc_img . '/prod-sovereign12-back.webp' ),
-	array( 'FANE CD140', '1.4" Compression Driver', '140W AES · 8Ω', $sc_img . '/prod-cd140.webp', 'live-sound studio', 'compression', '140', '1.4', $sc_img . '/prod-cd140-back.webp' ),
+	array( 'FANE Colossus 18XB', '18" High Power Bass Driver', '2000W Program · 8Ω', $sc_img . '/prod-colossus18xb.webp', 'live-sound touring', 'bass', '2000', '18', $sc_img . '/prod-colossus18xb-back.webp' ),
+	array( 'FANE Imperium 18XL', '18" High Power Bass Driver', '2600W Program · 8Ω', $sc_img . '/prod-imperium18xl.webp', 'live-sound touring', 'bass', '2600', '18', $sc_img . '/prod-imperium18xl-back.webp' ),
+	array( 'FANE Sovereign 15-600', '15" Mid Bass Driver', '1200W Program · 8Ω', $sc_img . '/prod-sovereign15.webp', 'installed-audio worship', 'mid-bass', '1200', '15', $sc_img . '/prod-sovereign15-back.webp' ),
+	array( 'FANE Sovereign 12-250TC', '12" Midrange Driver', '500W Program · 8Ω', $sc_img . '/prod-sovereign12.webp', 'installed-audio studio', 'midrange', '500', '12', $sc_img . '/prod-sovereign12-back.webp' ),
+	array( 'FANE CD140', '1.4" Compression Driver', '40W AES · 8Ω', $sc_img . '/prod-cd140.webp', 'live-sound studio', 'compression', '40', '1.4', $sc_img . '/prod-cd140-back.webp' ),
 );
 
 $sc_why = array(
@@ -183,10 +183,10 @@ $sc_arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-w
 	<div class="sc-container">
 		<div class="sc-cta-band sc-cta-band--photo" style="background-image:url('<?php echo esc_url( $sc_img . '/fane-hero.jpg' ); ?>');">
 			<div class="sc-cta-band__inner">
-				<h2><?php echo esc_html( sc_setting( 'fane_cta_title', 'Become a FANE distributor.' ) ); ?></h2>
-				<p class="sc-lead" style="margin:0 0 1.5rem;"><?php echo sc_rich_e( sc_setting( 'fane_cta_text', 'We’re building the FANE dealer network across Kenya, Rwanda, DRC Congo and the UAE. Sound Creations focuses on large, project-based installations, so we partner with distributors who can stock and sell FANE components at the local level.' ) ); ?></p>
+				<h2><?php echo esc_html( sc_setting( 'fane_cta_title', 'Become a FANE Dealer.' ) ); ?></h2>
+				<p class="sc-lead" style="margin:0 0 1.5rem;"><?php echo sc_rich_e( sc_setting( 'fane_cta_text', 'We’re building the FANE dealer network across Sub-Saharan Africa. Sound Creations focuses on large, project-based installations, so we partner with dealers who can stock and sell FANE components at the local level, supported by product knowledge, technical support, marketing resources and local availability through Sound Creations.' ) ); ?></p>
 				<div class="sc-fane-cta__btns">
-					<a class="sc-btn sc-btn--primary" href="<?php echo esc_url( home_url( '/become-a-dealer/' ) ); ?>"><?php esc_html_e( 'Become a Distributor', 'soundcreations' ); ?> <?php echo $sc_arrow; ?></a>
+					<a class="sc-btn sc-btn--primary" href="<?php echo esc_url( home_url( '/become-a-dealer/' ) ); ?>"><?php esc_html_e( 'Become a Dealer', 'soundcreations' ); ?> <?php echo $sc_arrow; ?></a>
 					<?php if ( strlen( $sc_catalogue ) > 0 ) : ?>
 					<a class="sc-btn sc-btn--ghost" href="<?php echo esc_url( $sc_catalogue ); ?>" target="_blank" rel="noopener"><?php esc_html_e( 'Download Catalogue', 'soundcreations' ); ?> <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></a>
 					<?php endif; ?>
