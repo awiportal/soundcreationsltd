@@ -184,7 +184,7 @@ $sc_arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-w
 		<div class="sc-cta-band sc-cta-band--photo" style="background-image:url('<?php echo esc_url( $sc_img . '/fane-hero.jpg' ); ?>');">
 			<div class="sc-cta-band__inner">
 				<h2><?php echo esc_html( sc_setting( 'fane_cta_title', 'Become a FANE Dealer.' ) ); ?></h2>
-				<p class="sc-lead" style="margin:0 0 1.5rem;"><?php echo sc_rich_e( sc_setting( 'fane_cta_text', 'We’re building the FANE dealer network across Sub-Saharan Africa. Sound Creations focuses on large, project-based installations, so we partner with dealers who can stock and sell FANE components at the local level, supported by product knowledge, technical support, marketing resources and local availability through Sound Creations.' ) ); ?></p>
+				<p class="sc-lead" style="margin:0 0 1.5rem;"><?php echo sc_rich_e( sc_setting( 'fane_cta_text', 'We’re building the FANE dealer network across Kenya, Uganda, Tanzania, Rwanda, Burundi, Ethiopia, South Sudan and the Democratic Republic of Congo. Sound Creations focuses on large, project-based installations, so we partner with dealers who can stock and sell FANE components at the local level, supported by product knowledge, technical support, marketing resources and local availability through Sound Creations.' ) ); ?></p>
 				<div class="sc-fane-cta__btns">
 					<a class="sc-btn sc-btn--primary" href="<?php echo esc_url( home_url( '/become-a-dealer/' ) ); ?>"><?php esc_html_e( 'Become a Dealer', 'soundcreations' ); ?> <?php echo $sc_arrow; ?></a>
 					<?php if ( strlen( $sc_catalogue ) > 0 ) : ?>

@@ -119,7 +119,7 @@ function sc_default_settings() {
 		'about_journey_p1' => 'Founded in 2004, Sound Creations Ltd has grown into a leading provider of professional audio, visual, lighting and acoustic solutions across East Africa and beyond. What began as a specialist audio company is today a full-service integrator — designing, supplying, installing and supporting complete systems for the region’s most demanding spaces.', // page-about.php
 		'about_partners_eyebrow' => 'Our Brands', // page-about.php
 		'about_partners_title' => 'World-class brands, supported locally', // page-about.php
-		'fane_cta_text' => 'We’re building the FANE dealer network across Sub-Saharan Africa. Sound Creations focuses on large, project-based installations, so we partner with dealers who can stock and sell FANE components at the local level, supported by product knowledge, technical support, marketing resources and local availability through Sound Creations.', // page-fane.php
+		'fane_cta_text' => 'We’re building the FANE dealer network across Kenya, Uganda, Tanzania, Rwanda, Burundi, Ethiopia, South Sudan and the Democratic Republic of Congo. Sound Creations focuses on large, project-based installations, so we partner with dealers who can stock and sell FANE components at the local level, supported by product knowledge, technical support, marketing resources and local availability through Sound Creations.', // page-fane.php
 		'fane_cta_title' => 'Become a FANE Dealer.', // page-fane.php
 		'fane_diff_body' => 'Every FANE component is designed and engineered to work in perfect harmony - delivering the performance, reliability and consistency professionals depend on.', // page-fane.php
 		'fane_diff_title' => 'Built from the inside out.', // page-fane.php
@@ -127,7 +127,7 @@ function sc_default_settings() {
 		'fane_heritage_title' => '65+ years of loudspeaker engineering.', // page-fane.php
 		'fane_lead' => 'Precision-engineered loudspeaker components built for demanding professional applications, trusted by sound professionals around the world.', // page-fane.php
 		'fane_products_title' => 'The FANE component range.', // page-fane.php
-		'fane_social_text' => 'See FANE loudspeakers, live demos and installations on the channels we use to bring the brand to Sub-Saharan Africa.', // page-fane.php
+		'fane_social_text' => 'See FANE loudspeakers, live demos and installations on the channels we use to bring the brand to East and Central Africa.', // page-fane.php
 		'fane_social_title' => 'Follow FANE with Sound Creations', // page-fane.php
 		'fane_title' => 'Engineering sound since 1958.', // page-fane.php
 		'resources_cta_text' => 'Our technical team can point you to the right video, manual or datasheet for your system.', // archive-sc_resource.php
