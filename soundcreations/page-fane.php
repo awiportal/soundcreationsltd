@@ -99,7 +99,7 @@ $sc_arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-w
 			</div>
 		</div>
 		<div class="sc-fane-hero__media">
-			<img src="<?php echo esc_url( sc_setting( 'fane_hero_image', $sc_img . '/fane-hero.webp' ) ); ?>" alt="<?php esc_attr_e( 'FANE professional loudspeaker driver', 'soundcreations' ); ?>">
+			<img src="<?php echo esc_url( sc_setting( 'fane_hero_image', $sc_img . '/fane-hero-sov15.webp' ) ); ?>" alt="<?php esc_attr_e( 'FANE Sovereign 15-400LF professional loudspeaker driver', 'soundcreations' ); ?>">
 		</div>
 	</div>
 </section>

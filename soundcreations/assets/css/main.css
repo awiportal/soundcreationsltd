@@ -2089,9 +2089,16 @@ article.sc-svc:hover { transform: none; border-color: transparent; box-shadow: n
   width: 104%; aspect-ratio: 1 / 1;
   background: radial-gradient(circle at 50% 50%, rgba(169,139,214,.20) 0%, rgba(98,68,137,.12) 42%, transparent 70%);
 }
+/* No CSS drop-shadow here. fane-hero-sov15.webp is a cut-out that already
+   carries its own soft side shadow in the alpha channel, so adding
+   drop-shadow() stacks a second, differently-angled shadow on top of it. That
+   reads as a muddy double shadow in the light theme, where both are visible
+   against #FBFBFD; on the dark theme it is invisible either way, so there is
+   nothing to gain by keeping it. If a hero image WITHOUT a baked-in shadow is
+   ever set via the fane_hero_image setting, restore:
+     filter: drop-shadow(0 26px 34px rgba(0,0,0,.62)); */
 .sc-fane-hero__media img {
   position: relative; z-index: 1;
-  filter: drop-shadow(0 26px 34px rgba(0,0,0,.62));
 }
 
 /* --- Component rail: four on a laptop, fifth peeking -------------------- */
